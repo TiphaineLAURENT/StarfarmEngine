@@ -36,6 +36,13 @@ namespace star
           Scene &operator=(Scene &&) = delete;
 
   public:
+          void update(float deltaTime);
+
+          template <class E, class ...ARGS>
+          E &createEntity(ARGS &&... args);
+          template <class S, class ...ARGS>
+          S &createSystem(ARGS &&... args);
+
   private:
   };
 

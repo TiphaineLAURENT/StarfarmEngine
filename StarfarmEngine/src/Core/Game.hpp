@@ -8,6 +8,8 @@
 # include <ostream>
 # include <list>
 
+# include <SFML/System/Clock.hpp>
+
 # include "Scene.hpp"
 
 namespace star
@@ -17,7 +19,9 @@ namespace star
   {
 // ATTRIBUTES
   private:
-          std::list<Scene> _scenes;
+          std::list<Scene> _scenes{};
+          Scene *_activeScene = nullptr;
+          sf::Clock _clock;
 
   public:
 
@@ -33,7 +37,7 @@ namespace star
           Game &operator=(Game &&) = delete;
 
   public:
-          int run();
+          bool run();
 
   private:
   };
