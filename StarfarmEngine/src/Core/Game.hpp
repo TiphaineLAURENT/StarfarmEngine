@@ -33,6 +33,8 @@ namespace star
           Game &operator=(Game &&) = delete;
 
   public:
+          int run();
+
   private:
   };
 

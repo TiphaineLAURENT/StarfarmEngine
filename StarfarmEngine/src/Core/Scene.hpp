@@ -6,8 +6,9 @@
 #define STARFARM_SCENE_HPP
 
 # include <ostream>
-#include <EntityManager.hpp>
-#include <SystemManager.hpp>
+# include <EntityManager.hpp>
+# include <ComponentManager.hpp>
+# include <MediumSystemManager.hpp>
 
 
 namespace star
@@ -19,7 +20,7 @@ namespace star
   private:
           ecs::EntityManager _entities{};
           ecs::ComponentManager _components{};
-          ecs::SystemManager _systems{};
+          ecs::MediumSystemManager _systems{};
 
   public:
 

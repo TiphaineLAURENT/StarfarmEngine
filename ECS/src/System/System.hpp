@@ -7,7 +7,6 @@
 
 # include <ostream>
 # include "ISystem.hpp"
-# include "SystemManager.hpp"
 
 namespace ecs
 {
@@ -23,7 +22,7 @@ namespace ecs
 // METHODS:
   public: // CONSTRUCTORS
           explicit System(
-                  SystemPriority priority = SystemPriority::NORMAL,
+                  SYSTEM_PRIORITY priority = SYSTEM_PRIORITY::NORMAL,
                   float updateInterval = 1.
           )
                   : ISystem(priority, updateInterval)
@@ -49,16 +48,17 @@ namespace ecs
                   return systemTypeName;
           }
 
-          void preUpdate() override
+          void preUpdate(float deltaTime) override
           {
           }
-          void update() override
+          void update(float deltaTime) override
           {
           }
-          void postUpdate() override
+          void postUpdate(float deltaTime) override
           {
           }
 
+          /*
           template <class ...Dependencies>
           void addDependencies(Dependencies &&... dependencies)
           {
@@ -67,6 +67,7 @@ namespace ecs
                           std::forward<Dependencies>(dependencies)...
                   );
           }
+          */
   };
 
   template <class S>

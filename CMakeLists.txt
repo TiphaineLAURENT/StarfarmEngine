@@ -20,8 +20,7 @@ set(ECS_SOURCES
     ${CMAKE_SOURCE_DIR}/ECS/src/Entity/EntityContainer.cpp ${CMAKE_SOURCE_DIR}/ECS/src/Entity/EntityContainer.hpp
     ${CMAKE_SOURCE_DIR}/ECS/src/System/ISystem.cpp ${CMAKE_SOURCE_DIR}/ECS/src/System/ISystem.hpp
     ${CMAKE_SOURCE_DIR}/ECS/src/System/System.cpp ${CMAKE_SOURCE_DIR}/ECS/src/System/System.hpp
-    ${CMAKE_SOURCE_DIR}/ECS/src/System/SystemManager.cpp ${CMAKE_SOURCE_DIR}/ECS/src/System/SystemManager.hpp
-    ${CMAKE_SOURCE_DIR}/ECS/src/System/SimpleSystemManager.cpp ${CMAKE_SOURCE_DIR}/ECS/src/System/SimpleSystemManager.hpp
+    ${CMAKE_SOURCE_DIR}/ECS/src/System/MediumSystemManager.cpp ${CMAKE_SOURCE_DIR}/ECS/src/System/MediumSystemManager.hpp
     )
 
 include_directories(ECS/src/Entity)
@@ -38,7 +37,18 @@ list(APPEND ENGINE_SOURCES ${ECS_SOURCES})
 list(SORT ENGINE_SOURCES COMPARE FILE_BASENAME)
 list(JOIN ENGINE_SOURCES "\n" ENGINE_SOURCES_STRING)
 message("Found sources: [\n" ${ENGINE_SOURCES_STRING} "\n]")
+
+if (WIN32)
+    if (CMAKE_SIZEOF_VOID_P EQUAL 8)
+        set(SFML_DIR "SFML-2.5.1-visual64/lib/cmake/SFML")
+        set(SFML_DLLS "${CMAKE_SOURCE_DIR}/SFML-2.5.1-visual64/bin")
+        include_directories(SFML-2.5.1-visual64/include)
+    endif ()
+endif ()
+find_package(SFML 2.5 COMPONENTS graphics audio window network system REQUIRED)
+
 add_library(starfarm STATIC ${ENGINE_SOURCES})
+
 
 add_library(coverage_config INTERFACE)
 option(CODE_COVERAGE "Enable coverage reporting" OFF)
