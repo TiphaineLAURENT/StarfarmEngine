@@ -6,10 +6,11 @@
 #define STARFARM_SCENE_HPP
 
 # include <ostream>
+# include <map>
+
 # include <EntityManager.hpp>
 # include <ComponentManager.hpp>
 # include <MediumSystemManager.hpp>
-
 
 namespace star
 {
@@ -36,12 +37,20 @@ namespace star
           Scene &operator=(Scene &&) = delete;
 
   public:
-          void update(float deltaTime);
+          void update(long deltaTime);
+          void refresh();
 
           template <class E, class ...ARGS>
-          E &createEntity(ARGS &&... args);
+          E &createEntity(ARGS &&... args)
+          {
+                  return _entities.createEntity<E>(std::forward<ARGS>(args)...);
+          }
+
           template <class S, class ...ARGS>
-          S &createSystem(ARGS &&... args);
+          S &createSystem(ARGS &&... args)
+          {
+                  return _systems.createSystem<S>(std::forward<ARGS>(args)...);
+          }
 
   private:
   };

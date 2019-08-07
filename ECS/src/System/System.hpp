@@ -10,6 +10,7 @@
 
 namespace ecs
 {
+# define SYSTEM(system) system : public ecs::System<system>
 
   template <class S>
   class System : public ISystem
@@ -23,7 +24,7 @@ namespace ecs
   public: // CONSTRUCTORS
           explicit System(
                   SYSTEM_PRIORITY priority = SYSTEM_PRIORITY::NORMAL,
-                  float updateInterval = 1.
+                  long updateInterval = 10
           )
                   : ISystem(priority, updateInterval)
           {
@@ -48,13 +49,13 @@ namespace ecs
                   return systemTypeName;
           }
 
-          void preUpdate(float deltaTime) override
+          [[deprecated]] void preUpdate(float deltaTime) override
           {
           }
-          void update(float deltaTime) override
+          void update(long deltaTime) override
           {
           }
-          void postUpdate(float deltaTime) override
+          [[deprecated]] void postUpdate(float deltaTime) override
           {
           }
 

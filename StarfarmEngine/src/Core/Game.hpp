@@ -7,8 +7,10 @@
 
 # include <ostream>
 # include <list>
+# include <map>
 
 # include <SFML/System/Clock.hpp>
+# include <SFML/Graphics/RenderWindow.hpp>
 
 # include "Scene.hpp"
 
@@ -21,7 +23,10 @@ namespace star
   private:
           std::list<Scene> _scenes{};
           Scene *_activeScene = nullptr;
-          sf::Clock _clock;
+
+          std::map<std::string, sf::RenderWindow> _windows{};
+
+          sf::Clock _clock{};
 
   public:
 
@@ -38,6 +43,13 @@ namespace star
 
   public:
           bool run();
+
+          Scene &createScene();
+          void setActiveScene(Scene *scene);
+
+          sf::RenderWindow &createWindow(const sf::VideoMode &mode,
+                                         const std::string &name = "StarfarmEngine",
+                                         unsigned style = sf::Style::Default);
 
   private:
   };

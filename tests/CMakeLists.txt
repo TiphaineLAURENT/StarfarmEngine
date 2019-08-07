@@ -1,4 +1,16 @@
-add_executable(tests main.cpp ${ENGINE_SOURCES})
-target_link_libraries(tests coverage_config)
+set(TEST_EXECUTABLE tests)
 
-add_test(NAME exec_tests COMMAND tests --success)
+add_executable(${TEST_EXECUTABLE} ${ENGINE_SOURCES} main.cpp)
+if (WIN32)
+    add_custom_command(TARGET ${TEST_EXECUTABLE} POST_BUILD
+                       COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       ${SFML_DLLS}
+                       ${EXECUTABLE_OUTPUT_PATH}
+                       )
+endif()
+
+target_link_libraries(${TEST_EXECUTABLE} sfml-graphics sfml-audio sfml-window sfml-network sfml-system)
+target_link_libraries(${TEST_EXECUTABLE} coverage_config)
+install(TARGETS ${TEST_EXECUTABLE} DESTINATION bin)
+
+add_test(NAME exec_tests COMMAND ${TEST_EXECUTABLE} --success)

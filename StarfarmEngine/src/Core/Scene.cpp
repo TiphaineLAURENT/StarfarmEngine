@@ -2,25 +2,23 @@
 // Created by Tiphaine LAURENT on 05/08/2019.
 //
 
+#include <string>
+
 #include "Scene.hpp"
+#include "../Log/LogSystem.hpp"
 
 namespace star
 {
 
-  void Scene::update(float deltaTime)
+  void Scene::update(long deltaTime)
   {
+          LogSystem::log("Update after " + std::to_string(deltaTime) + " micros\n");
           _systems.update(deltaTime);
   }
-  template <class E, class... ARGS>
-  E &Scene::createEntity(ARGS &&... args)
-  {
-          return _entities.createEntity<E>(std::forward<ARGS>(args)...);
-  }
 
-  template <class S, class... ARGS>
-  S &Scene::createSystem(ARGS &&... args)
+  void Scene::refresh()
   {
-          return _systems.createSystem<S>(std::forward<ARGS>(args)...);
+          _systems.updateSytemsOrder();
   }
 
 }
