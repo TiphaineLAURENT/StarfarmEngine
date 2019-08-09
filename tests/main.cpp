@@ -48,12 +48,16 @@ SCENARIO("Game running", "[engine][gamerun]")
                                         REQUIRE(transform->getPosition() ==
                                         sf::Vector2f{0, 0});
 
-                                        WHEN("The game is running")
+                                        WHEN("The game is running and the "
+                                             "object move")
                                         {
                                                 REQUIRE(game.run());
+                                                transform->move(10 , 10);
+                                                REQUIRE(game.run());
 
-                                                window.clear();
-                                                window.display();
+                                                REQUIRE
+                                                (transform->getPosition() ==
+                                                sf::Vector2f{10, 10});
                                         }
                                 }
                         }
