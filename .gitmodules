@@ -1,6 +1,3 @@
 [submodule "ECSsub"]
 	path = ECSsub
 	url = https://github.com/TiphaineLAURENT/ECS.git
-[submodule "ECS"]
-	path = ECS
-	url = https://github.com/TiphaineLAURENT/ECS.git
