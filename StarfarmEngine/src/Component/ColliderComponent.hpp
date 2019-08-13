@@ -6,7 +6,11 @@
 #define STARFARMENGINE_COLLIDERCOMPONENT_HPP
 
 # include <ostream>
+# include <vector>
+# include <array>
 # include <Component.hpp>
+# include <IEntity.hpp>
+# include <SFML/Graphics/Vertex.hpp>
 
 # include "RigidbodyComponent.hpp"
 
@@ -18,13 +22,28 @@ namespace star
   {
 // ATTRIBUTES
   private:
+          float _bounciness = 0.;
+
+          float _density = 0.;
+
+          float _friction = 0.;
+
+          bool _isTrigger = false;
+
+  protected:
           RigidbodyComponent *_rigidbodyComponent = nullptr;
+
+          TransformComponent *_transformComponent = nullptr;
 
   public:
 
 // METHODS
   public:// CONSTRUCTORS
-          ColliderComponent() = default;
+          explicit ColliderComponent()
+          {
+                  _rigidbodyComponent = getOwner()
+                          ->getComponent<RigidbodyComponent>();
+          }
           ~ColliderComponent() override = default;
           ColliderComponent(const ColliderComponent &copy) = default;
           ColliderComponent(ColliderComponent &&) noexcept = default;
@@ -34,6 +53,13 @@ namespace star
           ColliderComponent &operator=(ColliderComponent &&) noexcept = default;
 
   public:
+          [[nodiscard]] virtual std::vector<sf::Vector2f> getVertices() const = 0;
+
+          [[nodiscard]] virtual float distanceTo(const sf::Vector2f &point)
+          const = 0;
+          [[nodiscard]] virtual bool contains(const sf::Vector2f &point)
+          const = 0;
+
   private:
   };
 

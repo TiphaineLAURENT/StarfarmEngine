@@ -10,6 +10,8 @@
 #include "../StarfarmEngine/src/Core/Game.hpp"
 #include "../StarfarmEngine/src/Log/LogSystem.hpp"
 #include "../StarfarmEngine/src/Entity/GameObject.hpp"
+#include "../StarfarmEngine/src/Component/BoxCollider.hpp"
+
 
 SCENARIO("Game running", "[engine][gamerun]")
 {
@@ -66,3 +68,37 @@ SCENARIO("Game running", "[engine][gamerun]")
         }
 };
 
+SCENARIO("Two BoxColliders intersecting", "[boxcollider][intersection]")
+{
+        GIVEN("A game with a scene") {
+                auto game = star::Game{};
+                auto &scene = game.createScene();
+
+                GIVEN("A game object with a rigidbody") {
+                        auto &ga = scene.createEntity<star::GameObject>();
+                        auto *rigidbody = ga
+                                .addComponent<star::RigidbodyComponent>();
+                        REQUIRE(rigidbody != nullptr);
+
+                        THEN("We add two colliders") {
+                                auto *collider1 = ga
+                                        .addComponent<star::BoxCollider>
+                                                (sf::FloatRect{0, 0, 1, 1});
+                                REQUIRE(collider1 != nullptr);
+                                auto *collider2 = ga
+                                        .addComponent<star::BoxCollider>
+                                                (sf::FloatRect{0.5, 0.5, 1, 1});
+                                REQUIRE(collider2 != nullptr);
+
+                                THEN("We check their intersection") {
+                                        REQUIRE(collider1->intersects(
+                                                *collider2
+                                        ));
+                                        REQUIRE(collider1->contains(
+                                                collider2->getVertices()[0]
+                                        ));
+                                }
+                        }
+                }
+        }
+};

@@ -17,7 +17,11 @@ set(ENGINE_SOURCES
     StarfarmEngine/src/Entity/GameObject.cpp StarfarmEngine/src/Entity/GameObject.hpp
     StarfarmEngine/src/Component/TransformComponent.cpp StarfarmEngine/src/Component/TransformComponent.hpp
     StarfarmEngine/src/Component/RenderComponent.cpp StarfarmEngine/src/Component/RenderComponent.hpp
-    StarfarmEngine/src/Component/RigidbodyComponent.cpp StarfarmEngine/src/Component/RigidbodyComponent.hpp StarfarmEngine/src/Component/ColliderComponent.cpp StarfarmEngine/src/Component/ColliderComponent.hpp)
+    StarfarmEngine/src/Component/RigidbodyComponent.cpp StarfarmEngine/src/Component/RigidbodyComponent.hpp
+    StarfarmEngine/src/Component/ColliderComponent.hpp
+    StarfarmEngine/src/Util/Vector.hpp
+    StarfarmEngine/src/Component/BoxCollider.cpp StarfarmEngine/src/Component/BoxCollider.hpp
+    )
 
 list(SORT ENGINE_SOURCES COMPARE FILE_BASENAME)
 list(TRANSFORM ENGINE_SOURCES PREPEND "${CMAKE_SOURCE_DIR}/")
