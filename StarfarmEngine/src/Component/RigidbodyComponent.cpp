@@ -3,6 +3,8 @@
 //
 
 #include <ComponentManager.hpp>
+#include <IEntity.hpp>
+
 #include "RigidbodyComponent.hpp"
 
 namespace star
@@ -10,8 +12,7 @@ namespace star
 
   RigidbodyComponent::RigidbodyComponent()
   {
-          _transformComponent =
-                  ecs::ComponentManager::getComponent<TransformComponent>(getOwner());
+          _transformComponent = getOwner()->getComponent<TransformComponent>();
   }
 
   void RigidbodyComponent::addForce(sf::Vector2f force, RIGIDBODY_FORCE_MODE mode)

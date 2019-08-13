@@ -5,27 +5,10 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
 
-set(ECS_SOURCE_DIRECTORY ECS/src)
-set(ECS_SOURCES
-    ECS/src/Entity/IEntity.cpp ECS/src/Entity/IEntity.hpp
-    ECS/src/util/util.hpp
-    ECS/src/Component/ComponentManager.cpp ECS/src/Component/ComponentManager.hpp
-    ECS/src/Component/ComponentContainer.cpp ECS/src/Component/ComponentContainer.hpp
-    ECS/src/Component/IComponent.cpp ECS/src/Component/IComponent.hpp
-    ECS/src/Entity/Entity.cpp ECS/src/Entity/Entity.hpp
-    ECS/src/Component/Component.cpp ECS/src/Component/Component.hpp
-    ECS/src/Component/IComponentContainer.cpp ECS/src/Component/IComponentContainer.hpp
-    ECS/src/Entity/EntityManager.cpp ECS/src/Entity/EntityManager.hpp
-    ECS/src/Entity/IEntityContainer.cpp ECS/src/Entity/IEntityContainer.hpp
-    ECS/src/Entity/EntityContainer.cpp ECS/src/Entity/EntityContainer.hpp
-    ECS/src/System/ISystem.cpp ECS/src/System/ISystem.hpp
-    ECS/src/System/System.cpp ECS/src/System/System.hpp
-    ECS/src/System/MediumSystemManager.cpp ECS/src/System/MediumSystemManager.hpp
-    )
-
-include_directories(ECS/src/Entity)
-include_directories(ECS/src/Component)
-include_directories(ECS/src/System)
+add_subdirectory(ECS)
+include_directories(ECS/ECS/src/Entity)
+include_directories(ECS/ECS/src/Component)
+include_directories(ECS/ECS/src/System)
 
 set(ENGINE_SOURCES
     StarfarmEngine/src/Core/Game.cpp StarfarmEngine/src/Core/Game.hpp
@@ -56,7 +39,7 @@ find_package(SFML 2.5 COMPONENTS graphics audio window network system REQUIRED)
 add_library(starfarm STATIC ${ENGINE_SOURCES})
 
 
-add_library(coverage_config INTERFACE)
+#add_library(coverage_config INTERFACE)
 option(CODE_COVERAGE "Enable coverage reporting" OFF)
 if (CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(coverage_config INTERFACE
