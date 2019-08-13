@@ -11,7 +11,6 @@ namespace star
   BoxCollider::BoxCollider(const sf::FloatRect &bounds)
           : ColliderComponent(), _bounds(bounds)
   {
-          _transformComponent = getOwner()->getComponent<TransformComponent>();
           _angles[0] = {_bounds.left, _bounds.top};
           _angles[1] = {_bounds.left + _bounds.width, _bounds.top};
           _angles[2] = {_bounds.left + _bounds.width, _bounds.top + _bounds.height};

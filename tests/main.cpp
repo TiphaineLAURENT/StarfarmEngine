@@ -78,7 +78,6 @@ SCENARIO("Two BoxColliders intersecting", "[boxcollider][intersection]")
                         auto &ga = scene.createEntity<star::GameObject>();
                         auto *rigidbody = ga
                                 .addComponent<star::RigidbodyComponent>();
-                        REQUIRE(rigidbody != nullptr);
 
                         THEN("We add two colliders") {
                                 auto *collider1 = ga

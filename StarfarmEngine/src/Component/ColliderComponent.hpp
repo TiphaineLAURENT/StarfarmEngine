@@ -39,11 +39,7 @@ namespace star
 
 // METHODS
   public:// CONSTRUCTORS
-          explicit ColliderComponent()
-          {
-                  _rigidbodyComponent = getOwner()
-                          ->getComponent<RigidbodyComponent>();
-          }
+          ColliderComponent() = default;
           ~ColliderComponent() override = default;
           ColliderComponent(const ColliderComponent &copy) = default;
           ColliderComponent(ColliderComponent &&) noexcept = default;
@@ -53,6 +49,8 @@ namespace star
           ColliderComponent &operator=(ColliderComponent &&) noexcept = default;
 
   public:
+          void setup() override;
+
           [[nodiscard]] virtual std::vector<sf::Vector2f> getVertices() const = 0;
 
           [[nodiscard]] virtual float distanceTo(const sf::Vector2f &point)

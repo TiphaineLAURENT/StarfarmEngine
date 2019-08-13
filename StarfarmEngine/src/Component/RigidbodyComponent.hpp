@@ -79,7 +79,7 @@ namespace star
 
 // METHODS
   public:// CONSTRUCTORS
-          RigidbodyComponent();
+          RigidbodyComponent() = default;
           ~RigidbodyComponent() override = default;
           RigidbodyComponent(const RigidbodyComponent &copy) = default;
           RigidbodyComponent(RigidbodyComponent &&) noexcept = default;
@@ -89,6 +89,8 @@ namespace star
           RigidbodyComponent &operator=(RigidbodyComponent &&) noexcept = default;
 
   public:
+          void setup() override;
+
           void addForce(
                   sf::Vector2f force, RIGIDBODY_FORCE_MODE mode =
           RIGIDBODY_FORCE_MODE::IMPULSE

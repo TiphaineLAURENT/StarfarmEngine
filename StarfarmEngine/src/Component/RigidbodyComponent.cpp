@@ -10,7 +10,7 @@
 namespace star
 {
 
-  RigidbodyComponent::RigidbodyComponent()
+  void RigidbodyComponent::setup()
   {
           _transformComponent = getOwner()->getComponent<TransformComponent>();
   }
