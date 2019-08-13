@@ -15,6 +15,7 @@
 *.so
 *.dylib
 *.dll
+!SFML-2.5.1-visual64/bin/*.dll
 
 # Fortran module files
 *.mod
@@ -25,6 +26,7 @@
 *.la
 *.a
 *.lib
+!SFML-2.5.1-visual64/lib/*.lib
 
 # Executables
 *.exe
@@ -36,5 +38,5 @@
 build/
 test/
 out/
-bin/*
+./bin/
 cmake-build-debug/

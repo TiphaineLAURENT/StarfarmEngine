@@ -4,7 +4,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
-
 add_subdirectory(ECS)
 include_directories(ECS/ECS/src/Entity)
 include_directories(ECS/ECS/src/Component)
@@ -20,7 +19,6 @@ set(ENGINE_SOURCES
     StarfarmEngine/src/Component/RenderComponent.cpp StarfarmEngine/src/Component/RenderComponent.hpp
     StarfarmEngine/src/Component/RigidbodyComponent.cpp StarfarmEngine/src/Component/RigidbodyComponent.hpp StarfarmEngine/src/Component/ColliderComponent.cpp StarfarmEngine/src/Component/ColliderComponent.hpp)
 
-list(APPEND ENGINE_SOURCES ${ECS_SOURCES})
 list(SORT ENGINE_SOURCES COMPARE FILE_BASENAME)
 list(TRANSFORM ENGINE_SOURCES PREPEND "${CMAKE_SOURCE_DIR}/")
 list(JOIN ENGINE_SOURCES "\n" ENGINE_SOURCES_STRING)
