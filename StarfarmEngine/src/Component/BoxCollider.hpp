@@ -39,8 +39,8 @@ namespace star
           [[nodiscard]] const sf::FloatRect &getBounds() const;
           [[nodiscard]] std::vector<sf::Vector2f> getVertices() const override;
 
-          float distanceTo(const sf::Vector2f &point) const override;
-          bool contains(const sf::Vector2f &point) const override;
+          [[nodiscard]] float distanceTo(const sf::Vector2f &point) const override;
+          [[nodiscard]] bool contains(const sf::Vector2f &point) const override;
           [[nodiscard]] bool intersects(const BoxCollider &other) const;
 
 
