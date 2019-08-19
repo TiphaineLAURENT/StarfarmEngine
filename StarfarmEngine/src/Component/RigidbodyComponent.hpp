@@ -56,6 +56,8 @@ namespace star
 
           float _angularVelocity = 0.;
 
+          float _torque = 0.;
+
           RIGIDBODY_TYPE _rigidbodyType = RIGIDBODY_TYPE::DYNAMIC;
 
           RIGIDBODY_CONSTRAINTS _constraints = RIGIDBODY_CONSTRAINTS::NONE;
@@ -71,9 +73,13 @@ namespace star
 
           sf::Vector2f _velocity = {0., 0.};
 
+          sf::Vector2f _forces = {0., 0.};
+
           float _inertia = 0.;
 
           float _mass = 1.;
+
+          float _massInv = 1.;
 
   public:
 
@@ -108,6 +114,10 @@ namespace star
 
           void addRotation(float angle);
           void setRotation(float angle);
+
+          void updateVelocity(const sf::Vector2f &gravity, float deltaTime);
+          void updatePosition(float deltaTime);
+          void update(float deltaTime);
 
   private:
   };

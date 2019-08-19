@@ -6,6 +6,8 @@
 #include <IEntity.hpp>
 
 #include "RigidbodyComponent.hpp"
+#include "../Util/Vector.hpp"
+
 
 namespace star
 {
@@ -13,6 +15,7 @@ namespace star
   void RigidbodyComponent::setup()
   {
           _transformComponent = getOwner()->getComponent<TransformComponent>();
+          _massInv = 1 / _mass;
   }
 
   void RigidbodyComponent::addForce(sf::Vector2f force, RIGIDBODY_FORCE_MODE mode)
@@ -23,8 +26,8 @@ namespace star
   {
           switch (mode) {
           case RIGIDBODY_FORCE_MODE::IMPULSE: {
-                  _velocity.x = x / _mass;
-                  _velocity.y = y / _mass;
+                  _forces.x += x;
+                  _forces.y += y;
                   break;
           }
           case RIGIDBODY_FORCE_MODE::VELOCITYCHANGE: {
@@ -72,6 +75,40 @@ namespace star
                   return;
 
           _transformComponent->setRotation(angle);
+  }
+
+  void RigidbodyComponent::updateVelocity(
+          const sf::Vector2f &gravity,
+          float deltaTime
+  )
+  {
+          auto objectGravity = gravity * _gravityScale;
+          auto draggedVelocity = _velocity * _drag;
+          _velocity = draggedVelocity + (objectGravity + _forces * _massInv)
+                                        * deltaTime;
+
+          _angularVelocity = _angularVelocity * _angularDrag
+                             + _torque * _massInv * deltaTime;
+
+          _forces = {0., 0.};
+          _torque = 0.;
+  }
+
+  void RigidbodyComponent::updatePosition(float deltaTime)
+  {
+          auto position = _transformComponent->getPosition();
+          position += _velocity * deltaTime;
+          setPosition(position);
+
+          auto angle = _transformComponent->getRotation();
+          angle += _angularVelocity * deltaTime;
+          setRotation(angle);
+  }
+
+  void RigidbodyComponent::update(float deltaTime)
+  {
+          updateVelocity({SpaceGravity, SpaceGravity}, deltaTime);
+          updatePosition(deltaTime);
   }
 
 }

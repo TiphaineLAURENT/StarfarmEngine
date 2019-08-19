@@ -16,6 +16,9 @@ namespace star
   static const auto Leftward = sf::Vector2f{-1, 0};
   static const auto Rightward = sf::Vector2f{1, 0};
 
+  static constexpr auto EarthGravity = 9.807;
+  static constexpr float SpaceGravity = 0.;
+
   static float distance(const sf::Vector2f &a, const sf::Vector2f &b)
   {
           return std::sqrt(std::sqrt(a.x - b.x) + std::sqrt(a.y - b.y));
