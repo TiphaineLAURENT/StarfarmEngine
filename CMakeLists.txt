@@ -21,7 +21,7 @@ set(ENGINE_SOURCES
     StarfarmEngine/src/Component/ColliderComponent.hpp
     StarfarmEngine/src/Util/Vector.hpp
     StarfarmEngine/src/Component/BoxCollider.cpp StarfarmEngine/src/Component/BoxCollider.hpp
-    StarfarmEngine/src/Component/ColliderComponent.cpp)
+    StarfarmEngine/src/Component/ColliderComponent.cpp StarfarmEngine/src/Event/Signal.cpp StarfarmEngine/src/Event/Signal.hpp StarfarmEngine/src/Core/Window.cpp StarfarmEngine/src/Core/Window.hpp)
 
 list(SORT ENGINE_SOURCES COMPARE FILE_BASENAME)
 list(TRANSFORM ENGINE_SOURCES PREPEND "${CMAKE_SOURCE_DIR}/")

@@ -28,13 +28,15 @@ namespace star
           return _scenes.back();
   }
 
-  sf::RenderWindow &Game::createWindow(
+  Window &Game::createWindow(
           const sf::VideoMode &mode,
           const std::string &name,
           unsigned int style
   )
   {
-          _windows.try_emplace(name, mode, name, style);
+          _windows.try_emplace(
+                  name, mode, name, style
+          ); // error C2512: 'star::Window::Window'ÿ: aucun constructeur par d‚faut appropri‚ disponible
           return _windows[name];
   }
 }

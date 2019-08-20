@@ -1,0 +1,271 @@
+//
+// Created by Tiphaine LAURENT on 20/08/2019.
+//
+
+#ifndef STARFARMENGINE_SIGNAL_HPP
+#define STARFARMENGINE_SIGNAL_HPP
+
+# include <ostream>
+# include <algorithm>
+# include <functional>
+# include <memory>
+# include <vector>
+
+
+namespace star
+{
+
+# define SIGNAL(signalname, ...) using signalname ## Type = star::Signal<__VA_ARGS__>; \
+                                   mutable signalname ## Type signalname
+# define SLOT(class, signalname, slotname) class::signalname ## Type::ConnectionGuard slotname
+
+  template <class ...ARGS>
+  class Signal
+  {
+// ATTRIBUTES
+  public:
+          using Callback = std::function<void(ARGS...)>;
+
+          class Connection;
+
+          class ConnectionGuard;
+
+  private:
+          struct Slot
+          {
+                  explicit Slot(Signal *signal, Callback &&callback)
+                          : _signal(signal), _callback(std::move(callback))
+                  {
+                  }
+
+                  Callback _callback;
+
+                  Signal *_signal;
+          };
+
+          using SlotPtr = std::shared_ptr<Slot>;
+          using SlotList = std::vector<SlotPtr>;
+
+          // METHODS
+  public:// CONSTRUCTORS
+          Signal() = default;
+          ~Signal() = default;
+          Signal(const Signal &copy) = default;
+          Signal(Signal &&) noexcept = default;
+
+  public: //OPERATORS
+          Signal &operator=(const Signal &other) = default;
+          Signal &operator=(Signal &&) noexcept = default;
+
+          void operator()(ARGS ...args)
+          {
+                  for (
+                          auto &slot : _slots
+                          ) {
+                          slot->callback(args...);
+                  }
+          }
+
+  public:
+          void clear()
+          {
+                  _slots.clear();
+          }
+
+          Connection connect(const Callback &callback)
+          {
+                  return connect(Callback(callback));
+          }
+          Connection connect(Callback &&callback)
+          {
+                  auto slot = std::make_shared<Slot>(this, callback);
+                  _slots.push_back(std::move(slot));
+                  return Connection(_slots.back());
+          }
+          template <class O>
+          Connection connect(O &object, void (O::*method)(ARGS...))
+          {
+                  return connect(
+                          [&object, method](Args &&...args) {
+                                  return (object.*method)(
+                                          std::forward<Args>(args)...
+                                  );
+                          }
+                  );
+          }
+          template <class O>
+          Connection connect(O *object, void (O::*method)(ARGS...))
+          {
+                  return connect(
+                          [object, method](Args &&...args) {
+                                  return (object->*method)(
+                                          std::forward<Args>(args)...
+                                  );
+                          }
+                  );
+          }
+          template <class O>
+          Connection connect(const O &object, void (O::*method)(ARGS...) const)
+          {
+                  return connect(
+                          [&object, method](Args &&...args) {
+                                  return (object.*method)(
+                                          std::forward<Args>(args)...
+                                  );
+                          }
+                  );
+          }
+          template <class O>
+          Connection connect(const O *object, void (O::*method)(ARGS...) const)
+          {
+                  return connect(
+                          [object, method](Args &&...args) {
+                                  return (object->*method)(
+                                          std::forward<Args>(args)...
+                                  );
+                          }
+                  );
+          }
+
+          void disconnect(const Slot &slot)
+          {
+                  auto it = std::find(_slots.begin(), _slots.end(), slot);
+                  _slots.erase(it);
+          }
+
+  private:
+          SlotList _slots;
+  };
+
+  template <class ...ARGS>
+  std::ostream &operator<<(std::ostream &out, const Signal<ARGS...> &);
+
+
+  template <class ...Args>
+  class Signal<Args...>::Connection
+  {
+          using BaseClass = Signal<Args...>;
+          friend BaseClass;
+
+  public:
+  private:
+          std::weak_ptr<Slot> _slot;
+
+  public:
+          Connection() = default;
+          Connection(const Connection &connection) = default;
+          Connection(Connection &&connection) noexcept = default;
+          ~Connection() = default;
+
+  public:
+          Connection &operator=(const Connection &connection) = default;
+          Connection &operator=(Connection &&connection) noexcept
+          {
+                  _slot = std::move(connection._slot);
+                  connection._slot.reset();
+
+                  return *this;
+          }
+
+  public:
+          template <class ...ConnectArgs>
+          void connect(BaseClass &signal, ConnectArgs &&...args)
+          {
+                  operator=(signal.Connect(std::forward<ConnectArgs>(args)...));
+          }
+          void disconnect() noexcept
+          {
+                  if (SlotPtr ptr = _slot.lock()) {
+                          ptr->_signal->disconnect(ptr);
+                  }
+          }
+
+          [[nodiscard]] bool isConnected() const
+          {
+                  return _slot.expired();
+          }
+
+  private:
+          explicit Connection(const SlotPtr &slot)
+                  : _slot(slot)
+          {
+          }
+  };
+
+
+  template <class ...Args>
+  class Signal<Args...>::ConnectionGuard
+  {
+          using BaseClass = Signal<Args...>;
+          using Connection = typename BaseClass::Connection;
+
+  public:
+  private:
+          Connection _connection;
+
+  public:
+          ConnectionGuard() = default;
+          explicit ConnectionGuard(const Connection &connection)
+                  : _connection(connection)
+          {
+          }
+          ConnectionGuard(const ConnectionGuard &connection) = delete;
+          explicit ConnectionGuard(Connection &&connection)
+                  : _connection(std::move(connection))
+          {
+          }
+          ConnectionGuard(ConnectionGuard &&connection) noexcept = default;
+          ~ConnectionGuard()
+          {
+                  _connection.disconnect();
+          }
+
+  public:
+          ConnectionGuard &operator=(const Connection &connection)
+          {
+                  disconnect();
+                  _connection = connection;
+                  return *this;
+          }
+          ConnectionGuard &operator=(const ConnectionGuard &connection) = delete;
+          ConnectionGuard &operator=(Connection &&connection)
+          {
+                  disconnect();
+                  _connection = std::move(connection);
+                  return *this;
+          }
+          ConnectionGuard &operator=(ConnectionGuard &&connection) noexcept
+          {
+                  disconnect();
+                  _connection = std::move(connection);
+                  return *this;
+          }
+
+  public:
+          template <class... ConnectArgs>
+          void connect(BaseClass &signal, ConnectArgs &&... args)
+          {
+                  disconnect();
+                  _connection
+                          .connect(signal, std::forward<ConnectArgs>(args)...);
+          }
+          void disconnect() noexcept
+          {
+                  _connection.disconnect();
+          }
+
+          [[nodiscard]] Connection &getConnection()
+          {
+                  return _connection;
+          }
+
+          [[nodiscard]] bool isConnected() const
+          {
+                  return _connection.isConnected();
+          }
+
+  private:
+  };
+}
+
+#endif //STARFARMENGINE_SIGNAL_HPP

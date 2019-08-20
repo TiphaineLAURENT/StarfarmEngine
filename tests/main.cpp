@@ -66,7 +66,8 @@ SCENARIO("Game running", "[engine][gamerun]")
 
                 }
         }
-};
+}
+
 
 SCENARIO("Two BoxColliders intersecting", "[boxcollider][intersection]")
 {
@@ -100,4 +101,12 @@ SCENARIO("Two BoxColliders intersecting", "[boxcollider][intersection]")
                         }
                 }
         }
-};
+}
+
+
+SCENARIO("Game quitting by event keypressed", "[event][quit]")
+{
+        GIVEN("A game") {
+                auto game = star::Game{};
+        }
+}

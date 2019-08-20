@@ -11,6 +11,11 @@
 
 namespace star
 {
+  class Vector2f
+          : public sf::Vector2f
+  {
+  };
+
   static const auto Upward = sf::Vector2f{0, 1};
   static const auto Downward = sf::Vector2f{0, -1};
   static const auto Leftward = sf::Vector2f{-1, 0};
