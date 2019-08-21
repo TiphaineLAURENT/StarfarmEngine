@@ -25,7 +25,7 @@ namespace star
           WindowEventHandler() = default;
           ~WindowEventHandler() = default;
           WindowEventHandler(const WindowEventHandler &copy) = default;
-          WindowEventHandler(WindowEventHandler &&) noexcept = default;
+          WindowEventHandler(WindowEventHandler &&) = default;
 
   public: //OPERATORS
           WindowEventHandler &operator=(const WindowEventHandler &other) = default;
@@ -34,7 +34,30 @@ namespace star
   public:
           void dispatch(const sf::Event &event);
 
+          SIGNAL(OnClosed, const sf::Event&);
+
+          SIGNAL(OnResized, const sf::Event&);
+
+          SIGNAL(OnLostFocus, const sf::Event&);
+
+          SIGNAL(OnGainedFocus, const sf::Event&);
+
+          SIGNAL(OnTextEntered, const sf::Event&);
           SIGNAL(OnKeyPressed, const sf::Event&);
+
+          SIGNAL(OnKeyReleased, const sf::Event&);
+
+          SIGNAL(OnMouseWheelScrolled, const sf::Event&);
+
+          SIGNAL(OnMouseButtonPressed, const sf::Event&);
+
+          SIGNAL(OnMouseButtonReleased, const sf::Event&);
+
+          SIGNAL(OnMouseMoved, const sf::Event&);
+
+          SIGNAL(OnMouseEntered, const sf::Event&);
+
+          SIGNAL(OnMouseLeft, const sf::Event&);
 
   private:
   };

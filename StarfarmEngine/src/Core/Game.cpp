@@ -2,6 +2,7 @@
 // Created by Tiphaine LAURENT on 05/08/2019.
 //
 
+#include <cassert>
 #include "Game.hpp"
 
 namespace star
@@ -18,9 +19,18 @@ namespace star
 
           auto deltaTime = _clock.restart().asMicroseconds();
 
-          for (
-                  auto &[key, window] : _windows
-                  ) {
+          for (auto it = _windows.begin(); it != _windows.end();) {
+                  if (!it->second.isOpen()) {
+                          it = _windows.erase(it);
+                  } else {
+                          it++;
+                  }
+          }
+          if (_windows.empty()) {
+                  return false;
+          }
+
+          for (auto &[key, window] : _windows) {
                   window.processEvents();
           }
 
@@ -34,8 +44,7 @@ namespace star
 
   Scene &Game::createScene()
   {
-          _scenes.emplace_back();
-          return _scenes.back();
+          return _scenes.emplace_back();
   }
 
   Window &Game::createWindow(
@@ -44,15 +53,18 @@ namespace star
           sf::Uint32 style
   )
   {
-          _windows.try_emplace(
+          const auto[iterator, emplaced] = _windows.try_emplace(
                   name, mode, name, style
           );
+          assert(emplaced);
           auto &window = _windows[name];
 
           _onKeyPressed.connect(
-                  window._eventHandler.OnKeyPressed,
-                  [=](const sf::Event &event) {
-                          if (event.key.code == sf::Keyboard::Escape) {
+                  window.getEventHandler().OnClosed,
+                  [=, &window](const sf::Event &event) {
+                          window.close();
+
+                          if (_windows.empty()) {
                                   quit();
                           }
                   }

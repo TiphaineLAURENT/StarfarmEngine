@@ -18,8 +18,6 @@ namespace star
   class Window
           : public sf::RenderWindow
   {
-          friend Game;
-
 // ATTRIBUTES
   public:
   private:
@@ -42,9 +40,14 @@ namespace star
 
   public:
           void processEvents();
+          WindowEventHandler &getEventHandler();
+
+          const std::string &getName() const;
 
   private:
           WindowEventHandler _eventHandler;
+
+          std::string _name;
   };
 
   std::ostream &operator<<(std::ostream &out, const Window &);

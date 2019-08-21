@@ -7,7 +7,7 @@
 
 # include <ostream>
 # include <list>
-# include <map>
+# include <unordered_map>
 
 # include <SFML/System/Clock.hpp>
 
@@ -26,7 +26,7 @@ namespace star
           std::list<Scene> _scenes{};
           Scene *_activeScene = nullptr;
 
-          std::map<std::string, Window> _windows{};
+          std::unordered_map<std::string, Window> _windows{};
 
           sf::Clock _clock{};
 

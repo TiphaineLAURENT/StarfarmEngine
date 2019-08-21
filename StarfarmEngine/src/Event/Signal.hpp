@@ -9,7 +9,7 @@
 # include <algorithm>
 # include <functional>
 # include <memory>
-# include <vector>
+# include <list>
 
 
 namespace star
@@ -49,7 +49,7 @@ namespace star
           };
 
           using SlotPtr = std::shared_ptr<Slot>;
-          using SlotList = std::vector<SlotPtr>;
+          using SlotList = std::list<SlotPtr>;
 
           // METHODS
   public:// CONSTRUCTORS
@@ -64,9 +64,7 @@ namespace star
 
           void operator()(ARGS ...args)
           {
-                  for (
-                          auto &slot : _slots
-                          ) {
+                  for (auto &slot : _slots) {
                           slot->_callback(args...);
                   }
           }
@@ -79,13 +77,13 @@ namespace star
 
           Connection connect(const Callback &callback)
           {
-                  return connect(Callback(callback));
+                  return connect(Callback{callback});
           }
           Connection connect(Callback &&callback)
           {
                   auto slot = std::make_shared<Slot>(this, std::move(callback));
                   _slots.push_back(std::move(slot));
-                  return Connection(_slots.back());
+                  return Connection{_slots.back()};
           }
           template <class O>
           Connection connect(O &object, void (O::*method)(ARGS...))
@@ -140,7 +138,9 @@ namespace star
                                   return *slotPtr == slot;
                           }
                   );
-                  _slots.erase(it);
+                  if (it != _slots.end()) {
+                          _slots.erase(it);
+                  }
           }
 
   private:
@@ -154,8 +154,8 @@ namespace star
   template <class ...Args>
   class Signal<Args...>::Connection
   {
-          using BaseClass = Signal<Args...>;
-          friend BaseClass;
+          using SignalHandler = Signal<Args...>;
+          friend SignalHandler;
 
   public:
   private:
@@ -179,7 +179,7 @@ namespace star
 
   public:
           template <class ...ConnectArgs>
-          void connect(BaseClass &signal, ConnectArgs &&...args)
+          void connect(SignalHandler &signal, ConnectArgs &&...args)
           {
                   operator=(signal.connect(std::forward<ConnectArgs>(args)...));
           }
@@ -206,8 +206,8 @@ namespace star
   template <class ...Args>
   class Signal<Args...>::ConnectionGuard
   {
-          using BaseClass = Signal<Args...>;
-          using Connection = typename BaseClass::Connection;
+          using SignalHandler = Signal<Args...>;
+          using Connection = typename SignalHandler::Connection;
 
   public:
   private:
@@ -253,7 +253,7 @@ namespace star
 
   public:
           template <class... ConnectArgs>
-          void connect(BaseClass &signal, ConnectArgs &&... args)
+          void connect(SignalHandler &signal, ConnectArgs &&... args)
           {
                   disconnect();
                   _connection

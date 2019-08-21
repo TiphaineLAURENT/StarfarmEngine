@@ -15,7 +15,7 @@ namespace star
           const sf::String &title,
           sf::Uint32 style
   )
-          : RenderWindow(mode, title, style)
+          : RenderWindow(mode, title, style), _name(title)
   {
   }
 
@@ -26,6 +26,16 @@ namespace star
           while (pollEvent(event)) {
                   _eventHandler.dispatch(event);
           }
+  }
+
+  WindowEventHandler &Window::getEventHandler()
+  {
+          return _eventHandler;
+  }
+
+  const std::string &Window::getName() const
+  {
+          return _name;
   }
 
 }
