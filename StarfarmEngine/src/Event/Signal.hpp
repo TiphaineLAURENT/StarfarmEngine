@@ -38,6 +38,11 @@ namespace star
                   {
                   }
 
+                  bool operator==(const Slot &other) const
+                  {
+                          return this == &other;
+                  }
+
                   Callback _callback;
 
                   Signal *_signal;
@@ -62,7 +67,7 @@ namespace star
                   for (
                           auto &slot : _slots
                           ) {
-                          slot->callback(args...);
+                          slot->_callback(args...);
                   }
           }
 
@@ -78,7 +83,7 @@ namespace star
           }
           Connection connect(Callback &&callback)
           {
-                  auto slot = std::make_shared<Slot>(this, callback);
+                  auto slot = std::make_shared<Slot>(this, std::move(callback));
                   _slots.push_back(std::move(slot));
                   return Connection(_slots.back());
           }
@@ -129,7 +134,12 @@ namespace star
 
           void disconnect(const Slot &slot)
           {
-                  auto it = std::find(_slots.begin(), _slots.end(), slot);
+                  auto it = std::find_if(
+                          _slots.begin(), _slots.end(),
+                          [&slot](const SlotPtr &slotPtr) {
+                                  return *slotPtr == slot;
+                          }
+                  );
                   _slots.erase(it);
           }
 
@@ -171,12 +181,12 @@ namespace star
           template <class ...ConnectArgs>
           void connect(BaseClass &signal, ConnectArgs &&...args)
           {
-                  operator=(signal.Connect(std::forward<ConnectArgs>(args)...));
+                  operator=(signal.connect(std::forward<ConnectArgs>(args)...));
           }
           void disconnect() noexcept
           {
                   if (SlotPtr ptr = _slot.lock()) {
-                          ptr->_signal->disconnect(ptr);
+                          ptr->_signal->disconnect(*ptr);
                   }
           }
 

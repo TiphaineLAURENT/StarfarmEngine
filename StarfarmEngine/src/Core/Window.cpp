@@ -24,6 +24,7 @@ namespace star
           auto event = sf::Event{};
 
           while (pollEvent(event)) {
+                  _eventHandler.dispatch(event);
           }
   }
 

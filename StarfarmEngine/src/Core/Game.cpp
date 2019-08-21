@@ -9,10 +9,20 @@ namespace star
 
   bool Game::run()
   {
-          auto deltaTime = _clock.restart().asMicroseconds();
+          if (!_running) {
+                  return false;
+          }
 
           if (!_activeScene)
                   return false;
+
+          auto deltaTime = _clock.restart().asMicroseconds();
+
+          for (
+                  auto &[key, window] : _windows
+                  ) {
+                  window.processEvents();
+          }
 
           _activeScene->update(deltaTime);
           return true;
@@ -31,12 +41,29 @@ namespace star
   Window &Game::createWindow(
           const sf::VideoMode &mode,
           const std::string &name,
-          unsigned int style
+          sf::Uint32 style
   )
   {
           _windows.try_emplace(
                   name, mode, name, style
-          ); // error C2512: 'star::Window::Window'ÿ: aucun constructeur par d‚faut appropri‚ disponible
-          return _windows[name];
+          );
+          auto &window = _windows[name];
+
+          _onKeyPressed.connect(
+                  window._eventHandler.OnKeyPressed,
+                  [=](const sf::Event &event) {
+                          if (event.key.code == sf::Keyboard::Escape) {
+                                  quit();
+                          }
+                  }
+          );
+
+          return window;
   }
+
+  void Game::quit()
+  {
+          _running = false;
+  }
+
 }

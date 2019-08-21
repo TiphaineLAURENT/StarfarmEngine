@@ -8,22 +8,29 @@
 # include <ostream>
 # include <SFML/Graphics/RenderWindow.hpp>
 
+# include "../Event/WindowEventHandler.hpp"
+
 
 namespace star
 {
+  class Game;
 
   class Window
           : public sf::RenderWindow
   {
+          friend Game;
+
 // ATTRIBUTES
   public:
   private:
 
 // METHODS
   public:// CONSTRUCTORS
+          Window() = default;
           Window(
-                  const sf::VideoMode &mode, const sf::String &title, sf::Uint32
-          style
+                  const sf::VideoMode &mode,
+                  const sf::String &title,
+                  sf::Uint32 style
           );
           ~Window() override = default;
           Window(const Window &copy) = delete;
@@ -37,6 +44,7 @@ namespace star
           void processEvents();
 
   private:
+          WindowEventHandler _eventHandler;
   };
 
   std::ostream &operator<<(std::ostream &out, const Window &);

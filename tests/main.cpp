@@ -28,6 +28,7 @@ SCENARIO("Game running", "[engine][gamerun]")
                 {
                         auto &window = game.createWindow(sf::VideoMode(800, 400),
                                                          "StarfarmEngine");
+                        window.setFramerateLimit(60);
 
                         REQUIRE(window.getSize() == sf::Vector2u{800, 400});
 
@@ -60,6 +61,11 @@ SCENARIO("Game running", "[engine][gamerun]")
                                                 REQUIRE
                                                 (transform->getPosition() ==
                                                 sf::Vector2f{10, 10});
+
+                                                while (game.run()) {
+                                                        window.clear();
+                                                        window.display();
+                                                }
                                         }
                                 }
                         }

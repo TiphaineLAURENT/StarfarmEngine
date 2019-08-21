@@ -13,6 +13,7 @@
 
 # include "Scene.hpp"
 # include "Window.hpp"
+# include "../Event/Signal.hpp"
 
 
 namespace star
@@ -44,6 +45,7 @@ namespace star
 
   public:
           bool run();
+          void quit();
 
           Scene &createScene();
           void setActiveScene(Scene *scene);
@@ -51,10 +53,13 @@ namespace star
           Window &createWindow(
                   const sf::VideoMode &mode,
                   const std::string &name = "StarfarmEngine",
-                  unsigned style = sf::Style::Default
+                  sf::Uint32 style = sf::Style::Default
           );
 
   private:
+          bool _running = true;
+
+          SLOT(WindowEventHandler, OnKeyPressed, _onKeyPressed);
   };
 
   std::ostream &operator<<(std::ostream &out, const Game &);
