@@ -14,18 +14,18 @@ set(ENGINE_SOURCES
     StarfarmEngine/src/Core/Scene.cpp StarfarmEngine/src/Core/Scene.hpp
     StarfarmEngine/src/Log/LogSystem.cpp StarfarmEngine/src/Log/LogSystem.hpp
     StarfarmEngine/src/Render/View.cpp StarfarmEngine/src/Render/View.hpp
-    StarfarmEngine/src/Entity/GameObject.cpp StarfarmEngine/src/Entity/GameObject.hpp
-    StarfarmEngine/src/Component/TransformComponent.cpp StarfarmEngine/src/Component/TransformComponent.hpp
-    StarfarmEngine/src/Component/RenderComponent.cpp StarfarmEngine/src/Component/RenderComponent.hpp
-    StarfarmEngine/src/Component/RigidbodyComponent.cpp StarfarmEngine/src/Component/RigidbodyComponent.hpp
-    StarfarmEngine/src/Component/ColliderComponent.hpp
+    StarfarmEngine/src/GameObject/GameObject.cpp StarfarmEngine/src/GameObject/GameObject.hpp
+    StarfarmEngine/src/Physics/TransformComponent.cpp StarfarmEngine/src/Physics/TransformComponent.hpp
+    StarfarmEngine/src/Render/RenderComponent.cpp StarfarmEngine/src/Render/RenderComponent.hpp
+    StarfarmEngine/src/Physics/RigidbodyComponent.cpp StarfarmEngine/src/Physics/RigidbodyComponent.hpp
+    StarfarmEngine/src/Physics/ColliderComponent.hpp
     StarfarmEngine/src/Util/Vector.hpp
-    StarfarmEngine/src/Component/BoxCollider.cpp StarfarmEngine/src/Component/BoxCollider.hpp
-    StarfarmEngine/src/Component/ColliderComponent.cpp
+    StarfarmEngine/src/Physics/BoxCollider.cpp StarfarmEngine/src/Physics/BoxCollider.hpp
+    StarfarmEngine/src/Physics/ColliderComponent.cpp
     StarfarmEngine/src/Event/Signal.cpp StarfarmEngine/src/Event/Signal.hpp
-    StarfarmEngine/src/Core/Window.cpp StarfarmEngine/src/Core/Window.hpp
-    StarfarmEngine/src/Event/WindowEventHandler.cpp StarfarmEngine/src/Event/WindowEventHandler.hpp
-    )
+    StarfarmEngine/src/Window/Window.cpp StarfarmEngine/src/Window/Window.hpp
+    StarfarmEngine/src/Window/WindowEventHandler.cpp StarfarmEngine/src/Window/WindowEventHandler.hpp
+    StarfarmEngine/src/Render/RenderSystem.cpp StarfarmEngine/src/Render/RenderSystem.hpp)
 
 list(SORT ENGINE_SOURCES COMPARE FILE_BASENAME)
 list(TRANSFORM ENGINE_SOURCES PREPEND "${CMAKE_SOURCE_DIR}/")

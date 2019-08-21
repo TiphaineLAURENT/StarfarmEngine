@@ -13,6 +13,8 @@
 # include <SFML/Graphics/Vertex.hpp>
 # include <SFML/Graphics/Rect.hpp>
 # include <SFML/Graphics/VertexBuffer.hpp>
+#include "../Physics/TransformComponent.hpp"
+
 
 namespace star
 {
@@ -26,6 +28,8 @@ namespace star
                                              sf::VertexBuffer::Stream};
           const sf::Texture* _texture = nullptr;
           sf::IntRect        _textureRect{};
+
+          TransformComponent *_transformComponent = nullptr;
 
   public:
 
@@ -44,6 +48,8 @@ namespace star
           RenderComponent &operator=(RenderComponent &&) = default;
 
   public:
+          void setup() override;
+
           void setTexture(const sf::Texture& texture, bool resetRect = false);
           [[nodiscard]] const sf::Texture* getTexture() const;
 
@@ -57,7 +63,8 @@ namespace star
 
   private:
           void draw (sf::RenderTarget &target,
-                  sf::RenderStates states) const override = 0;
+                     sf::RenderStates states
+          ) const override;
 
           void updatePositions();
           void updateTexCoords();

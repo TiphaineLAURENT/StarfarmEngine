@@ -3,6 +3,9 @@
 //
 
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <Entity.hpp>
+#include <cassert>
 
 #include "RenderComponent.hpp"
 
@@ -118,6 +121,29 @@ namespace star
           _vertices[1].texCoords = sf::Vector2f(left, bottom);
           _vertices[2].texCoords = sf::Vector2f(right, top);
           _vertices[3].texCoords = sf::Vector2f(right, bottom);
+  }
+
+  void RenderComponent::draw(
+          sf::RenderTarget &target,
+          sf::RenderStates states
+  ) const
+  {
+          if (_texture) {
+                  states.transform *= _transformComponent->getTransform();
+                  states.texture = _texture;
+
+                  if (sf::VertexBuffer::isAvailable()) {
+                          target.draw(_verticesBuffer, states);
+                  } else {
+                          target.draw(_vertices, 4, sf::TriangleStrip, states);
+                  }
+          }
+  }
+
+  void RenderComponent::setup()
+  {
+          _transformComponent = getOwner()->getComponent<TransformComponent>();
+          assert(_transformComponent);
   }
 
 }

@@ -9,7 +9,7 @@
 
 # include <Entity.hpp>
 
-# include "../Component/TransformComponent.hpp"
+# include "../Physics/TransformComponent.hpp"
 
 
 namespace star

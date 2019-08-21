@@ -8,7 +8,7 @@
 # include <ostream>
 # include <SFML/Window/Event.hpp>
 
-# include "Signal.hpp"
+# include "../Event/Signal.hpp"
 
 
 namespace star

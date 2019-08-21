@@ -12,7 +12,7 @@
 # include <SFML/System/Clock.hpp>
 
 # include "Scene.hpp"
-# include "Window.hpp"
+# include "../Window/Window.hpp"
 # include "../Event/Signal.hpp"
 
 

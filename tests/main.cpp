@@ -6,11 +6,14 @@
 #include "catch.hpp"
 
 #include <iostream>
+#include <SFML/Graphics/Texture.hpp>
 
 #include "../StarfarmEngine/src/Core/Game.hpp"
 #include "../StarfarmEngine/src/Log/LogSystem.hpp"
-#include "../StarfarmEngine/src/Entity/GameObject.hpp"
-#include "../StarfarmEngine/src/Component/BoxCollider.hpp"
+#include "../StarfarmEngine/src/GameObject/GameObject.hpp"
+#include "../StarfarmEngine/src/Render/RenderComponent.hpp"
+#include "../StarfarmEngine/src/Physics/BoxCollider.hpp"
+#include "../StarfarmEngine/src/Render/RenderSystem.hpp"
 
 
 SCENARIO("Game running", "[engine][gamerun]")
@@ -36,6 +39,7 @@ SCENARIO("Game running", "[engine][gamerun]")
                         {
                                 auto &scene = game.createScene();
                                 scene.createSystem<star::LogSystem>();
+                                scene.createSystem<star::RenderSystem>(window);
 
                                 game.setActiveScene(&scene);
                                 scene.refresh();
@@ -44,6 +48,11 @@ SCENARIO("Game running", "[engine][gamerun]")
                                 {
                                         auto &entity = scene
                                                 .createEntity<star::GameObject>();
+                                        auto texture = sf::Texture{};
+                                        texture.loadFromFile("test.png");
+                                        auto *renderer = entity
+                                                .addComponent<star::RenderComponent>
+                                                        (texture);
                                         auto *transform = entity
                                                 .getComponent<star::TransformComponent>();
 
@@ -63,8 +72,8 @@ SCENARIO("Game running", "[engine][gamerun]")
                                                 sf::Vector2f{10, 10});
 
                                                 while (game.run()) {
-                                                        window.clear();
                                                         window.display();
+                                                        window.clear();
                                                 }
                                         }
                                 }

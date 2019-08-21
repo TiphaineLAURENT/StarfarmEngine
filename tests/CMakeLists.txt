@@ -8,6 +8,11 @@ if (WIN32)
                        ${EXECUTABLE_OUTPUT_PATH}
                        )
 endif()
+add_custom_command(TARGET ${TEST_EXECUTABLE} POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   "${CMAKE_CURRENT_SOURCE_DIR}/resource"
+                   ${EXECUTABLE_OUTPUT_PATH}
+                   )
 
 target_link_libraries(${TEST_EXECUTABLE} sfml-graphics sfml-audio sfml-window sfml-network sfml-system)
 target_link_libraries(${TEST_EXECUTABLE} ecs)

@@ -8,7 +8,7 @@
 # include <ostream>
 # include <SFML/Graphics/RenderWindow.hpp>
 
-# include "../Event/WindowEventHandler.hpp"
+# include "WindowEventHandler.hpp"
 
 
 namespace star
