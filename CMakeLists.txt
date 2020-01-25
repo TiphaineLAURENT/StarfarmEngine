@@ -8,6 +8,7 @@ add_subdirectory(ECS)
 include_directories(ECS/ECS/src/Entity)
 include_directories(ECS/ECS/src/Component)
 include_directories(ECS/ECS/src/System)
+include_directories(ECS/ECS/src/util)
 
 set(ENGINE_SOURCES
     StarfarmEngine/src/Core/Game.cpp StarfarmEngine/src/Core/Game.hpp
