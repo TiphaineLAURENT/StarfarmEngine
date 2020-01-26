@@ -21,6 +21,7 @@ set(ENGINE_SOURCES
     StarfarmEngine/src/Physics/RigidbodyComponent.cpp StarfarmEngine/src/Physics/RigidbodyComponent.hpp
     StarfarmEngine/src/Physics/ColliderComponent.hpp
     StarfarmEngine/src/Util/Vector.hpp
+    StarfarmEngine/src/Util/Point.hpp
     StarfarmEngine/src/Physics/BoxCollider.cpp StarfarmEngine/src/Physics/BoxCollider.hpp
     StarfarmEngine/src/Physics/ColliderComponent.cpp
     StarfarmEngine/src/Event/Signal.cpp StarfarmEngine/src/Event/Signal.hpp

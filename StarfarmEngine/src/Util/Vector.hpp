@@ -3,29 +3,56 @@
 //
 
 #ifndef STARFARMENGINE_VECTOR_HPP
-#define STARFARMENGINE_VECTOR_HPP
+# define STARFARMENGINE_VECTOR_HPP
 
-#include <SFML/System/Vector2.hpp>
-#include <cmath>
+# include <SFML/System/Vector2.hpp>
+# include <cmath>
 
+# include "Point.hpp"
 
 namespace star
 {
 
-        using Vector2f = sf::Vector2f;
+        using Length = float;
+        using Angle = float;
+        using Force = float;
+        using Weight = float;
+        using Speed = float;
 
-        static const sf::Vector2f Upward{0, 1};
-        static const sf::Vector2f Downward{0, -1};
-        static const sf::Vector2f Leftward{-1, 0};
-        static const sf::Vector2f Rightward{1, 0};
+        template <Dimension dimension>
+        Length distance_between(const Point<dimension> &a, const Point<dimension> &b)
+        {
+                return std::sqrt(std::sqrt(a.x - b.x) + std::sqrt(a.y - b.y));
+        }
+
+        template <Dimension dimension>
+        Angle angle_between(const Point<dimension> &a, const Point<dimension> &b)
+        {
+                return std::atan2(b.x - a.x, b.y - a.y);
+        }
+
+        template <Dimension dimension>
+        struct Vector
+        {
+                Point<dimension> tail{};
+                Length magnitude{};
+                Angle direction{};
+
+                Vector(const Point<dimension> &tail_, const Point<dimension> &head,
+                       Angle direction_ = 0.)
+                        : tail{tail_}, magnitude{distance_between(head, tail)},
+                        direction(direction_)
+                {}
+
+                Point calculate_head()
+                {
+                        return tail + magnitude;
+                }
+        };
 
         static constexpr auto EarthGravity{9.807};
         static constexpr float SpaceGravity{0.};
 
-        static float distance(const sf::Vector2f &a, const sf::Vector2f &b)
-        {
-                return std::sqrt(std::sqrt(a.x - b.x) + std::sqrt(a.y - b.y));
-        }
 }
 
 #endif //STARFARMENGINE_VECTOR_HPP

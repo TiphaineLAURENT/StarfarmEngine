@@ -48,7 +48,7 @@ namespace star
           [[nodiscard]] bool contains(const sf::Vector2f &point) const override;
           [[nodiscard]] bool intersects(const BoxCollider &other) const;
 
-          void collide(const std::vector<BoxCollider *> &);
+          void collide(const std::vector<BoxCollider*> &);
 
   private:
           void update_angles();

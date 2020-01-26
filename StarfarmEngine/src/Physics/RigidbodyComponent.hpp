@@ -6,8 +6,10 @@
 #define STARFARMENGINE_RIGIDBODYCOMPONENT_HPP
 
 # include <ostream>
+# include <utility>
 # include <Component.hpp>
 
+# include "../Util/Point.hpp"
 # include "TransformComponent.hpp"
 
 namespace star
@@ -52,11 +54,11 @@ namespace star
   private:
           ecs::NonOwningPointer<TransformComponent> _transformComponent{nullptr};
 
-          float _angularDrag{0.};
+          Force _angularDrag{0.};
 
-          float _angularVelocity{0.};
+          Speed _angularVelocity{0.};
 
-          float _torque{0.};
+          Force _torque{0.};
 
           RIGIDBODY_TYPE _rigidbodyType{RIGIDBODY_TYPE::DYNAMIC};
 
@@ -64,21 +66,22 @@ namespace star
 
           RIGIDBODY_COLLISION_MODE _collisionMode{RIGIDBODY_COLLISION_MODE::DISCRETE};
 
-          sf::Vector2f _centerOfMass{0., 0.};
+          Point<2> _centerOfMass{0., 0.};
 
-          float _gravityScale{1.};
+          Force _gravityScale{1.};
 
-          float _drag{0.};
+          Force _drag{0.};
 
-          sf::Vector2f _velocity{0., 0.};
+          std::pair<Speed, Speed> _velocity{0., 0.};
+          std::pair<Speed, Speed> _acceleration{0., 0.};
 
-          sf::Vector2f _forces{0., 0.};
+          std::pair<Force, Force> _forces{0., 0.};
 
-          float _inertia{0.};
+          Force _inertia{0.};
 
-          float _mass{1.};
+          Weight _mass{1.};
 
-          float _massInv{1.};
+          Weight _massInv{1.};
 
   public:
 
@@ -96,32 +99,28 @@ namespace star
   public:
           void setup() override;
 
-          void add_force(
-                  sf::Vector2f force, RIGIDBODY_FORCE_MODE mode =
-          RIGIDBODY_FORCE_MODE::IMPULSE
-          );
-          void add_force(
-                  float x, float y, RIGIDBODY_FORCE_MODE mode =
-          RIGIDBODY_FORCE_MODE::IMPULSE
-          );
+          template <RIGIDBODY_FORCE_MODE mode = RIGIDBODY_FORCE_MODE::IMPULSE>
+          void add_force(std::pair<Force, Force> force);
+          template <RIGIDBODY_FORCE_MODE mode = RIGIDBODY_FORCE_MODE::IMPULSE>
+          void add_force(Force x, Force y);
 
-          void move(sf::Vector2f offsets);
-          void move(float x, float y);
+          void move(Vector<2> offsets);
+          void move(Coordinate x, Coordinate y);
 
-          void set_position(sf::Vector2f coordinates);
-          void set_position(float x, float y);
+          void set_position(Vector<2> coordinates);
+          void set_position(Coordinate x, Coordinate y);
 
-          void add_rotation(float angle);
-          void set_rotation(float angle);
+          void add_rotation(Angle angle);
+          void set_rotation(Angle angle);
 
-          void update_velocity(const sf::Vector2f &gravity, ecs::Interval deltaTime);
+          void update_velocity(ecs::Interval deltaTime); // const Vector<2> &gravity, 
           void update_position(ecs::Interval deltaTime);
           void update(ecs::Interval deltaTime);
 
   private:
   };
 
-  std::ostream &operator<<(std::ostream &out, const RigidbodyComponent &);
+  std::ostream &operator<<(std::ostream &out, const RigidbodyComponent&);
 
 }
 
