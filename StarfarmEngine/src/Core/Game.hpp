@@ -11,6 +11,7 @@
 
 # include <SFML/System/Clock.hpp>
 
+# include "util.hpp"
 # include "Scene.hpp"
 # include "../Window/Window.hpp"
 # include "../Event/Signal.hpp"
@@ -23,12 +24,12 @@ namespace star
   {
 // ATTRIBUTES
   private:
-          std::list<Scene> _scenes{};
-          Scene *_activeScene = nullptr;
+          ::std::list<Scene> _scenes{};
+          ::ecs::NonOwningPointer<Scene> _activeScene{nullptr};
 
-          std::unordered_map<std::string, Window> _windows{};
+          ::std::unordered_map<::std::string, Window> _windows{};
 
-          sf::Clock _clock{};
+          ::sf::Clock _clock{};
 
   public:
 
@@ -47,22 +48,23 @@ namespace star
           bool run();
           void quit();
 
-          Scene &createScene();
-          void setActiveScene(Scene *scene);
+          Scene &create_scene();
+          void set_active_scene(::ecs::NonOwningPointer<Scene> scene);
 
-          Window &createWindow(
-                  const sf::VideoMode &mode,
-                  const std::string &name = "StarfarmEngine",
-                  sf::Uint32 style = sf::Style::Default
+          Window &create_window(
+                  const ::sf::VideoMode &mode,
+                  const ::std::string &name = "StarfarmEngine",
+                  ::sf::Uint32 style = ::sf::Style::Default
           );
 
   private:
-          bool _running = true;
+          bool _running{true};
 
-          SLOT(WindowEventHandler, OnKeyPressed, _onKeyPressed);
+          SLOT(WindowEventHandler, OnKeyPressed) _onKeyPressed{};
+          SLOT(WindowEventHandler, OnClosed) _onClosed{};
   };
 
-  std::ostream &operator<<(std::ostream &out, const Game &);
+  ::std::ostream &operator<<(::std::ostream &out, const Game &);
 
 }
 

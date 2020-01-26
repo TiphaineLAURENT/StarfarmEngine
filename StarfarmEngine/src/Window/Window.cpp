@@ -19,7 +19,7 @@ namespace star
   {
   }
 
-  void Window::processEvents()
+  void Window::process_events()
   {
           auto event = sf::Event{};
 
@@ -28,12 +28,12 @@ namespace star
           }
   }
 
-  WindowEventHandler &Window::getEventHandler()
+  WindowEventHandler &Window::get_event_handler()
   {
           return _eventHandler;
   }
 
-  const std::string &Window::getName() const
+  const std::string &Window::get_name() const
   {
           return _name;
   }

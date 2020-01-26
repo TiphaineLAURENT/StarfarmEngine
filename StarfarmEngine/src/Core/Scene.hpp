@@ -37,19 +37,19 @@ namespace star
           Scene &operator=(Scene &&) = delete;
 
   public:
-          void update(long deltaTime);
+          void update(::ecs::Interval deltaTime);
           void refresh();
 
           template <class E, class ...ARGS>
-          E &createEntity(ARGS &&... args)
+          E &create_entity(ARGS &&... args)
           {
-                  return _entities.createEntity<E>(std::forward<ARGS>(args)...);
+                  return _entities.create<E>(std::forward<ARGS>(args)...);
           }
 
           template <class S, class ...ARGS>
-          S &createSystem(ARGS &&... args)
+          S &create_system(ARGS &&... args)
           {
-                  return _systems.createSystem<S>(std::forward<ARGS>(args)...);
+                  return _systems.create_system<S>(std::forward<ARGS>(args)...);
           }
 
   private:

@@ -31,23 +31,24 @@ namespace star
           }
 
           for (auto &[key, window] : _windows) {
-                  window.processEvents();
+                  window.process_events();
           }
 
           _activeScene->update(deltaTime);
           return true;
   }
-  void Game::setActiveScene(Scene *scene)
+  void Game::set_active_scene(::ecs::NonOwningPointer<Scene> scene)
   {
-        _activeScene = scene;
+          auto *nonConstScenePointer = const_cast<Scene**>(&_activeScene);
+          *nonConstScenePointer = scene;
   }
 
-  Scene &Game::createScene()
+  Scene &Game::create_scene()
   {
           return _scenes.emplace_back();
   }
 
-  Window &Game::createWindow(
+  Window &Game::create_window(
           const sf::VideoMode &mode,
           const std::string &name,
           sf::Uint32 style
@@ -60,7 +61,18 @@ namespace star
           auto &window = _windows[name];
 
           _onKeyPressed.connect(
-                  window.getEventHandler().OnClosed,
+                  window.get_event_handler().OnKeyPressed,
+                  [=, &window] (const sf::Event &event)
+                  {
+                          if (event.key.code == ::sf::Keyboard::Escape)
+                          {
+                                  window.close();
+                                  quit();
+                          }
+                  }
+          );
+          _onClosed.connect(
+                  window.get_event_handler().OnClosed,
                   [=, &window](const sf::Event &event) {
                           window.close();
 

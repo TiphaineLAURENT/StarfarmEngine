@@ -29,7 +29,7 @@ SCENARIO("Game running", "[engine][gamerun]")
 
                 THEN("We create a new window")
                 {
-                        auto &window = game.createWindow(sf::VideoMode(800, 400),
+                        auto &window = game.create_window(sf::VideoMode(800, 400),
                                                          "StarfarmEngine");
                         window.setFramerateLimit(60);
 
@@ -37,41 +37,42 @@ SCENARIO("Game running", "[engine][gamerun]")
 
                         THEN("We create a new scene and set it as active scene")
                         {
-                                auto &scene = game.createScene();
-                                scene.createSystem<star::LogSystem>();
-                                scene.createSystem<star::RenderSystem>(window);
+                                auto &scene = game.create_scene();
+                                scene.create_system<star::LogSystem>();
+                                scene.create_system<star::RenderSystem>(window);
 
-                                game.setActiveScene(&scene);
+                                game.set_active_scene(&scene);
                                 scene.refresh();
 
                                 THEN("We create a new gameobject")
                                 {
                                         auto &entity = scene
-                                                .createEntity<star::GameObject>();
+                                                .create_entity<star::GameObject>();
                                         auto texture = sf::Texture{};
                                         texture.loadFromFile("test.png");
                                         auto *renderer = entity
-                                                .addComponent<star::RenderComponent>
-                                                        (texture);
+                                                .create_component<star::RenderComponent>
+                                                (texture);
                                         auto *transform = entity
-                                                .getComponent<star::TransformComponent>();
+                                                .create_component<star::TransformComponent>();
 
                                         REQUIRE(transform != nullptr);
                                         REQUIRE(transform->getPosition() ==
-                                        sf::Vector2f{0, 0});
+                                                sf::Vector2f{0, 0});
 
                                         WHEN("The game is running and the "
                                              "object move")
                                         {
                                                 REQUIRE(game.run());
-                                                transform->move(10 , 10);
+                                                transform->move(10, 10);
                                                 REQUIRE(game.run());
 
                                                 REQUIRE
                                                 (transform->getPosition() ==
-                                                sf::Vector2f{10, 10});
+                                                 sf::Vector2f{10, 10});
 
-                                                while (game.run()) {
+                                                while (game.run())
+                                                {
                                                         window.display();
                                                         window.clear();
                                                 }
@@ -86,31 +87,35 @@ SCENARIO("Game running", "[engine][gamerun]")
 
 SCENARIO("Two BoxColliders intersecting", "[boxcollider][intersection]")
 {
-        GIVEN("A game with a scene") {
+        GIVEN("A game with a scene")
+        {
                 auto game = star::Game{};
-                auto &scene = game.createScene();
+                auto &scene = game.create_scene();
 
-                GIVEN("A game object with a rigidbody") {
-                        auto &ga = scene.createEntity<star::GameObject>();
+                GIVEN("A game object with a rigidbody")
+                {
+                        auto &ga = scene.create_entity<star::GameObject>();
                         auto *rigidbody = ga
-                                .addComponent<star::RigidbodyComponent>();
+                                .create_component<star::RigidbodyComponent>();
 
-                        THEN("We add two colliders") {
+                        THEN("We add two colliders")
+                        {
                                 auto *collider1 = ga
-                                        .addComponent<star::BoxCollider>
-                                                (sf::FloatRect{0, 0, 1, 1});
+                                        .create_component<star::BoxCollider>
+                                        (sf::FloatRect{0, 0, 1, 1});
                                 REQUIRE(collider1 != nullptr);
                                 auto *collider2 = ga
-                                        .addComponent<star::BoxCollider>
-                                                (sf::FloatRect{0.5, 0.5, 1, 1});
+                                        .create_component<star::BoxCollider>
+                                        (sf::FloatRect{0.5, 0.5, 1, 1});
                                 REQUIRE(collider2 != nullptr);
 
-                                THEN("We check their intersection") {
+                                THEN("We check their intersection")
+                                {
                                         REQUIRE(collider1->intersects(
                                                 *collider2
                                         ));
                                         REQUIRE(collider1->contains(
-                                                collider2->getVertices()[0]
+                                                collider2->get_vertices()[0]
                                         ));
                                 }
                         }
@@ -121,7 +126,8 @@ SCENARIO("Two BoxColliders intersecting", "[boxcollider][intersection]")
 
 SCENARIO("Game quitting by event keypressed", "[event][quit]")
 {
-        GIVEN("A game") {
+        GIVEN("A game")
+        {
                 auto game = star::Game{};
         }
 }

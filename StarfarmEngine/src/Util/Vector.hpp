@@ -11,23 +11,21 @@
 
 namespace star
 {
-  class Vector2f
-          : public sf::Vector2f
-  {
-  };
 
-  static const auto Upward = sf::Vector2f{0, 1};
-  static const auto Downward = sf::Vector2f{0, -1};
-  static const auto Leftward = sf::Vector2f{-1, 0};
-  static const auto Rightward = sf::Vector2f{1, 0};
+        using Vector2f = sf::Vector2f;
 
-  static constexpr auto EarthGravity = 9.807;
-  static constexpr float SpaceGravity = 0.;
+        static const sf::Vector2f Upward{0, 1};
+        static const sf::Vector2f Downward{0, -1};
+        static const sf::Vector2f Leftward{-1, 0};
+        static const sf::Vector2f Rightward{1, 0};
 
-  static float distance(const sf::Vector2f &a, const sf::Vector2f &b)
-  {
-          return std::sqrt(std::sqrt(a.x - b.x) + std::sqrt(a.y - b.y));
-  }
+        static constexpr auto EarthGravity{9.807};
+        static constexpr float SpaceGravity{0.};
+
+        static float distance(const sf::Vector2f &a, const sf::Vector2f &b)
+        {
+                return std::sqrt(std::sqrt(a.x - b.x) + std::sqrt(a.y - b.y));
+        }
 }
 
 #endif //STARFARMENGINE_VECTOR_HPP

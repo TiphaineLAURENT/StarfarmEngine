@@ -15,8 +15,7 @@ namespace star
 {
   class Game;
 
-  class Window
-          : public sf::RenderWindow
+  class Window : public sf::RenderWindow
   {
 // ATTRIBUTES
   public:
@@ -39,15 +38,15 @@ namespace star
           Window &operator=(Window &&) noexcept = delete;
 
   public:
-          void processEvents();
-          WindowEventHandler &getEventHandler();
+          void process_events();
+          WindowEventHandler &get_event_handler();
 
-          const std::string &getName() const;
+          const std::string &get_name() const;
 
   private:
-          WindowEventHandler _eventHandler;
+          WindowEventHandler _eventHandler{};
 
-          std::string _name;
+          std::string _name{};
   };
 
   std::ostream &operator<<(std::ostream &out, const Window &);

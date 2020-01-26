@@ -15,10 +15,10 @@ namespace star
   {
   }
 
-  void RenderSystem::update(long deltaTime)
+  void RenderSystem::update(::ecs::Interval deltaTime)
   {
           for (auto &render :
-                  ecs::ComponentManager::getComponentContainer<RenderComponent>()) {
+                  ecs::ComponentManager::get_component_container<RenderComponent>()) {
                   _window.draw(*render);
           }
   }

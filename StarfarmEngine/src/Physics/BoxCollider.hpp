@@ -22,7 +22,7 @@ namespace star
           sf::Vector2f _offset{0., 0.};
           std::array<sf::Vector2f, 4> _angles{};
 
-          float _size = 0.;
+          float _size{0.};
 
   public:
 
@@ -39,19 +39,19 @@ namespace star
           BoxCollider &operator=(BoxCollider &&) noexcept = default;
 
   public:
-          void setOffset(float x, float y);
+          void set_offset(float x, float y);
 
-          [[nodiscard]] const sf::FloatRect &getBounds() const;
-          [[nodiscard]] std::vector<sf::Vector2f> getVertices() const override;
+          [[nodiscard]] const sf::FloatRect &get_bounds() const;
+          [[nodiscard]] std::vector<sf::Vector2f> get_vertices() const override;
 
-          [[nodiscard]] float distanceTo(const sf::Vector2f &point) const override;
+          [[nodiscard]] float distance_to(const sf::Vector2f &point) const override;
           [[nodiscard]] bool contains(const sf::Vector2f &point) const override;
           [[nodiscard]] bool intersects(const BoxCollider &other) const;
 
           void collide(const std::vector<BoxCollider *> &);
 
   private:
-          void updateAngles();
+          void update_angles();
   };
 
   std::ostream &operator<<(std::ostream &out, const BoxCollider &);

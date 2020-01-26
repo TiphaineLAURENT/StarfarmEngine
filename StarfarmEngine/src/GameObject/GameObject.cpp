@@ -3,13 +3,20 @@
 //
 
 #include "GameObject.hpp"
+#include "../Component/MonoBehaviourComponent.hpp"
 
 namespace star
 {
 
-  star::GameObject::GameObject()
-  {
-        _transform = addComponent<TransformComponent>();
-  }
+        GameObject::GameObject()
+                : Entity(),
+                _transform{create_component<TransformComponent>()}
+        {}
+
+        template <class Behaviour, class ...ARGS>
+        void GameObject::create_behaviour(ARGS ...args)
+        {
+                create_component<Behaviour, MonoBehaviour>(std::forward<ARGS>(args)...);
+        }
 
 }

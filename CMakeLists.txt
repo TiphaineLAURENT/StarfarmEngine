@@ -26,7 +26,9 @@ set(ENGINE_SOURCES
     StarfarmEngine/src/Event/Signal.cpp StarfarmEngine/src/Event/Signal.hpp
     StarfarmEngine/src/Window/Window.cpp StarfarmEngine/src/Window/Window.hpp
     StarfarmEngine/src/Window/WindowEventHandler.cpp StarfarmEngine/src/Window/WindowEventHandler.hpp
-    StarfarmEngine/src/Render/RenderSystem.cpp StarfarmEngine/src/Render/RenderSystem.hpp)
+    StarfarmEngine/src/Render/RenderSystem.cpp StarfarmEngine/src/Render/RenderSystem.hpp
+    StarfarmEngine/src/Component/MonoBehaviourComponent.cpp StarfarmEngine/src/Component/MonoBehaviourComponent.hpp
+    )
 
 list(SORT ENGINE_SOURCES COMPARE FILE_BASENAME)
 list(TRANSFORM ENGINE_SOURCES PREPEND "${CMAKE_SOURCE_DIR}/")

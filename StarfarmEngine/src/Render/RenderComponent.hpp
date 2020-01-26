@@ -19,58 +19,58 @@
 namespace star
 {
 
-  class COMPONENT(RenderComponent), public sf::Drawable
-  {
-// ATTRIBUTES
-  private:
-          sf::Vertex         _vertices[4]{};
-          sf::VertexBuffer   _verticesBuffer{sf::TrianglesStrip,
-                                             sf::VertexBuffer::Stream};
-          const sf::Texture* _texture = nullptr;
-          sf::IntRect        _textureRect{};
+        class COMPONENT(RenderComponent), public sf::Drawable
+        {
+                // ATTRIBUTES
+                  private:
+                          sf::Vertex         _vertices[4]{};
+                          sf::VertexBuffer   _verticesBuffer{sf::TrianglesStrip,
+                                                             sf::VertexBuffer::Stream};
+                          const ecs::NonOwningPointer<sf::Texture> _texture{nullptr};
+                          sf::IntRect        _textureRect{};
 
-          TransformComponent *_transformComponent = nullptr;
+                          ecs::NonOwningPointer<TransformComponent> _transformComponent{nullptr};
 
-  public:
+        public:
 
-// METHODS
-  public:// CONSTRUCTORS
-          RenderComponent();
-          explicit RenderComponent(const sf::Texture &texture);
-          RenderComponent(const sf::Texture &texture,
-                          const sf::IntRect &rectangle);
-          ~RenderComponent() override = default;
-          RenderComponent(const RenderComponent &copy) = default;
-          RenderComponent(RenderComponent &&) = default;
+                // METHODS
+                  public:// CONSTRUCTORS
+                          RenderComponent();
+                          explicit RenderComponent(const sf::Texture &texture);
+                          RenderComponent(const sf::Texture &texture,
+                                          const sf::IntRect &rectangle);
+                          ~RenderComponent() override = default;
+                          RenderComponent(const RenderComponent &copy) = default;
+                          RenderComponent(RenderComponent &&) = default;
 
-  public: //OPERATORS
-          RenderComponent &operator=(const RenderComponent &other) = default;
-          RenderComponent &operator=(RenderComponent &&) = default;
+                  public: //OPERATORS
+                          RenderComponent &operator=(const RenderComponent &other) = default;
+                          RenderComponent &operator=(RenderComponent &&) = default;
 
-  public:
-          void setup() override;
+                  public:
+                          void setup() override;
 
-          void setTexture(const sf::Texture& texture, bool resetRect = false);
-          [[nodiscard]] const sf::Texture* getTexture() const;
+                          void set_texture(const sf::Texture &texture, bool resetRect = false);
+                          [[nodiscard]] const ecs::NonOwningPointer<sf::Texture> get_texture() const;
 
-          void setTextureRect(const sf::IntRect& rectangle);
-          [[nodiscard]] const sf::IntRect& getTextureRect() const;
+                          void set_texture_rect(const sf::IntRect &rectangle);
+                          [[nodiscard]] const sf::IntRect &getTextureRect() const;
 
-          void setColor(const sf::Color& color);
-          [[nodiscard]] const sf::Color& getColor() const;
+                          void set_color(const sf::Color &color);
+                          [[nodiscard]] const sf::Color &get_color() const;
 
-          [[nodiscard]] sf::FloatRect getLocalBounds() const;
+                          [[nodiscard]] sf::FloatRect get_local_bounds() const;
 
-  private:
-          void draw (sf::RenderTarget &target,
-                     sf::RenderStates states
-          ) const override;
+                  private:
+                          void draw(sf::RenderTarget &target,
+                                     sf::RenderStates states
+                          ) const override;
 
-          void updatePositions();
-          void updateTexCoords();
-  };
+                          void update_position();
+                          void update_texture_coordinates();
+        };
 
-  std::ostream &operator<<(std::ostream &out, const RenderComponent &);
+        std::ostream &operator<<(std::ostream &out, const RenderComponent &);
 
 }
 

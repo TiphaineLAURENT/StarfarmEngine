@@ -12,16 +12,16 @@ namespace star
           : ColliderComponent(),
             _bounds(_transformComponent->getPosition(), {width, height})
   {
-          updateAngles();
+          update_angles();
   }
 
   BoxCollider::BoxCollider(const sf::FloatRect &bounds)
           : ColliderComponent(), _bounds(bounds)
   {
-          updateAngles();
+          update_angles();
   }
 
-  float BoxCollider::distanceTo(const sf::Vector2f &point) const
+  float BoxCollider::distance_to(const sf::Vector2f &point) const
   {
           auto distances = std::array<float, 4>{};
           distances[0] = distance(_angles[0] + _transformComponent->getPosition(), point);
@@ -49,26 +49,26 @@ namespace star
           return _bounds.intersects(other._bounds);
   }
 
-  const sf::FloatRect &BoxCollider::getBounds() const
+  const sf::FloatRect &BoxCollider::get_bounds() const
   {
           return _bounds;
   }
 
-  std::vector<sf::Vector2f> BoxCollider::getVertices() const
+  std::vector<sf::Vector2f> BoxCollider::get_vertices() const
   {
           return {_angles.begin(), _angles.end()};
   }
 
-  void BoxCollider::setOffset(float x, float y)
+  void BoxCollider::set_offset(float x, float y)
   {
           _offset = {x, y};
           auto position = _transformComponent->getPosition();
           _bounds.left = position.x + x;
           _bounds.top = position.y + y;
-          updateAngles();
+          update_angles();
   }
 
-  void BoxCollider::updateAngles()
+  void BoxCollider::update_angles()
   {
           _angles[0] = {_bounds.left, _bounds.top};
           _angles[1] = {_bounds.left + _bounds.width, _bounds.top};

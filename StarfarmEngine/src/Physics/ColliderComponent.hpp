@@ -22,18 +22,18 @@ namespace star
   {
 // ATTRIBUTES
   private:
-          float _bounciness = 0.;
+          float _bounciness{0.};
 
-          float _density = 0.;
+          float _density{0.};
 
-          float _friction = 0.;
+          float _friction{0.};
 
-          bool _isTrigger = false;
+          bool _isTrigger{false};
 
   protected:
-          RigidbodyComponent *_rigidbodyComponent = nullptr;
+          ecs::NonOwningPointer<RigidbodyComponent> _rigidbodyComponent{nullptr};
 
-          TransformComponent *_transformComponent = nullptr;
+          ecs::NonOwningPointer<TransformComponent> _transformComponent{nullptr};
 
   public:
 
@@ -51,9 +51,9 @@ namespace star
   public:
           void setup() override;
 
-          [[nodiscard]] virtual std::vector<sf::Vector2f> getVertices() const = 0;
+          [[nodiscard]] virtual std::vector<sf::Vector2f> get_vertices() const = 0;
 
-          [[nodiscard]] virtual float distanceTo(const sf::Vector2f &point)
+          [[nodiscard]] virtual float distance_to(const sf::Vector2f &point)
           const = 0;
           [[nodiscard]] virtual bool contains(const sf::Vector2f &point)
           const = 0;

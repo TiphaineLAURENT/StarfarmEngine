@@ -10,7 +10,9 @@ namespace star
 
   void ColliderComponent::setup()
   {
-          _rigidbodyComponent = getOwner()->getComponent<RigidbodyComponent>();
-          _transformComponent = getOwner()->getComponent<TransformComponent>();
+          auto *rigidbodyNonConstPointer = const_cast<RigidbodyComponent **>(&_rigidbodyComponent);
+          *rigidbodyNonConstPointer = get_owner()->get_component<RigidbodyComponent>();
+          auto *transformNonConstPointer = const_cast<TransformComponent **>(&_transformComponent);
+          *transformNonConstPointer = get_owner()->get_component<TransformComponent>();
   }
 }

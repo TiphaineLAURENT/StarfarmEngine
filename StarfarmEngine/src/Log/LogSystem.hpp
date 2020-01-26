@@ -17,7 +17,7 @@ namespace star
   {
 // ATTRIBUTES
   private:
-          static std::list<std::string> _buffer;
+          static inline std::list<std::string> _buffer{};
 
   public:
 
@@ -33,7 +33,7 @@ namespace star
           LogSystem &operator=(LogSystem &&) noexcept = delete;
 
   public:
-          void update(long deltaTime) override;
+          void update(ecs::Interval deltaTime) override;
           static void log(const std::string &str);
           static void warning(const std::string &str);
           static void error(const std::string &str);

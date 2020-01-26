@@ -50,36 +50,35 @@ namespace star
   {
 // ATTRIBUTES
   private:
-          TransformComponent *_transformComponent = nullptr;
+          ecs::NonOwningPointer<TransformComponent> _transformComponent{nullptr};
 
-          float _angularDrag = 0.;
+          float _angularDrag{0.};
 
-          float _angularVelocity = 0.;
+          float _angularVelocity{0.};
 
-          float _torque = 0.;
+          float _torque{0.};
 
-          RIGIDBODY_TYPE _rigidbodyType = RIGIDBODY_TYPE::DYNAMIC;
+          RIGIDBODY_TYPE _rigidbodyType{RIGIDBODY_TYPE::DYNAMIC};
 
-          RIGIDBODY_CONSTRAINTS _constraints = RIGIDBODY_CONSTRAINTS::NONE;
+          RIGIDBODY_CONSTRAINTS _constraints{RIGIDBODY_CONSTRAINTS::NONE};
 
-          RIGIDBODY_COLLISION_MODE _collisionMode =
-                  RIGIDBODY_COLLISION_MODE::DISCRETE;
+          RIGIDBODY_COLLISION_MODE _collisionMode{RIGIDBODY_COLLISION_MODE::DISCRETE};
 
-          sf::Vector2f _centerOfMass = {0., 0.};
+          sf::Vector2f _centerOfMass{0., 0.};
 
-          float _gravityScale = 1.;
+          float _gravityScale{1.};
 
-          float _drag = 0.;
+          float _drag{0.};
 
-          sf::Vector2f _velocity = {0., 0.};
+          sf::Vector2f _velocity{0., 0.};
 
-          sf::Vector2f _forces = {0., 0.};
+          sf::Vector2f _forces{0., 0.};
 
-          float _inertia = 0.;
+          float _inertia{0.};
 
-          float _mass = 1.;
+          float _mass{1.};
 
-          float _massInv = 1.;
+          float _massInv{1.};
 
   public:
 
@@ -97,11 +96,11 @@ namespace star
   public:
           void setup() override;
 
-          void addForce(
+          void add_force(
                   sf::Vector2f force, RIGIDBODY_FORCE_MODE mode =
           RIGIDBODY_FORCE_MODE::IMPULSE
           );
-          void addForce(
+          void add_force(
                   float x, float y, RIGIDBODY_FORCE_MODE mode =
           RIGIDBODY_FORCE_MODE::IMPULSE
           );
@@ -109,15 +108,15 @@ namespace star
           void move(sf::Vector2f offsets);
           void move(float x, float y);
 
-          void setPosition(sf::Vector2f coordinates);
-          void setPosition(float x, float y);
+          void set_position(sf::Vector2f coordinates);
+          void set_position(float x, float y);
 
-          void addRotation(float angle);
-          void setRotation(float angle);
+          void add_rotation(float angle);
+          void set_rotation(float angle);
 
-          void updateVelocity(const sf::Vector2f &gravity, float deltaTime);
-          void updatePosition(float deltaTime);
-          void update(float deltaTime);
+          void update_velocity(const sf::Vector2f &gravity, ecs::Interval deltaTime);
+          void update_position(ecs::Interval deltaTime);
+          void update(ecs::Interval deltaTime);
 
   private:
   };

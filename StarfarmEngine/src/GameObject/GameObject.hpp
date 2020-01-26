@@ -17,9 +17,10 @@ namespace star
 
   class ENTITY(GameObject)
   {
+          friend class MonoBehaviour;
 // ATTRIBUTES
   private:
-          TransformComponent *_transform = nullptr;
+          ecs::NonOwningPointer<TransformComponent> _transform{nullptr};
 
   public:
 
@@ -35,10 +36,13 @@ namespace star
           GameObject &operator=(GameObject &&) noexcept = default;
 
   public:
+          template <class Behaviour, class ...ARGS>
+          void create_behaviour(ARGS ...args);
+
   private:
   };
 
-  std::ostream &operator<<(std::ostream &out, const GameObject &);
+  ::std::ostream &operator<<(::std::ostream &out, const GameObject &);
 
 }
 

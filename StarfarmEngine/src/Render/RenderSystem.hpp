@@ -32,7 +32,7 @@ namespace star
           RenderSystem &operator=(RenderSystem &&) noexcept = delete;
 
   public:
-          void update(long deltaTime) override;
+          void update(::ecs::Interval deltaTime) override;
 
   private:
           Window &_window;
