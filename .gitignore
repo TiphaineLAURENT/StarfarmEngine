@@ -44,3 +44,4 @@ build/
 out/
 ./bin/
 cmake-build-debug/
+.vs/
