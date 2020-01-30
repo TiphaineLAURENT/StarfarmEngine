@@ -3,12 +3,13 @@
 //
 
 #ifndef STARFARMENGINE_BOXCOLLIDER_HPP
-#define STARFARMENGINE_BOXCOLLIDER_HPP
+# define STARFARMENGINE_BOXCOLLIDER_HPP
 
 # include <ostream>
+# include <SFML/System/Vector2.hpp>
+# include <SFML/Graphics/Rect.hpp>
 
 # include "ColliderComponent.hpp"
-
 
 namespace star
 {

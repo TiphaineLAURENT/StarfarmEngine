@@ -6,7 +6,6 @@
 # define STARFARMENGINE_VECTOR_HPP
 
 # include <cmath>
-# include <SFML/System/Vector2.hpp>
 
 # include "Point.hpp"
 

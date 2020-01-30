@@ -3,13 +3,13 @@
 //
 
 #ifndef STARFARMENGINE_RIGIDBODYCOMPONENT_HPP
-#define STARFARMENGINE_RIGIDBODYCOMPONENT_HPP
+# define STARFARMENGINE_RIGIDBODYCOMPONENT_HPP
 
 # include <ostream>
 # include <utility>
 # include <Component.hpp>
 
-# include "../Util/Point.hpp"
+# include "../Util/Vector.hpp"
 
 namespace star
 {
