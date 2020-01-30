@@ -10,10 +10,11 @@
 # include <Component.hpp>
 
 # include "../Util/Point.hpp"
-# include "TransformComponent.hpp"
 
 namespace star
 {
+        class TransformComponent;
+
   enum class RIGIDBODY_TYPE
           : unsigned
   {

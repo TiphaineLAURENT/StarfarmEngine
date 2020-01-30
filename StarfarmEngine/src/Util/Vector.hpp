@@ -5,8 +5,8 @@
 #ifndef STARFARMENGINE_VECTOR_HPP
 # define STARFARMENGINE_VECTOR_HPP
 
-# include <SFML/System/Vector2.hpp>
 # include <cmath>
+# include <SFML/System/Vector2.hpp>
 
 # include "Point.hpp"
 
@@ -44,7 +44,7 @@ namespace star
                         direction(direction_)
                 {}
 
-                Point calculate_head()
+                Point<dimension> calculate_head()
                 {
                         return tail + magnitude;
                 }

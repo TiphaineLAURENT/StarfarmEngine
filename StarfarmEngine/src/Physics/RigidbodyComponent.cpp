@@ -6,6 +6,7 @@
 #include <IEntity.hpp>
 
 #include "RigidbodyComponent.hpp"
+#include "TransformComponent.hpp"
 #include "../Util/Vector.hpp"
 
 
@@ -82,7 +83,12 @@ namespace star
         void RigidbodyComponent::update_velocity(ecs::Interval deltaTime)
                 //const sf::Vector2f &gravity,
         {
-                        /*auto objectGravity = gravity * _gravityScale;
+                _acceleration.first = _forces.first * std::sin(_rotation);
+                _acceleration.second = _forces.second * std::cos(_rotation);
+
+                _velocity.first += _acceleration.first * deltaTime;
+                _velocity.second += _acceleration.second * deltaTime;
+                /*auto objectGravity = gravity * _gravityScale;
                         auto draggedVelocity = _velocity * _drag;
                         _velocity = draggedVelocity + (objectGravity + _forces * _massInv)
                                                       * static_cast<float>(deltaTime);
