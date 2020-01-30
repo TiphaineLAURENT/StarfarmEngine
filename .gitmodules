@@ -4,3 +4,6 @@
 [submodule "ECS"]
 	path = ECS
 	url = https://github.com/TiphaineLAURENT/ECS.git
+[submodule "box2d"]
+	path = box2d
+	url = https://github.com/erincatto/box2d.git
