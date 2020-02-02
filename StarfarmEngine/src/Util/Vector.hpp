@@ -34,23 +34,35 @@ namespace star
         struct Vector
         {
                 Point<dimension> tail{};
-                Length magnitude{};
-                Angle direction{};
+                Length magnitude{calculate_magnitude()};
+                Angle direction{calculate_direction()};
 
-                Vector(const Point<dimension> &tail_, const Point<dimension> &head,
-                       Angle direction_ = 0.)
-                        : tail{tail_}, magnitude{distance_between(head, tail)},
-                        direction(direction_)
+                Vector(const Point<dimension> &tail_, const Point<dimension> &head)
+                        : tail{tail_}, magnitude{distance_between(head, tail)}
                 {}
 
-                Point<dimension> calculate_head()
+                explicit Vector(const Point<dimension> &tail_)
+                        : tail{tail_}
+                {}
+
+                Point<dimension> calculate_head() const
                 {
                         return tail + magnitude;
+                }
+
+                Length calculate_magnitude() const;
+
+                Angle calculate_direction() const;
+
+                template <typename Trivial>
+                Vector<dimension> operator*(const Trivial &trivial) const
+                {
+                        return {tail * trivial};
                 }
         };
 
         static constexpr auto EarthGravity{9.807};
-        static constexpr float SpaceGravity{0.};
+        static constexpr auto SpaceGravity{0.};
 
 }
 
