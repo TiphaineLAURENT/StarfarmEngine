@@ -9,19 +9,16 @@
 # include <utility>
 # include <Component.hpp>
 
+# include <box2d/b2_body.h>
+# include <box2d/b2_polygon_shape.h>
+# include <box2d/b2_fixture.h>
+
 # include "../Util/Vector.hpp"
 
 namespace star
 {
         class TransformComponent;
-
-  enum class RIGIDBODY_TYPE
-          : unsigned
-  {
-          DYNAMIC,
-          KINEMATIC,
-          STATIC
-  };
+        class Scene;
 
   enum class RIGIDBODY_CONSTRAINTS
           : unsigned
@@ -45,8 +42,10 @@ namespace star
   enum class RIGIDBODY_FORCE_MODE
           : unsigned
   {
+          FORCE,
           IMPULSE,
-          VELOCITYCHANGE
+          VELOCITYCHANGE,
+          ACCELERATION
   };
 
   class COMPONENT(RigidbodyComponent)
@@ -55,40 +54,45 @@ namespace star
   private:
           ecs::NonOwningPointer<TransformComponent> _transformComponent{nullptr};
 
-          Force _angularDrag{0.};
+          b2BodyDef _bodyDef{};
+          ecs::NonOwningPointer<b2Body> _body{nullptr};
+          b2PolygonShape _dynamicBox{};
+          b2FixtureDef _fixtureDef{};
 
-          Speed _angularVelocity{0.};
+          //Force _angularDrag{0.};
 
-          Force _torque{0.};
+          //Speed _angularVelocity{0.};
 
-          RIGIDBODY_TYPE _rigidbodyType{RIGIDBODY_TYPE::DYNAMIC};
+          //Force _torque{0.};
 
-          RIGIDBODY_CONSTRAINTS _constraints{RIGIDBODY_CONSTRAINTS::NONE};
+          //b2BodyType _rigidbodyType{b2BodyType::b2_dynamicBody};
 
-          RIGIDBODY_COLLISION_MODE _collisionMode{RIGIDBODY_COLLISION_MODE::DISCRETE};
+          //RIGIDBODY_CONSTRAINTS _constraints{RIGIDBODY_CONSTRAINTS::NONE};
 
-          Point<2> _centerOfMass{0., 0.};
+          //RIGIDBODY_COLLISION_MODE _collisionMode{RIGIDBODY_COLLISION_MODE::DISCRETE};
 
-          Force _gravityScale{1.};
+          //Point<2> _centerOfMass{0., 0.};
 
-          Force _drag{0.};
+          //Force _gravityScale{1.};
 
-          std::pair<Speed, Speed> _velocity{0., 0.};
-          std::pair<Speed, Speed> _acceleration{0., 0.};
+          //Force _drag{0.};
 
-          std::pair<Force, Force> _forces{0., 0.};
+          //std::pair<Speed, Speed> _velocity{0., 0.};
+          //std::pair<Speed, Speed> _acceleration{0., 0.};
 
-          Force _inertia{0.};
+          //std::pair<Force, Force> _forces{0., 0.};
 
-          Weight _mass{1.};
+          //Force _inertia{0.};
 
-          Weight _massInv{1.};
+          //Weight _mass{1.};
+
+          //Weight _massInv{1.};
 
   public:
 
 // METHODS
   public:// CONSTRUCTORS
-          RigidbodyComponent() = default;
+          explicit RigidbodyComponent(Scene &scene);
           ~RigidbodyComponent() override = default;
           RigidbodyComponent(const RigidbodyComponent &copy) = default;
           RigidbodyComponent(RigidbodyComponent &&) noexcept = default;
@@ -101,7 +105,7 @@ namespace star
           void setup() override;
 
           template <RIGIDBODY_FORCE_MODE mode = RIGIDBODY_FORCE_MODE::IMPULSE>
-          void add_force(std::pair<Force, Force> force);
+          void add_force(Vector<2> force);
           template <RIGIDBODY_FORCE_MODE mode = RIGIDBODY_FORCE_MODE::IMPULSE>
           void add_force(Force x, Force y);
 

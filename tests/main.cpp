@@ -14,6 +14,7 @@
 #include "../StarfarmEngine/src/Render/RenderComponent.hpp"
 #include "../StarfarmEngine/src/Physics/BoxCollider.hpp"
 #include "../StarfarmEngine/src/Render/RenderSystem.hpp"
+#include "../StarfarmEngine/src/Physics/PhysicSystem.hpp"
 
 
 SCENARIO("Game running", "[engine][gamerun]")
@@ -129,5 +130,8 @@ SCENARIO("Game quitting by event keypressed", "[event][quit]")
         GIVEN("A game")
         {
                 auto game = star::Game{};
+                while (game.run())
+                {
+                }
         }
 }

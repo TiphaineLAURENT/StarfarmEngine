@@ -10,6 +10,9 @@ include_directories(ECS/ECS/src/Component)
 include_directories(ECS/ECS/src/System)
 include_directories(ECS/ECS/src/util)
 
+add_subdirectory(box2d/src)
+include_directories(box2d/include)
+
 set(ENGINE_SOURCES
     StarfarmEngine/src/Core/Game.cpp StarfarmEngine/src/Core/Game.hpp
     StarfarmEngine/src/Core/Scene.cpp StarfarmEngine/src/Core/Scene.hpp
@@ -20,7 +23,7 @@ set(ENGINE_SOURCES
     StarfarmEngine/src/Render/RenderComponent.cpp StarfarmEngine/src/Render/RenderComponent.hpp
     StarfarmEngine/src/Physics/RigidbodyComponent.cpp StarfarmEngine/src/Physics/RigidbodyComponent.hpp
     StarfarmEngine/src/Physics/ColliderComponent.hpp
-    StarfarmEngine/src/Util/Vector.hpp
+    StarfarmEngine/src/Util/Vector.cpp StarfarmEngine/src/Util/Vector.hpp
     StarfarmEngine/src/Util/Point.hpp
     StarfarmEngine/src/Physics/BoxCollider.cpp StarfarmEngine/src/Physics/BoxCollider.hpp
     StarfarmEngine/src/Physics/ColliderComponent.cpp
@@ -29,12 +32,13 @@ set(ENGINE_SOURCES
     StarfarmEngine/src/Window/WindowEventHandler.cpp StarfarmEngine/src/Window/WindowEventHandler.hpp
     StarfarmEngine/src/Render/RenderSystem.cpp StarfarmEngine/src/Render/RenderSystem.hpp
     StarfarmEngine/src/Component/MonoBehaviourComponent.cpp StarfarmEngine/src/Component/MonoBehaviourComponent.hpp
+    StarfarmEngine/src/Physics/PhysicSystem.cpp StarfarmEngine/src/Physics/PhysicSystem.hpp
     )
 
 list(SORT ENGINE_SOURCES COMPARE FILE_BASENAME)
 list(TRANSFORM ENGINE_SOURCES PREPEND "${CMAKE_SOURCE_DIR}/")
 list(JOIN ENGINE_SOURCES "\n" ENGINE_SOURCES_STRING)
-message("Found library sources: [\n" ${ENGINE_SOURCES_STRING} "\n]")
+message("Found starfarmengine sources: [\n" ${ENGINE_SOURCES_STRING} "\n]")
 
 if (WIN32)
     if (CMAKE_SIZEOF_VOID_P EQUAL 8)

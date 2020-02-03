@@ -10,15 +10,19 @@
 namespace star
 {
 
-  void Scene::update(::ecs::Interval deltaTime)
-  {
-          LogSystem::log("Update after " + std::to_string(deltaTime) + " micros");
-          _systems.update(deltaTime);
-  }
+        Scene::Scene(const Vector<2> &vec)
+                : _world{{vec.tail.x, vec.tail.y}}
+        {}
 
-  void Scene::refresh()
-  {
-          _systems.updateSytemsOrder();
-  }
+        void Scene::update(::ecs::Interval deltaTime)
+        {
+                LogSystem::log("Update after " + std::to_string(deltaTime) + " micros");
+                _systems.update(deltaTime);
+        }
+
+        void Scene::refresh()
+        {
+                _systems.updateSytemsOrder();
+        }
 
 }

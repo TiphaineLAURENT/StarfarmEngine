@@ -8,9 +8,10 @@
 namespace star
 {
 
-        GameObject::GameObject()
+        GameObject::GameObject(Scene &scene)
                 : Entity(),
-                _transform{create_component<TransformComponent>()}
+                _transform{create_component<TransformComponent>()},
+                _scene{scene}
         {}
 
         template <class Behaviour, class ...ARGS>
