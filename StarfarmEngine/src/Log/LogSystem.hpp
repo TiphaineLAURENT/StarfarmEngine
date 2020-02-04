@@ -34,9 +34,36 @@ namespace star
 
   public:
           void update(ecs::Interval deltaTime) override;
-          static void log(const std::string &str);
-          static void warning(const std::string &str);
-          static void error(const std::string &str);
+
+          static void log(const std::string &str)
+          {
+                  _buffer.push_back("Info: " + str);
+          }
+          template <class Type>
+          static void log(const Type &value)
+          {
+                  LogSystem::log(std::to_string(value));
+          }
+
+          static void warning(const std::string &str)
+          {
+                  _buffer.push_back("\033[1;33mWarning: " + str);
+          }
+          template <class Type>
+          static void warning(const Type &value)
+          {
+                  LogSystem::warning(std::to_string(value));
+          }
+
+          static void error(const std::string &str)
+          {
+                  _buffer.push_back("\033[1;31mError: " + str);
+          }
+          template <class Type>
+          static void error(const Type &value)
+          {
+                  LogSystem::error(std::to_string(value));
+          }
 
   private:
   };

@@ -62,6 +62,8 @@ namespace star
                   return _systems.create_system<S>(std::forward<ARGS>(args)...);
           }
 
+          b2World &get_world();
+
   private:
   };
 

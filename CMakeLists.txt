@@ -22,11 +22,10 @@ set(ENGINE_SOURCES
     StarfarmEngine/src/Physics/TransformComponent.cpp StarfarmEngine/src/Physics/TransformComponent.hpp
     StarfarmEngine/src/Render/RenderComponent.cpp StarfarmEngine/src/Render/RenderComponent.hpp
     StarfarmEngine/src/Physics/RigidbodyComponent.cpp StarfarmEngine/src/Physics/RigidbodyComponent.hpp
-    StarfarmEngine/src/Physics/ColliderComponent.hpp
+#    StarfarmEngine/src/Physics/ColliderComponent.cpp StarfarmEngine/src/Physics/ColliderComponent.hpp
     StarfarmEngine/src/Util/Vector.cpp StarfarmEngine/src/Util/Vector.hpp
     StarfarmEngine/src/Util/Point.hpp
-    StarfarmEngine/src/Physics/BoxCollider.cpp StarfarmEngine/src/Physics/BoxCollider.hpp
-    StarfarmEngine/src/Physics/ColliderComponent.cpp
+#    StarfarmEngine/src/Physics/BoxCollider.cpp StarfarmEngine/src/Physics/BoxCollider.hpp
     StarfarmEngine/src/Event/Signal.cpp StarfarmEngine/src/Event/Signal.hpp
     StarfarmEngine/src/Window/Window.cpp StarfarmEngine/src/Window/Window.hpp
     StarfarmEngine/src/Window/WindowEventHandler.cpp StarfarmEngine/src/Window/WindowEventHandler.hpp

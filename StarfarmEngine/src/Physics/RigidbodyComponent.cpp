@@ -39,7 +39,7 @@ namespace star
         }
 
         template <RIGIDBODY_FORCE_MODE mode>
-        void RigidbodyComponent::add_force(Vector<2> force)
+        void RigidbodyComponent::add_force(const Vector<2> &force)
         {
                 if constexpr (mode == RIGIDBODY_FORCE_MODE::IMPULSE)
                 {
@@ -59,9 +59,9 @@ namespace star
                 //add_force<mode>(force.x, force.y);
         }
         template <RIGIDBODY_FORCE_MODE mode>
-        void RigidbodyComponent::add_force(float x, float y)
+        void RigidbodyComponent::add_force(Force x, Force y)
         {
-                add_force({x, y});
+                add_force<mode>({x, y});
                 //if constexpr (mode == RIGIDBODY_FORCE_MODE::IMPULSE)
                 //{
                 //        _forces.x += x;
@@ -74,80 +74,91 @@ namespace star
                 //}
         }
 
-        void RigidbodyComponent::move(Vector<2> offsets)
+        void RigidbodyComponent::move(const Vector<2> &offsets)
         {
-                move(offsets.x, offsets.y);
+                set_position(offsets);
+                //move(offsets.x, offsets.y);
         }
-        void RigidbodyComponent::move(float x, float y)
+        void RigidbodyComponent::move(Coordinate x, Coordinate y)
         {
-                if (!_transformComponent)
-                        return;
+                move({x, y});
+                //if (!_transformComponent)
+                //        return;
 
-                _transformComponent->move(x, y);
-        }
-
-        void RigidbodyComponent::set_position(Vector<2> coordinates)
-        {
-                set_position(coordinates.x, coordinates.y);
-        }
-        void RigidbodyComponent::set_position(float x, float y)
-        {
-                if (!_transformComponent)
-                        return;
-
-                _transformComponent->setPosition(x, y);
+                //_transformComponent->move(x, y);
         }
 
-        void RigidbodyComponent::add_rotation(float angle)
+        void RigidbodyComponent::set_position(const Vector<2> &coordinates)
         {
-                if (!_transformComponent)
-                        return;
-
-                _transformComponent->rotate(angle);
+                _body->SetTransform(coordinates, _body->GetAngle());
+                //set_position(coordinates.x, coordinates.y);
         }
-        void RigidbodyComponent::set_rotation(float angle)
+        void RigidbodyComponent::set_position(Coordinate x, Coordinate y)
         {
-                if (!_transformComponent)
-                        return;
+                set_position({x, y});
+                //if (!_transformComponent)
+                //        return;
 
-                _transformComponent->setRotation(angle);
-        }
-
-        void RigidbodyComponent::update_velocity(ecs::Interval deltaTime)
-                //const sf::Vector2f &gravity,
-        {
-                //_acceleration.first = _forces.first * std::sin(_rotation);
-                //_acceleration.second = _forces.second * std::cos(_rotation);
-
-                //_velocity.first += _acceleration.first * deltaTime;
-                //_velocity.second += _acceleration.second * deltaTime;
-                /*auto objectGravity = gravity * _gravityScale;
-                        auto draggedVelocity = _velocity * _drag;
-                        _velocity = draggedVelocity + (objectGravity + _forces * _massInv)
-                                                      * static_cast<float>(deltaTime);
-
-                        _angularVelocity = _angularVelocity * _angularDrag
-                                           + _torque * _massInv * deltaTime;
-
-                        _forces = {0., 0.};
-                        _torque = 0.;*/
+                //_transformComponent->setPosition(x, y);
         }
 
-        void RigidbodyComponent::update_position(ecs::Interval deltaTime)
+        const b2Transform &RigidbodyComponent::get_transform() const
         {
-                //auto position = _transformComponent->getPosition();
-                //position += _velocity * static_cast<float>(deltaTime);
-                //set_position(position);
-
-                //auto angle = _transformComponent->getRotation();
-                //angle += _angularVelocity * deltaTime;
-                //set_rotation(angle);
+                return _body->GetTransform();
         }
 
-        void RigidbodyComponent::update(ecs::Interval deltaTime)
+        void RigidbodyComponent::add_rotation(Angle angle)
         {
-                //update_velocity({SpaceGravity, SpaceGravity}, deltaTime);
-                //update_position(deltaTime);
+                set_rotation(_body->GetAngle() + angle);
+                //if (!_transformComponent)
+                //        return;
+
+                //_transformComponent->rotate(angle);
         }
+        void RigidbodyComponent::set_rotation(Angle angle)
+        {
+                _body->SetTransform(_body->GetPosition(), angle);
+                //if (!_transformComponent)
+                //        return;
+
+                //_transformComponent->setRotation(angle);
+        }
+
+        //void RigidbodyComponent::update_velocity(ecs::Interval deltaTime)
+        //        const sf::Vector2f &gravity,
+        //{
+        //        _acceleration.first = _forces.first * std::sin(_rotation);
+        //        _acceleration.second = _forces.second * std::cos(_rotation);
+
+        //        _velocity.first += _acceleration.first * deltaTime;
+        //        _velocity.second += _acceleration.second * deltaTime;
+        //        /*auto objectGravity = gravity * _gravityScale;
+        //                auto draggedVelocity = _velocity * _drag;
+        //                _velocity = draggedVelocity + (objectGravity + _forces * _massInv)
+        //                                              * static_cast<float>(deltaTime);
+
+        //                _angularVelocity = _angularVelocity * _angularDrag
+        //                                   + _torque * _massInv * deltaTime;
+
+        //                _forces = {0., 0.};
+        //                _torque = 0.;*/
+        //}
+
+        //void RigidbodyComponent::update_position(ecs::Interval deltaTime)
+        //{
+        //        auto position = _transformComponent->getPosition();
+        //        position += _velocity * static_cast<float>(deltaTime);
+        //        set_position(position);
+
+        //        auto angle = _transformComponent->getRotation();
+        //        angle += _angularVelocity * deltaTime;
+        //        set_rotation(angle);
+        //}
+
+        //void RigidbodyComponent::update(ecs::Interval deltaTime)
+        //{
+        //        update_velocity({SpaceGravity, SpaceGravity}, deltaTime);
+        //        update_position(deltaTime);
+        //}
 
 }

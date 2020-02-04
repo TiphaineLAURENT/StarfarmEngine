@@ -11,7 +11,7 @@ namespace star
 {
 
         Scene::Scene(const Vector<2> &vec)
-                : _world{{vec.tail.x, vec.tail.y}}
+                : _world{{vec.x, vec.y}}
         {}
 
         void Scene::update(::ecs::Interval deltaTime)
@@ -23,6 +23,11 @@ namespace star
         void Scene::refresh()
         {
                 _systems.updateSytemsOrder();
+        }
+
+        b2World &Scene::get_world()
+        {
+                return _world;
         }
 
 }

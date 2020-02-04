@@ -16,17 +16,4 @@ namespace star
                 _buffer.clear();
         }
 
-        void LogSystem::log(const std::string &str)
-        {
-                _buffer.push_back("Info: " + str);
-        }
-        void LogSystem::warning(const std::string &str)
-        {
-                _buffer.push_back("\033[1;33mWarning: " + str);
-        }
-        void LogSystem::error(const std::string &str)
-        {
-                _buffer.push_back("\033[1;31mError: " + str);
-        }
-
 }

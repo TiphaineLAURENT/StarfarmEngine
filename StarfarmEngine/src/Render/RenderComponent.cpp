@@ -131,7 +131,9 @@ namespace star
         {
                 if (_texture)
                 {
-                        states.transform *= _transformComponent->getTransform();
+                        auto &transform = _transformComponent->get_transform();
+                        states.transform.translate(transform.p.x, transform.p.y);
+                        states.transform.rotate(transform.q.GetAngle());
                         states.texture = _texture;
 
                         if (sf::VertexBuffer::isAvailable())
@@ -147,8 +149,8 @@ namespace star
 
         void RenderComponent::setup()
         {
-                auto *transformNonConstPointer = const_cast<TransformComponent **>(&_transformComponent);
-                *transformNonConstPointer = get_owner()->get_component<TransformComponent>();
+                auto &transformNonConstPointer = const_cast<RigidbodyComponent *&>(_transformComponent);
+                transformNonConstPointer = get_owner()->get_component<RigidbodyComponent>();
         }
 
 }

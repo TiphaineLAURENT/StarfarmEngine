@@ -65,6 +65,9 @@ namespace star
         template <Dimension dimension>
         struct Vector
         {
+                Length calculate_magnitude() const;
+                Angle calculate_direction() const;
+
                 Vector<dimension> &operator+=(const Vector<dimension> &other);
                 Vector<dimension> &operator-=(const Vector<dimension> &other);
                 Vector<dimension> &operator*=(const Coordinate &other);
@@ -85,7 +88,7 @@ namespace star
         };
 
         template <>
-        struct Vector<2> : private b2Vec2
+        struct Vector<2> : public b2Vec2
         {
                 using b2Vec2::x;
                 using b2Vec2::y;
@@ -116,19 +119,25 @@ namespace star
                         return *this;
                 }
 
-                star::Length calculate_magnitude() const
+                star::Length Vector<2>::calculate_magnitude() const
                 {
-                        return std::sqrt(LengthSquared());
+                        return std::sqrt(x * x + y * y);
                 }
 
                 star::Length normalize()
                 {
                         return Normalize();
                 }
+
+                Angle Vector<2>::calculate_direction() const
+                {
+                        return std::atan(y / x);
+                }
+
         };
 
         template <>
-        struct Vector<3> : private b2Vec3
+        struct Vector<3> : public b2Vec3
         {
                 using b2Vec3::x;
                 using b2Vec3::y;
@@ -158,6 +167,13 @@ namespace star
                 {
                         b2Vec3::operator*=(other);
                         return *this;
+                }
+
+                Length Vector<3>::calculate_magnitude() const
+                {
+                        return std::sqrt(x * x
+                                         + y * y
+                                         + z * z);
                 }
 
         };

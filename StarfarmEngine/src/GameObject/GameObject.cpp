@@ -20,4 +20,9 @@ namespace star
                 create_component<Behaviour, MonoBehaviour>(std::forward<ARGS>(args)...);
         }
 
+        Scene &GameObject::get_scene()
+        {
+                return _scene;
+        }
+
 }

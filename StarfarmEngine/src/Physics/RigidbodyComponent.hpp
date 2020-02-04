@@ -105,22 +105,23 @@ namespace star
           void setup() override;
 
           template <RIGIDBODY_FORCE_MODE mode = RIGIDBODY_FORCE_MODE::IMPULSE>
-          void add_force(Vector<2> force);
+          void add_force(const Vector<2> &force);
           template <RIGIDBODY_FORCE_MODE mode = RIGIDBODY_FORCE_MODE::IMPULSE>
           void add_force(Force x, Force y);
 
-          void move(Vector<2> offsets);
+          void move(const Vector<2> &offsets);
           void move(Coordinate x, Coordinate y);
 
-          void set_position(Vector<2> coordinates);
+          void set_position(const Vector<2> &coordinates);
           void set_position(Coordinate x, Coordinate y);
+          const b2Transform &get_transform() const;
 
           void add_rotation(Angle angle);
           void set_rotation(Angle angle);
 
-          void update_velocity(ecs::Interval deltaTime); // const Vector<2> &gravity, 
-          void update_position(ecs::Interval deltaTime);
-          void update(ecs::Interval deltaTime);
+          //void update_velocity(ecs::Interval deltaTime); // const Vector<2> &gravity, 
+          //void update_position(ecs::Interval deltaTime);
+          //void update(ecs::Interval deltaTime);
 
   private:
   };

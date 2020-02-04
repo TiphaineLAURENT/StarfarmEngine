@@ -42,14 +42,7 @@ namespace star
           template <class Behaviour, class ...ARGS>
           void create_behaviour(ARGS ...args);
 
-          template <class C, class Container = C, class ...ARGS>
-          ecs::NonOwningPointer<C> create_component(ARGS &&... args)
-          {
-                  return ecs::ComponentManager::create_component<C, Container>(
-                          this, _scene,
-                          std::forward<ARGS>(args)...
-                          );
-          }
+          Scene &get_scene();
 
   private:
   };

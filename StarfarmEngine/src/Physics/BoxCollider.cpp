@@ -2,6 +2,7 @@
 // Created by Tiphaine LAURENT on 13/08/2019.
 //
 
+# include "TransformComponent.hpp"
 # include "BoxCollider.hpp"
 # include "../Util/Vector.hpp"
 
@@ -24,7 +25,7 @@ namespace star
   float BoxCollider::distance_to(const sf::Vector2f &point) const
   {
           auto distances = std::array<float, 4>{};
-          distances[0] = distance(_angles[0] + _transformComponent->getPosition(), point);
+          distances[0] = distance_between(_angles[0] + _transformComponent->getPosition(), point);
           distances[1] = distance(_angles[1] +
                   _transformComponent->getPosition(), point);
           distances[2] = distance(_angles[2] +
