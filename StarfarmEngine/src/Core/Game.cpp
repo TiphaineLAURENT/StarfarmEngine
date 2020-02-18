@@ -39,8 +39,7 @@ namespace star
   }
   void Game::set_active_scene(::ecs::NonOwningPointer<Scene> scene)
   {
-          auto *nonConstScenePointer = const_cast<Scene**>(&_activeScene);
-          *nonConstScenePointer = scene;
+          ecs::replace_pointer(_activeScene, scene);
   }
 
   Scene &Game::create_scene()

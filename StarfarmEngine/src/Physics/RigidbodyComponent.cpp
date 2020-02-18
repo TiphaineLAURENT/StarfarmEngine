@@ -4,7 +4,9 @@
 
 #include <ComponentManager.hpp>
 #include <IEntity.hpp>
+#include <util.hpp>
 
+#include "../GameObject/GameObject.hpp"
 #include "RigidbodyComponent.hpp"
 #include "TransformComponent.hpp"
 #include "../Core/Scene.hpp"
@@ -14,64 +16,30 @@
 namespace star
 {
 
-        RigidbodyComponent::RigidbodyComponent(Scene &scene)
+        RigidbodyComponent::RigidbodyComponent()
         {
                 _bodyDef.type = b2BodyType::b2_dynamicBody;
                 _bodyDef.position.SetZero();
-
-                auto *bodyNonConstPointer = const_cast<b2Body **>(&_body);
-                *bodyNonConstPointer = scene._world.CreateBody(&_bodyDef);
 
                 _dynamicBox.SetAsBox(1., 1.);
 
                 _fixtureDef.shape = &_dynamicBox;
                 _fixtureDef.density = 1.;
                 _fixtureDef.friction = 0.3;
-
-                _body->CreateFixture(&_fixtureDef);
         }
 
         void RigidbodyComponent::setup()
         {
-                auto *transformNonConstPointer = const_cast<TransformComponent **>(&_transformComponent);
-                *transformNonConstPointer = get_owner()->get_component<TransformComponent>();
-                //_massInv = 1 / _mass;
-        }
+                ecs::replace_pointer(_transformComponent, get_owner()->get_component<TransformComponent>());
+                assert(("A entity cannot have a rigidbogy without having a transform",
+                        _transformComponent != nullptr));
 
-        template <RIGIDBODY_FORCE_MODE mode>
-        void RigidbodyComponent::add_force(const Vector<2> &force)
-        {
-                if constexpr (mode == RIGIDBODY_FORCE_MODE::IMPULSE)
-                {
-                        _body->ApplyLinearImpulseToCenter(force);
-                }
-                else if constexpr (mode == RIGIDBODY_FORCE_MODE::VELOCITYCHANGE)
-                {
-                        _body->SetLinearVelocity(_body->GetLinearVelocity() + force);
-                }
-                else if constexpr (mode == RIGIDBODY_FORCE_MODE::ACCELERATION)
-                {
-                }
-                else if constexpr (mode == RIGIDBODY_FORCE_MODE::FORCE)
-                {
-                        _body->ApplyForceToCenter(force);
-                }
-                //add_force<mode>(force.x, force.y);
-        }
-        template <RIGIDBODY_FORCE_MODE mode>
-        void RigidbodyComponent::add_force(Force x, Force y)
-        {
-                add_force<mode>({x, y});
-                //if constexpr (mode == RIGIDBODY_FORCE_MODE::IMPULSE)
-                //{
-                //        _forces.x += x;
-                //        _forces.y += y;
-                //}
-                //else if constexpr (mode == RIGIDBODY_FORCE_MODE::VELOCITYCHANGE)
-                //{
-                //        _velocity.x += x;
-                //        _velocity.y += y;
-                //}
+                auto &scene = static_cast<ecs::NonOwningPointer<GameObject>>(get_owner())->get_scene();
+                auto &world = scene.get_world();
+                ecs::replace_pointer(_body, world.CreateBody(&_bodyDef));
+                _body->CreateFixture(&_fixtureDef);
+
+                //_massInv = 1 / _mass;
         }
 
         void RigidbodyComponent::move(const Vector<2> &offsets)
@@ -96,9 +64,6 @@ namespace star
         void RigidbodyComponent::set_position(Coordinate x, Coordinate y)
         {
                 set_position({x, y});
-                //if (!_transformComponent)
-                //        return;
-
                 //_transformComponent->setPosition(x, y);
         }
 

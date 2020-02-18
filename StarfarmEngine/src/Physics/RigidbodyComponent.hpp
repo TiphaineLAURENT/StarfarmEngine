@@ -92,7 +92,7 @@ namespace star
 
 // METHODS
   public:// CONSTRUCTORS
-          explicit RigidbodyComponent(Scene &scene);
+          explicit RigidbodyComponent();
           ~RigidbodyComponent() override = default;
           RigidbodyComponent(const RigidbodyComponent &copy) = default;
           RigidbodyComponent(RigidbodyComponent &&) noexcept = default;
@@ -105,9 +105,40 @@ namespace star
           void setup() override;
 
           template <RIGIDBODY_FORCE_MODE mode = RIGIDBODY_FORCE_MODE::IMPULSE>
-          void add_force(const Vector<2> &force);
+          void add_force(const Vector<2> &force)
+          {
+                  if constexpr (mode == RIGIDBODY_FORCE_MODE::IMPULSE)
+                  {
+                          _body->ApplyLinearImpulseToCenter(force, false);
+                  }
+                  else if constexpr (mode == RIGIDBODY_FORCE_MODE::VELOCITYCHANGE)
+                  {
+                          _body->SetLinearVelocity(_body->GetLinearVelocity() + force);
+                  }
+                  else if constexpr (mode == RIGIDBODY_FORCE_MODE::ACCELERATION)
+                  {
+                  }
+                  else if constexpr (mode == RIGIDBODY_FORCE_MODE::FORCE)
+                  {
+                          _body->ApplyForceToCenter(force, false);
+                  }
+                  //add_force<mode>(force.x, force.y);
+          }
           template <RIGIDBODY_FORCE_MODE mode = RIGIDBODY_FORCE_MODE::IMPULSE>
-          void add_force(Force x, Force y);
+          void add_force(Force x, Force y)
+          {
+                  add_force<mode>({x, y});
+                  //if constexpr (mode == RIGIDBODY_FORCE_MODE::IMPULSE)
+                  //{
+                  //        _forces.x += x;
+                  //        _forces.y += y;
+                  //}
+                  //else if constexpr (mode == RIGIDBODY_FORCE_MODE::VELOCITYCHANGE)
+                  //{
+                  //        _velocity.x += x;
+                  //        _velocity.y += y;
+                  //}
+          }
 
           void move(const Vector<2> &offsets);
           void move(Coordinate x, Coordinate y);

@@ -22,7 +22,7 @@ namespace star
 
         void Scene::refresh()
         {
-                _systems.updateSytemsOrder();
+                _systems.update_systems_order();
         }
 
         b2World &Scene::get_world()

@@ -52,9 +52,9 @@ SCENARIO("Game running", "[engine][gamerun]")
                                 {
                                         auto &entity = scene
                                                 .create_entity<star::GameObject>();
+                                        auto *body = entity.create_component<star::RigidbodyComponent>();
                                         auto texture = sf::Texture{};
                                         texture.loadFromFile("test.png");
-                                        auto *body = entity.create_component<star::RigidbodyComponent>(entity.get_scene());
                                         auto *renderer = entity
                                                 .create_component<star::RenderComponent>
                                                 (texture);
@@ -79,6 +79,7 @@ SCENARIO("Game running", "[engine][gamerun]")
                                         //        (transform->getPosition() ==
                                         //         sf::Vector2f{10, 10});
 
+                                                body->add_force({100, 100});
                                                 while (game.run())
                                                 {
                                                         window.display();
