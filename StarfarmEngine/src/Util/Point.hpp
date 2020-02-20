@@ -30,6 +30,9 @@ namespace star
                 {}
         };
 
+        using Point2D = Point<2>;
+        using Point3D = Point<3>;
+
 }
 
 #endif // !STARFARMENGINE_POINT_HPP

@@ -8,35 +8,35 @@
 # include <ostream>
 # include <map>
 
-# include <box2d/b2_world.h>
-
 # include <EntityManager.hpp>
 # include <ComponentManager.hpp>
 # include <MediumSystemManager.hpp>
-
-# include "../Util/Vector.hpp"
 
 namespace star
 {
 
         class RigidbodyComponent;
+        class Fixture;
+        class ContactManager;
+        class Controller;
 
   class Scene
   {
 // ATTRIBUTES
   private:
           friend RigidbodyComponent;
+          friend Fixture;
+          friend ContactManager;
+          friend Controller;
 
           ecs::EntityManager _entities{};
           ecs::ComponentManager _components{};
           ecs::MediumSystemManager _systems{};
-          b2World _world{{0, EarthGravity}};
 
   public:
 
 // METHODS
   public:// CONSTRUCTORS
-          Scene(const Vector<2> &gravity);
           Scene() = default;
           ~Scene() = default;
           Scene(const Scene &copy) = delete;
@@ -61,8 +61,6 @@ namespace star
           {
                   return _systems.create_system<S>(std::forward<ARGS>(args)...);
           }
-
-          b2World &get_world();
 
   private:
   };

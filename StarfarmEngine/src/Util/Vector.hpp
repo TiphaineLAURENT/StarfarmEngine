@@ -179,6 +179,9 @@ namespace star
         };
 
 
+        using Vector2D = Vector<2>;
+        using Vector3D = Vector<3>;
+
         static constexpr auto EarthGravity{9.807};
         static constexpr auto SpaceGravity{0.};
 
