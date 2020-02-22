@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 project(StarfarmEngine)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
@@ -12,6 +12,7 @@ include_directories(ECS/ECS/src/util)
 
 add_subdirectory(box2d/src)
 include_directories(box2d/include)
+include_directories(box2d/src)
 
 set(ENGINE_SOURCES
     StarfarmEngine/src/Core/Game.cpp StarfarmEngine/src/Core/Game.hpp
@@ -32,6 +33,7 @@ set(ENGINE_SOURCES
     StarfarmEngine/src/Render/RenderSystem.cpp StarfarmEngine/src/Render/RenderSystem.hpp
     StarfarmEngine/src/Component/MonoBehaviourComponent.cpp StarfarmEngine/src/Component/MonoBehaviourComponent.hpp
     StarfarmEngine/src/Physics/PhysicSystem.cpp StarfarmEngine/src/Physics/PhysicSystem.hpp
+    StarfarmEngine/src/Util/enum_flags.hpp
     )
 
 list(SORT ENGINE_SOURCES COMPARE FILE_BASENAME)
@@ -49,7 +51,7 @@ if (WIN32)
 endif ()
 find_package(SFML 2.5 COMPONENTS graphics audio window network system REQUIRED)
 
-add_library(starfarm STATIC ${ENGINE_SOURCES})
+add_library(starfarm STATIC ${ENGINE_SOURCES} cpp.hint)
 
 
 #add_library(coverage_config INTERFACE)

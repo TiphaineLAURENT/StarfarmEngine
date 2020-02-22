@@ -5,6 +5,4 @@
 #include "TransformComponent.hpp"
 
 namespace star
-{
-
-}
+{}

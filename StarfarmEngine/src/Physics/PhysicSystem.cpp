@@ -4,21 +4,20 @@
 
 #include <ComponentManager.hpp>
 
-#include "PhysicSystem.hpp"
-#include "RigidbodyComponent.hpp"
-#include "Island.hpp"
+#include "dynamics/b2_island.h"
 
+#include "PhysicSystem.hpp"
 
 namespace star
 {
 
         PhysicSystem::PhysicSystem(const Vector2D &gravity)
-                : System(), _gravity{ gravity }
+                : _gravity{ gravity }
         {}
 
-        void PhysicSystem::update(::ecs::Interval deltaTime)
+        void PhysicSystem::update(ecs::Interval deltaTime)
         {
-                step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
+                //step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
         }
 
         void PhysicSystem::set_allow_sleeping(bool flag)
@@ -39,7 +38,26 @@ namespace star
                 _profile.solveVelocity = 0.f;
                 _profile.solvePosition = 0.f;
 
-                auto island = Island{_rigidbodies.count(), ,_joints};
+                auto island = b2Island{
+                        (int32)_rigidbodies.size(),
+                        _contactManager.m_contactCount,
+                        (int32)_joints.size(),
+                        &_allocator,
+                        _contactManager.m_contactListener
+                };
+
+                for (const auto &body : _rigidbodies)
+                {
+                        body->_flags &= ~RIGIDBODY_FLAGS::ISLAND;
+                }
+                for (b2Contact *c = _contactManager.m_contactList; c; c = c->m_next)
+                {
+                        c->m_flags &= ~b2Contact::e_islandFlag;
+                }
+                for (const auto &joint : _joints)
+                {
+                        joint->m_islandFlag = false;
+                }
         }
 
 }

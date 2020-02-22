@@ -8,21 +8,18 @@
 # include <ostream>
 # include <Component.hpp>
 
-# include "Component.hpp"
-
 namespace star
 {
         class GameObject;
-
         class TransformComponent;
 
         class COMPONENT(MonoBehaviour)
         {
                 // ATTRIBUTES
         protected:
-                ecs::NonOwningPointer<GameObject> _gameObject{nullptr};
+                ecs::NonOwningPointer<GameObject> _gameObject{ nullptr };
 
-                ecs::NonOwningPointer<TransformComponent> _transform{nullptr};
+                ecs::NonOwningPointer<TransformComponent> _transform{ nullptr };
 
         public:
 
@@ -30,13 +27,13 @@ namespace star
         public: // CONSTRUCTORS
                 explicit MonoBehaviour(ecs::NonOwningPointer<GameObject> gameObject);
                 ~MonoBehaviour() override = default;
-                MonoBehaviour(const MonoBehaviour &copy) = default;
-                MonoBehaviour(MonoBehaviour &&other) noexcept = default;
+                MonoBehaviour(const MonoBehaviour & copy) = default;
+                MonoBehaviour(MonoBehaviour && other) noexcept = default;
 
         public: // OPERATORS
                 MonoBehaviour &operator=(const MonoBehaviour
-                                                  &other) = delete;
-                MonoBehaviour &operator=(MonoBehaviour &&other) =
+                                         & other) = delete;
+                MonoBehaviour &operator=(MonoBehaviour && other) =
                         delete;
 
         public:

@@ -22,7 +22,7 @@ namespace star
           friend class MonoBehaviour;
 // ATTRIBUTES
   private:
-          ecs::NonOwningPointer<TransformComponent> _transform{nullptr};
+          ecs::NonOwningPointer<TransformComponent> _transform{ create_component<TransformComponent>() };
           Scene &_scene;
 
   public:
@@ -40,7 +40,7 @@ namespace star
 
   public:
           template <class Behaviour, class ...ARGS>
-          void create_behaviour(ARGS ...args);
+          void create_behaviour(ARGS &&...args);
 
           Scene &get_scene();
 

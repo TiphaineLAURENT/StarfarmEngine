@@ -12,11 +12,12 @@
 # include <IEntity.hpp>
 # include <SFML/Graphics/Vertex.hpp>
 
-# include "RigidbodyComponent.hpp"
-
 
 namespace star
 {
+
+        class RigidbodyComponent;
+        class TransformComponent;
 
   class COMPONENT(ColliderComponent)
   {

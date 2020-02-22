@@ -85,6 +85,13 @@ namespace star
                         vec -= other;
                         return vec;
                 }
+
+                Vector<dimension> operator*(const Coordinate &other)
+                {
+                        Vector<dimension> vec{ this };
+                        vec *= other;
+                        return vec;
+                }
         };
 
         template <>
@@ -93,7 +100,11 @@ namespace star
                 using b2Vec2::x;
                 using b2Vec2::y;
 
-                Vector(const Point<2> &tail)
+                Vector()
+                        : b2Vec2{ 0.f, 0.f }
+                {}
+
+                explicit Vector(const Point2D &tail)
                         : b2Vec2(tail.x, tail.y)
                 {}
 
@@ -135,6 +146,17 @@ namespace star
                 }
 
         };
+
+        inline Vector<2> operator - (const Vector<2> &a, const Vector<2> &b)
+        {
+                return Vector<2>(a.x - b.x, a.y - b.y);
+        }
+
+        inline Vector<2> operator * (float s, const Vector<2> &a)
+        {
+                return Vector<2>(s * a.x, s * a.y);
+        }
+
 
         template <>
         struct Vector<3> : public b2Vec3

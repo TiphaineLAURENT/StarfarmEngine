@@ -8,6 +8,7 @@
 #include <cassert>
 
 #include "RenderComponent.hpp"
+#include "../Physics/TransformComponent.hpp"
 
 namespace star
 {
@@ -131,9 +132,7 @@ namespace star
         {
                 if (_texture)
                 {
-                        auto &transform = _transformComponent->get_transform();
-                        states.transform.translate(transform.p.x, transform.p.y);
-                        states.transform.rotate(transform.q.GetAngle());
+                        states.transform = _transformComponent->getTransform();
                         states.texture = _texture;
 
                         if (sf::VertexBuffer::isAvailable())
@@ -149,7 +148,8 @@ namespace star
 
         void RenderComponent::setup()
         {
-                ecs::replace_pointer(_transformComponent, get_owner()->get_component<RigidbodyComponent>());
+                ecs::replace_pointer(_transformComponent, get_owner()->get_component<TransformComponent>());
+                assert(_transformComponent != nullptr);
         }
 
 }

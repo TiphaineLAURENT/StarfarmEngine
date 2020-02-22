@@ -1,0 +1,8 @@
+// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
+// such as names of functions and macros.
+// For more information see https://go.microsoft.com/fwlink/?linkid=865984
+
+#define COMPONENT(component) component : public ecs::Component<component>
+#define ENTITY(entity) entity : public ecs::Entity<entity>
+#define SYSTEM(system) system : public ecs::System<system>
+#define ENUM_FLAGS(T) ENUM_FLAGS_EX(T,intptr_t)

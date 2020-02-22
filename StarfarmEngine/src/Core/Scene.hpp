@@ -15,20 +15,10 @@
 namespace star
 {
 
-        class RigidbodyComponent;
-        class Fixture;
-        class ContactManager;
-        class Controller;
-
   class Scene
   {
 // ATTRIBUTES
   private:
-          friend RigidbodyComponent;
-          friend Fixture;
-          friend ContactManager;
-          friend Controller;
-
           ecs::EntityManager _entities{};
           ecs::ComponentManager _components{};
           ecs::MediumSystemManager _systems{};
@@ -47,7 +37,7 @@ namespace star
           Scene &operator=(Scene &&) = delete;
 
   public:
-          void update(::ecs::Interval deltaTime);
+          void update(ecs::Interval deltaTime);
           void refresh();
 
           template <class E, class ...ARGS>

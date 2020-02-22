@@ -19,6 +19,7 @@ namespace star
 // ATTRIBUTES
   public:
   private:
+          Window &_window;
 
 // METHODS
   public:// CONSTRUCTORS
@@ -33,9 +34,6 @@ namespace star
 
   public:
           void update(::ecs::Interval deltaTime) override;
-
-  private:
-          Window &_window;
   };
 
   std::ostream &operator<<(std::ostream &out, const RenderSystem &);

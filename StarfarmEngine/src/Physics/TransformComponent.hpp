@@ -3,39 +3,37 @@
 //
 
 #ifndef STARFARMENGINE_TRANSFORMCOMPONENT_HPP
-#define STARFARMENGINE_TRANSFORMCOMPONENT_HPP
+# define STARFARMENGINE_TRANSFORMCOMPONENT_HPP
 
 # include <ostream>
 
 # include <Component.hpp>
-# include <SFML/System/Vector2.hpp>
-# include <SFML/System/Vector3.hpp>
 # include <SFML/Graphics/Transformable.hpp>
 
 namespace star
 {
 
-  class COMPONENT(TransformComponent), public sf::Transformable
-  {
-// ATTRIBUTES
-  private:
-  public:
+        class COMPONENT(TransformComponent), public sf::Transformable
+        {
+                // ATTRIBUTES
+                  private:
+                  public:
 
-// METHODS
-  public:// CONSTRUCTORS
-          TransformComponent() = default;
-          TransformComponent(const TransformComponent &copy) = default;
-          TransformComponent(TransformComponent &&) noexcept = default;
+                          // METHODS
+                            public:// CONSTRUCTORS
+                                    TransformComponent() = default;
+                                    TransformComponent(const TransformComponent &copy) = default;
+                                    TransformComponent(TransformComponent &&) noexcept = default;
 
-  public: //OPERATORS
-          TransformComponent &operator=(const TransformComponent &other) = default;
-          TransformComponent &operator=(TransformComponent &&) noexcept = default;
+                            public: //OPERATORS
+                                    TransformComponent &operator=(const TransformComponent &other) = default;
+                                    TransformComponent &operator=(TransformComponent &&) noexcept = default;
 
-  public:
-  private:
-  };
+                            public:
+                            private:
+        };
 
-  std::ostream &operator<<(std::ostream &out, const TransformComponent &);
+        std::ostream &operator<<(std::ostream &out, const TransformComponent &);
 
 }
 

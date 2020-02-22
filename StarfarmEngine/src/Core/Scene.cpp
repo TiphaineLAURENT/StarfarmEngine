@@ -10,7 +10,7 @@
 namespace star
 {
 
-        void Scene::update(::ecs::Interval deltaTime)
+        void Scene::update(ecs::Interval deltaTime)
         {
                 LogSystem::log("Update after " + std::to_string(deltaTime) + " micros");
                 _systems.update(deltaTime);

@@ -22,45 +22,41 @@
 # include <ostream>
 # include <System.hpp>
 
+# include "box2d/b2_contact_manager.h"
+# include "box2d/b2_math.h"
+# include "box2d/b2_time_step.h"
+# include "box2d/b2_world_callbacks.h"
+# include "box2d/b2_stack_allocator.h"
+
+# include "../Util/enum_flags.hpp"
 # include "../Util/Vector.hpp"
+# include "RigidbodyComponent.hpp"
 
 namespace star
 {
 
-        struct Profile
+        enum class PHYSICSYSTEM_FLAGS
+                : unsigned
         {
-                ecs::Interval step;
-                float collide;
-                float solve;
-                float solveInit;
-                float solveVelocity;
-                float solvePosition;
-                float broadphase;
-                float solveTOI;
+                NEW_FIXTURE = 1u << 0,
+                LOCKED = 1u << 1,
+                CLEAR_FORCES = 1u << 2
         };
-
-        class RigidbodyComponent;
-        class Joint;
-        class ContactManager;
+        ENUM_FLAGS(PHYSICSYSTEM_FLAGS);
 
         class SYSTEM(PhysicSystem)
         {
                 // ATTRIBUTES
         private:
-                enum class FLAGS
-                {
-                        NEW_FIXTURE = 0x0001,
-                        LOCKED = 0x0002,
-                        CLEAR_FORCES = 0x0004
-                } _flags{ FLAGS::CLEAR_FORCES };
+                PHYSICSYSTEM_FLAGS _flags{ PHYSICSYSTEM_FLAGS::CLEAR_FORCES };
 
-                ContactManager _contactManager{};
+                b2ContactManager _contactManager{};
 
                 ecs::ComponentContainer<RigidbodyComponent> &_rigidbodies{
                         ecs::ComponentManager::get_component_container<RigidbodyComponent>()
                 };
-                ecs::ComponentContainer<Joint> &_joints{
-                        ecs::ComponentManager::get_component_container<Joint>()
+                ecs::ComponentContainer<b2Joint> &_joints{
+                        ecs::ComponentManager::get_component_container<b2Joint>()
                 };
 
                 Vector2D _gravity{ 0, EarthGravity };
@@ -74,15 +70,18 @@ namespace star
 
                 bool _stepComplete{ true };
 
-                Profile _profile{};
+                b2Profile _profile{};
 
                 static constexpr auto TIME_STEP{ 1. / 60. };
                 static constexpr auto VELOCITY_ITERATIONS{ 8 };
                 static constexpr auto POSITION_ITERATIONS{ 3 };
+
+                b2StackAllocator _allocator{};
         public:
 
                 // METHODS
         public:// CONSTRUCTORS
+                explicit PhysicSystem() = default;
                 explicit PhysicSystem(const Vector2D &gravity);
                 ~PhysicSystem() override = default;
                 PhysicSystem(const PhysicSystem &copy) = delete;

@@ -9,13 +9,11 @@ namespace star
 {
 
         GameObject::GameObject(Scene &scene)
-                : Entity(),
-                _transform{create_component<TransformComponent>()},
-                _scene{scene}
+                : _scene{scene}
         {}
 
         template <class Behaviour, class ...ARGS>
-        void GameObject::create_behaviour(ARGS ...args)
+        void GameObject::create_behaviour(ARGS &&...args)
         {
                 create_component<Behaviour, MonoBehaviour>(std::forward<ARGS>(args)...);
         }

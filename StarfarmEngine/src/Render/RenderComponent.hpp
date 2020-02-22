@@ -13,11 +13,12 @@
 # include <SFML/Graphics/Vertex.hpp>
 # include <SFML/Graphics/Rect.hpp>
 # include <SFML/Graphics/VertexBuffer.hpp>
-#include "../Physics/RigidbodyComponent.hpp"
 
 
 namespace star
 {
+
+        class TransformComponent;
 
         class COMPONENT(RenderComponent), public sf::Drawable
         {
@@ -29,7 +30,7 @@ namespace star
                           const ecs::NonOwningPointer<sf::Texture> _texture{nullptr};
                           sf::IntRect        _textureRect{};
 
-                          ecs::NonOwningPointer<RigidbodyComponent> _transformComponent{nullptr};
+                          ecs::NonOwningPointer<TransformComponent> _transformComponent{nullptr};
 
         public:
 

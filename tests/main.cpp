@@ -18,7 +18,6 @@
 #include "../StarfarmEngine/src/Physics/PhysicSystem.hpp"
 #include "../StarfarmEngine/src/Log/LogSystem.hpp"
 
-
 SCENARIO("Game running", "[engine][gamerun]")
 {
         GIVEN("A game")
@@ -43,7 +42,7 @@ SCENARIO("Game running", "[engine][gamerun]")
                                 auto &scene = game.create_scene();
                                 scene.create_system<star::LogSystem>();
                                 scene.create_system<star::RenderSystem>(window);
-                                scene.create_system<star::PhysicSystem>(scene.get_world());
+                                scene.create_system<star::PhysicSystem>();
 
                                 game.set_active_scene(&scene);
                                 scene.refresh();
@@ -71,7 +70,7 @@ SCENARIO("Game running", "[engine][gamerun]")
 
                                                 REQUIRE(game.run());
                                                 body->set_position({10, 10});
-                                                REQUIRE(transform.p.y == 10);
+                                                REQUIRE(transform.getPosition().y == 10);
                                                 
                                         //        REQUIRE(game.run());
 
@@ -79,12 +78,13 @@ SCENARIO("Game running", "[engine][gamerun]")
                                         //        (transform->getPosition() ==
                                         //         sf::Vector2f{10, 10});
 
-                                                body->add_force({100, 100});
+                                                //body->add_force({100, 100});
+                                                body->apply_force_to_center(100, 100);
                                                 while (game.run())
                                                 {
                                                         window.display();
                                                         window.clear();
-                                                        star::LogSystem::log(transform.p.y);
+                                                        star::LogSystem::log(transform.getPosition().y);
                                                 }
                                         }
                                 }

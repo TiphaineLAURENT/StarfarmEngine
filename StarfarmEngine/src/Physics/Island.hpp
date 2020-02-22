@@ -26,7 +26,6 @@ namespace star
 {
         class RigidbodyComponent;
         class Profile;
-        class Vector2D;
         class Contact;
         class Joint;
 
@@ -34,19 +33,19 @@ namespace star
 	{
         // ATTRIBUTES
         private:
-                std::vector<ecs::NonOwningPointer<RigidbodyComponent>> _rigidbodies{};
-                std::vector<ecs::NonOwningPointer<Contact>> _contacts{};
-                std::vector<ecs::NonOwningPointer<Joint>> _joints{};
+                //std::vector<ecs::NonOwningPointer<RigidbodyComponent>> _rigidbodies{};
+                //std::vector<ecs::NonOwningPointer<Contact>> _contacts{};
+                //std::vector<ecs::NonOwningPointer<Joint>> _joints{};
 
-                std::vector<Position> _positions{};
-                std::vector<Velocity> _velocities{};
+                //std::vector<Position> _positions{};
+                //std::vector<Velocity> _velocities{};
 
         public:
 
                 // METHODS
         public:// CONSTRUCTORS
                 explicit Island(int rigidbodyCapacity, int contactCapacity, int jointCapacity);
-                ~Island() override = default;
+                ~Island() = default;
                 Island(const Island &copy) = delete;
                 Island(Island &&) noexcept = delete;
 
@@ -65,7 +64,7 @@ namespace star
                 void add(ecs::NonOwningPointer<Contact> contact);
                 void add(ecs::NonOwningPointer<Joint> joint);
 
-                void report(const ContactVelocityConstraint *constraints);
+                //void report(const ContactVelocityConstraint *constraints);
         };
 }
 
