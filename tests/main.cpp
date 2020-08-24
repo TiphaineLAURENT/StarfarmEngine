@@ -5,19 +5,18 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
-#include <iostream>
 #include <SFML/Graphics/Texture.hpp>
+#include <iostream>
 
 #include "../StarfarmEngine/src/Core/Game.hpp"
-#include "../StarfarmEngine/src/Log/LogSystem.hpp"
 #include "../StarfarmEngine/src/GameObject/GameObject.hpp"
+#include "../StarfarmEngine/src/Log/LogSystem.hpp"
 #include "../StarfarmEngine/src/Render/RenderComponent.hpp"
 //#include "../StarfarmEngine/src/Physics/BoxCollider.hpp"
+#include "../StarfarmEngine/src/Log/LogSystem.hpp"
+#include "../StarfarmEngine/src/Physics/PhysicSystem.hpp"
 #include "../StarfarmEngine/src/Physics/RigidbodyComponent.hpp"
 #include "../StarfarmEngine/src/Render/RenderSystem.hpp"
-#include "../StarfarmEngine/src/Physics/PhysicSystem.hpp"
-#include "../StarfarmEngine/src/Log/LogSystem.hpp"
-
 
 SCENARIO("Game running", "[engine][gamerun]")
 {
@@ -25,77 +24,74 @@ SCENARIO("Game running", "[engine][gamerun]")
         {
                 star::Game game;
 
-                THEN("The game is empty and cannot run")
-                {
-                        REQUIRE(!game.run());
-                }
+                THEN("The game is empty and cannot run") { REQUIRE(!game.run()); }
 
                 THEN("We create a new window")
                 {
                         auto &window = game.create_window(sf::VideoMode(800, 400),
-                                                         "StarfarmEngine");
+                                                          "StarfarmEngine");
                         window.setFramerateLimit(60);
 
-                        REQUIRE(window.getSize() == sf::Vector2u{800, 400});
+                        REQUIRE(window.getSize() == sf::Vector2u{ 800, 400 });
 
                         THEN("We create a new scene and set it as active scene")
                         {
                                 auto &scene = game.create_scene();
                                 scene.create_system<star::LogSystem>();
                                 scene.create_system<star::RenderSystem>(window);
-                                scene.create_system<star::PhysicSystem>(scene.get_world());
+                                scene.create_system<star::PhysicSystem>(
+                                        scene.get_world());
 
                                 game.set_active_scene(&scene);
                                 scene.refresh();
 
                                 THEN("We create a new gameobject")
                                 {
-                                        auto &entity = scene
-                                                .create_entity<star::GameObject>();
-                                        auto *body = entity.create_component<star::RigidbodyComponent>();
+                                        auto &entity = scene.create_entity<
+                                                star::GameObject>();
+                                        auto *body = entity.create_component<
+                                                star::RigidbodyComponent>();
                                         auto texture = sf::Texture{};
                                         texture.loadFromFile("test.png");
-                                        auto *renderer = entity
-                                                .create_component<star::RenderComponent>
-                                                (texture);
-
+                                        auto *renderer = entity.create_component<
+                                                star::RenderComponent>(texture);
 
                                         REQUIRE(body != nullptr);
-                                        //REQUIRE(transform->getPosition() ==
+                                        // REQUIRE(transform->getPosition() ==
                                         //        sf::Vector2f{0, 0});
 
                                         WHEN("The game is running and the "
                                              "object move")
-                                        {                                                
-                                                auto position = body->get_position();
-
+                                        {
                                                 REQUIRE(game.run());
-                                                body->set_position({10, 10});
+                                                body->set_position(10, 10);
+                                                auto position
+                                                        = body->get_position();
                                                 REQUIRE(position.y == 10);
-                                                
-                                        //        REQUIRE(game.run());
 
-                                        //        REQUIRE
-                                        //        (transform->getPosition() ==
-                                        //         sf::Vector2f{10, 10});
+                                                //        REQUIRE(game.run());
 
-                                                //body->add_force({100, 100});
+                                                //        REQUIRE
+                                                //        (transform->getPosition()
+                                                //        ==
+                                                //         sf::Vector2f{10, 10});
+
+                                                // body->add_force({100, 100});
                                                 while (game.run())
                                                 {
                                                         window.display();
                                                         window.clear();
-                                                        star::LogSystem::log(position.y);
+                                                        star::LogSystem::log(
+                                                                position.y);
                                                 }
                                         }
                                 }
                         }
-
                 }
         }
 }
 
-
-//SCENARIO("Two BoxColliders intersecting", "[boxcollider][intersection]")
+// SCENARIO("Two BoxColliders intersecting", "[boxcollider][intersection]")
 //{
 //        GIVEN("A game with a scene")
 //        {
@@ -133,14 +129,11 @@ SCENARIO("Game running", "[engine][gamerun]")
 //        }
 //}
 
-
 SCENARIO("Game quitting by event keypressed", "[event][quit]")
 {
         GIVEN("A game")
         {
                 auto game = star::Game{};
-                while (game.run())
-                {
-                }
+                while (game.run()) {}
         }
 }
