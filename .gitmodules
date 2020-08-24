@@ -1,6 +1,8 @@
 [submodule "ECS"]
 	path = ECS
 	url = https://github.com/TiphaineLAURENT/ECS.git
+	ignore = dirty
 [submodule "Chipmunk2D"]
 	path = Chipmunk2D
 	url = https://github.com/slembcke/Chipmunk2D.git
+	ignore = dirty

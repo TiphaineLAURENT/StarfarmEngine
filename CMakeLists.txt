@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 project(StarfarmEngine)
 set(CMAKE_CXX_STANDARD 20)
-set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
 add_subdirectory(ECS)

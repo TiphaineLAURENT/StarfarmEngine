@@ -7,6 +7,11 @@ if (WIN32)
                        ${SFML_DLLS}
                        ${EXECUTABLE_OUTPUT_PATH}
                        )
+    add_custom_command(TARGET ${TEST_EXECUTABLE} POST_BUILD
+                       COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       ${LIBRARY_OUTPUT_PATH}
+                       ${EXECUTABLE_OUTPUT_PATH}
+                       )
 endif()
 add_custom_command(TARGET ${TEST_EXECUTABLE} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
