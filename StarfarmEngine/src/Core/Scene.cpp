@@ -10,24 +10,25 @@
 namespace star
 {
 
-        Scene::Scene(const Vector<2> &vec)
-                : _world{{vec.x, vec.y}}
-        {}
+        Scene::Scene(const Vector<2> &gravity)
+        {
+            cpSpaceSetGravity(m_world.get(), gravity);
+        }
 
         void Scene::update(::ecs::Interval deltaTime)
         {
                 LogSystem::log("Update after " + std::to_string(deltaTime) + " micros");
-                _systems.update(deltaTime);
+                m_systems.update(deltaTime);
         }
 
         void Scene::refresh()
         {
-                _systems.update_systems_order();
+                m_systems.update_systems_order();
         }
 
-        b2World &Scene::get_world()
+        cpSpace &Scene::get_world()
         {
-                return _world;
+                return *m_world;
         }
 
 }

@@ -17,7 +17,7 @@ add_custom_command(TARGET ${TEST_EXECUTABLE} POST_BUILD
 target_link_libraries(${TEST_EXECUTABLE} sfml-graphics sfml-audio sfml-window sfml-network sfml-system)
 target_link_libraries(${TEST_EXECUTABLE} ecs)
 target_link_libraries(${TEST_EXECUTABLE} coverage_config)
-target_link_libraries(${TEST_EXECUTABLE} box2d)
+target_link_libraries(${TEST_EXECUTABLE} chipmunk)
 install(TARGETS ${TEST_EXECUTABLE} DESTINATION ${EXECUTABLE_OUTPUT_PATH})
 
 add_test(NAME exec_tests COMMAND ${TEST_EXECUTABLE} --success)

@@ -67,11 +67,11 @@ SCENARIO("Game running", "[engine][gamerun]")
                                         WHEN("The game is running and the "
                                              "object move")
                                         {                                                
-                                                auto &transform = body->get_transform();
+                                                auto position = body->get_position();
 
                                                 REQUIRE(game.run());
                                                 body->set_position({10, 10});
-                                                REQUIRE(transform.p.y == 10);
+                                                REQUIRE(position.y == 10);
                                                 
                                         //        REQUIRE(game.run());
 
@@ -79,12 +79,12 @@ SCENARIO("Game running", "[engine][gamerun]")
                                         //        (transform->getPosition() ==
                                         //         sf::Vector2f{10, 10});
 
-                                                body->add_force({100, 100});
+                                                //body->add_force({100, 100});
                                                 while (game.run())
                                                 {
                                                         window.display();
                                                         window.clear();
-                                                        star::LogSystem::log(transform.p.y);
+                                                        star::LogSystem::log(position.y);
                                                 }
                                         }
                                 }

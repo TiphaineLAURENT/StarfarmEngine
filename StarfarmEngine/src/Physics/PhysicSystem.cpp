@@ -10,13 +10,13 @@
 namespace star
 {
 
-        PhysicSystem::PhysicSystem(b2World &world)
-                : System(), _world{world}
+        PhysicSystem::PhysicSystem(cpSpace &space)
+                : System(), m_space{space}
         {}
 
         void PhysicSystem::update(::ecs::Interval deltaTime)
         {
-                _world.Step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
+            cpSpaceStep(&m_space, deltaTime);
         }
 
 }

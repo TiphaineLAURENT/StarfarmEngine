@@ -11,7 +11,7 @@
 namespace star
 {
 
-        using Coordinate = float;
+        using Coordinate = double;
         using Dimension = size_t;
 
         template <Dimension> struct Point;

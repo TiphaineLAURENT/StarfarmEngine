@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 project(StarfarmEngine)
 set(CMAKE_CXX_STANDARD 20)
-set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
 add_subdirectory(ECS)
@@ -10,7 +10,7 @@ include_directories(ECS/ECS/src/Component)
 include_directories(ECS/ECS/src/System)
 include_directories(ECS/ECS/src/util)
 
-add_subdirectory(Chipmunk2D/src)
+add_subdirectory(Chipmunk2D)
 include_directories(Chipmunk2D/include)
 
 set(ENGINE_SOURCES

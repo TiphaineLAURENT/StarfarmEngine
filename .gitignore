@@ -42,6 +42,7 @@ test/
 .idea/
 build/
 out/
-./bin/
+bin/
 cmake-build-debug/
 .vs/
+lib/

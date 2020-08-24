@@ -131,9 +131,12 @@ namespace star
         {
                 if (_texture)
                 {
-                        auto &transform = _transformComponent->get_transform();
-                        states.transform.translate(transform.p.x, transform.p.y);
-                        states.transform.rotate(transform.q.GetAngle());
+                        auto position = _transformComponent->get_position();
+                        states.transform.translate(position.x, position.y);
+
+                        auto rotation = _transformComponent->get_rotation();
+                        states.transform.rotate(rotation);
+
                         states.texture = _texture;
 
                         if (sf::VertexBuffer::isAvailable())
