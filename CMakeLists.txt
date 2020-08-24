@@ -10,8 +10,8 @@ include_directories(ECS/ECS/src/Component)
 include_directories(ECS/ECS/src/System)
 include_directories(ECS/ECS/src/util)
 
-add_subdirectory(Chipmunk2D/src)
-include_directories(Chipmunk2D/include)
+add_subdirectory(box2d/src)
+include_directories(box2d/include)
 
 set(ENGINE_SOURCES
     StarfarmEngine/src/Core/Game.cpp StarfarmEngine/src/Core/Game.hpp

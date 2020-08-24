@@ -4,6 +4,3 @@
 [submodule "box2d"]
 	path = box2d
 	url = https://github.com/erincatto/box2d.git
-[submodule "Chipmunk2D"]
-	path = Chipmunk2D
-	url = https://github.com/slembcke/Chipmunk2D.git
