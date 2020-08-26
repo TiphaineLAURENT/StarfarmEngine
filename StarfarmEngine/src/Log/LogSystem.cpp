@@ -6,6 +6,7 @@
 
 namespace star
 {
+        LogSystem::LogSystem() : System(ecs::SYSTEM_PRIORITY::LOWEST, 1) {}
 
         void LogSystem::update(ecs::Interval deltaTime)
         {
@@ -16,4 +17,4 @@ namespace star
                 _buffer.clear();
         }
 
-}
+}    // namespace star

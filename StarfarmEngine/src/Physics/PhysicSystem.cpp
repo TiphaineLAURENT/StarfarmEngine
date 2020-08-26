@@ -3,20 +3,17 @@
 //
 
 #include <ComponentManager.hpp>
+
+#include "../Log/LogSystem.hpp"
 #include "PhysicSystem.hpp"
 #include "RigidbodyComponent.hpp"
 
-
 namespace star
 {
-
         PhysicSystem::PhysicSystem(cpSpace &space)
-                : System(), m_space{space}
+                : System(ecs::SYSTEM_PRIORITY::HIGHEST, 0.001), m_space{ space }
         {}
 
-        void PhysicSystem::update(::ecs::Interval deltaTime)
-        {
-            cpSpaceStep(&m_space, deltaTime);
-        }
+        void PhysicSystem::update(::ecs::Interval deltaTime) { cpSpaceStep(&m_space, deltaTime); }
 
-}
+}    // namespace star

@@ -20,6 +20,7 @@ namespace star
 {
         class TransformComponent;
         class Scene;
+        class ColliderComponent;
 
         enum class RIGIDBODY_CONSTRAINTS : unsigned
         {
@@ -50,12 +51,15 @@ namespace star
         {
                 // ATTRIBUTES
             private:
+                friend class ColliderComponent;
+                friend class SegmentCollider;
+                friend class CircleCollider;
+
                 ecs::NonOwningPointer<cpSpace> m_space{ nullptr };
 
                 ecs::NonOwningPointer<TransformComponent> m_transformComponent{ nullptr };
 
                 std::unique_ptr<cpBody> m_body{ nullptr };
-                std::unique_ptr<cpShape> m_shape{ nullptr };
 
                 // Force _angularDrag{0.};
 
@@ -89,60 +93,48 @@ namespace star
 
             public:
                 // METHODS
-            public:   // CONSTRUCTORS
-                explicit RigidbodyComponent();
+            public:    // CONSTRUCTORS
+                explicit RigidbodyComponent(cpBodyType type = cpBodyType::CP_BODY_TYPE_DYNAMIC);
                 ~RigidbodyComponent() override = default;
                 RigidbodyComponent(const RigidbodyComponent &copy) = default;
                 RigidbodyComponent(RigidbodyComponent &&) noexcept = default;
 
-            public:   // OPERATORS
-                RigidbodyComponent &operator=(const RigidbodyComponent &other)
-                        = default;
-                RigidbodyComponent &
-                        operator=(RigidbodyComponent &&) noexcept = default;
+            public:    // OPERATORS
+                RigidbodyComponent &operator=(const RigidbodyComponent &other) = default;
+                RigidbodyComponent &operator=(RigidbodyComponent &&) noexcept = default;
 
             public:
                 void setup() override;
 
-                template <RIGIDBODY_FORCE_MODE mode
-                          = RIGIDBODY_FORCE_MODE::IMPULSE>
+                template <RIGIDBODY_FORCE_MODE mode = RIGIDBODY_FORCE_MODE::IMPULSE>
                 void add_force(const Vector<2> &force)
                 {
                         if constexpr (mode == RIGIDBODY_FORCE_MODE::IMPULSE)
                         {
-                                m_body->ApplyLinearImpulseToCenter(force, false);
+                                cpBodyApplyImpulseAtLocalPoint(
+                                        m_body.get(),
+                                        force,
+                                        cpBodyGetCenterOfGravity(m_body.get()));
                         }
-                        else if constexpr (mode
-                                           == RIGIDBODY_FORCE_MODE::VELOCITYCHANGE)
+                        else if constexpr (mode == RIGIDBODY_FORCE_MODE::VELOCITYCHANGE)
                         {
-                                m_body->SetLinearVelocity(
-                                        m_body->GetLinearVelocity() + force);
+                                cpBodySetVelocity(m_body.get(),
+                                                  cpBodyGetVelocity(m_body.get()) + force);
                         }
-                        else if constexpr (mode
-                                           == RIGIDBODY_FORCE_MODE::ACCELERATION)
+                        else if constexpr (mode == RIGIDBODY_FORCE_MODE::ACCELERATION)
                         {}
                         else if constexpr (mode == RIGIDBODY_FORCE_MODE::FORCE)
                         {
-                                m_body->ApplyForceToCenter(force, false);
+                                cpBodyApplyForceAtLocalPoint(
+                                        m_body.get(),
+                                        force,
+                                        cpBodyGetCenterOfGravity(m_body.get()));
                         }
-                        // add_force<mode>(force.x, force.y);
                 }
-                template <RIGIDBODY_FORCE_MODE mode
-                          = RIGIDBODY_FORCE_MODE::IMPULSE>
+                template <RIGIDBODY_FORCE_MODE mode = RIGIDBODY_FORCE_MODE::IMPULSE>
                 void add_force(Force x, Force y)
                 {
                         add_force<mode>({ x, y });
-                        // if constexpr (mode == RIGIDBODY_FORCE_MODE::IMPULSE)
-                        //{
-                        //        _forces.x += x;
-                        //        _forces.y += y;
-                        //}
-                        // else if constexpr (mode ==
-                        // RIGIDBODY_FORCE_MODE::VELOCITYCHANGE)
-                        //{
-                        //        _velocity.x += x;
-                        //        _velocity.y += y;
-                        //}
                 }
 
                 void move(const Vector<2> &offsets);
@@ -158,6 +150,8 @@ namespace star
                 void add_rotation(Angle angle);
                 void set_rotation(Angle angle);
 
+                Vector<2> get_velocity() const;
+
                 void update(ecs::Interval deltaTime);
 
             private:
@@ -165,6 +159,6 @@ namespace star
 
         std::ostream &operator<<(std::ostream &out, const RigidbodyComponent &);
 
-}   // namespace star
+}    // namespace star
 
-#endif   // STARFARMENGINE_RIGIDBODYCOMPONENT_HPP
+#endif    // STARFARMENGINE_RIGIDBODYCOMPONENT_HPP

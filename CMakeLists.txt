@@ -22,7 +22,7 @@ set(ENGINE_SOURCES
     StarfarmEngine/src/Physics/TransformComponent.cpp StarfarmEngine/src/Physics/TransformComponent.hpp
     StarfarmEngine/src/Render/RenderComponent.cpp StarfarmEngine/src/Render/RenderComponent.hpp
     StarfarmEngine/src/Physics/RigidbodyComponent.cpp StarfarmEngine/src/Physics/RigidbodyComponent.hpp
-#    StarfarmEngine/src/Physics/ColliderComponent.cpp StarfarmEngine/src/Physics/ColliderComponent.hpp
+    StarfarmEngine/src/Physics/ColliderComponent.cpp StarfarmEngine/src/Physics/ColliderComponent.hpp
     StarfarmEngine/src/Util/Vector.cpp StarfarmEngine/src/Util/Vector.hpp
     StarfarmEngine/src/Util/Point.hpp
 #    StarfarmEngine/src/Physics/BoxCollider.cpp StarfarmEngine/src/Physics/BoxCollider.hpp
@@ -32,7 +32,8 @@ set(ENGINE_SOURCES
     StarfarmEngine/src/Render/RenderSystem.cpp StarfarmEngine/src/Render/RenderSystem.hpp
     StarfarmEngine/src/Component/MonoBehaviourComponent.cpp StarfarmEngine/src/Component/MonoBehaviourComponent.hpp
     StarfarmEngine/src/Physics/PhysicSystem.cpp StarfarmEngine/src/Physics/PhysicSystem.hpp
-    )
+    StarfarmEngine/src/Physics/SegmentCollider.cpp StarfarmEngine/src/Physics/SegmentCollider.hpp
+    StarfarmEngine/src/Physics/CircleCollider.cpp StarfarmEngine/src/Physics/CircleCollider.hpp)
 
 list(SORT ENGINE_SOURCES COMPARE FILE_BASENAME)
 list(TRANSFORM ENGINE_SOURCES PREPEND "${CMAKE_SOURCE_DIR}/")

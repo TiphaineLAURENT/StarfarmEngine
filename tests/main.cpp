@@ -5,18 +5,20 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
-#include <SFML/Graphics/Texture.hpp>
 #include <iostream>
+
+#include <SFML/Graphics/Texture.hpp>
 
 #include "../StarfarmEngine/src/Core/Game.hpp"
 #include "../StarfarmEngine/src/GameObject/GameObject.hpp"
 #include "../StarfarmEngine/src/Log/LogSystem.hpp"
-#include "../StarfarmEngine/src/Render/RenderComponent.hpp"
-//#include "../StarfarmEngine/src/Physics/BoxCollider.hpp"
-#include "../StarfarmEngine/src/Log/LogSystem.hpp"
+#include "../StarfarmEngine/src/Physics/CircleCollider.hpp"
 #include "../StarfarmEngine/src/Physics/PhysicSystem.hpp"
 #include "../StarfarmEngine/src/Physics/RigidbodyComponent.hpp"
+#include "../StarfarmEngine/src/Physics/SegmentCollider.hpp"
+#include "../StarfarmEngine/src/Render/RenderComponent.hpp"
 #include "../StarfarmEngine/src/Render/RenderSystem.hpp"
+#include "../StarfarmEngine/src/Util/Vector.hpp"
 
 SCENARIO("Game running", "[engine][gamerun]")
 {
@@ -28,61 +30,75 @@ SCENARIO("Game running", "[engine][gamerun]")
 
                 THEN("We create a new window")
                 {
-                        auto &window = game.create_window(sf::VideoMode(800, 400),
-                                                          "StarfarmEngine");
+                        auto &window =
+                                game.create_window(sf::VideoMode(800, 400), "StarfarmEngine");
                         window.setFramerateLimit(60);
 
                         REQUIRE(window.getSize() == sf::Vector2u{ 800, 400 });
 
                         THEN("We create a new scene and set it as active scene")
                         {
-                                auto &scene = game.create_scene();
+                                auto &scene = game.create_scene(star::Vector<2>{ 0, 10 });
                                 scene.create_system<star::LogSystem>();
                                 scene.create_system<star::RenderSystem>(window);
-                                scene.create_system<star::PhysicSystem>(
-                                        scene.get_world());
+                                scene.create_system<star::PhysicSystem>(scene.get_world());
 
                                 game.set_active_scene(&scene);
                                 scene.refresh();
 
                                 THEN("We create a new gameobject")
                                 {
-                                        auto &entity = scene.create_entity<
-                                                star::GameObject>();
-                                        auto *body = entity.create_component<
-                                                star::RigidbodyComponent>();
-                                        auto texture = sf::Texture{};
-                                        texture.loadFromFile("test.png");
-                                        auto *renderer = entity.create_component<
-                                                star::RenderComponent>(texture);
+                                        auto &ground = scene.create_entity<star::GameObject>();
 
-                                        REQUIRE(body != nullptr);
-                                        // REQUIRE(transform->getPosition() ==
-                                        //        sf::Vector2f{0, 0});
+                                        auto *ground_body =
+                                                ground.create_component<star::RigidbodyComponent>(
+                                                        cpBodyType::CP_BODY_TYPE_STATIC);
+
+                                        auto *ground_collider =
+                                                ground.create_component<star::SegmentCollider>(
+                                                        star::Vector<2>{ -200, 80 },
+                                                        star::Vector<2>{ 200, -80 },
+                                                        0);
+                                        ground_collider->set_friction(1);
+
+                                        auto ground_texture = sf::Texture{};
+                                        ground_texture.loadFromFile("rectangle.png");
+                                        auto *ground_renderer =
+                                                ground.create_component<star::RenderComponent>(
+                                                        ground_texture);
+
+                                        REQUIRE(ground_body != nullptr);
 
                                         WHEN("The game is running and the "
                                              "object move")
                                         {
                                                 REQUIRE(game.run());
-                                                body->set_position(10, 10);
-                                                auto position
-                                                        = body->get_position();
-                                                REQUIRE(position.y == 10);
 
-                                                //        REQUIRE(game.run());
+                                                auto &ball =
+                                                        scene.create_entity<star::GameObject>();
 
-                                                //        REQUIRE
-                                                //        (transform->getPosition()
-                                                //        ==
-                                                //         sf::Vector2f{10, 10});
+                                                auto *ball_body = ball.create_component<
+                                                        star::RigidbodyComponent>();
 
-                                                // body->add_force({100, 100});
+                                                auto *ball_collider =
+                                                        ball.create_component<star::CircleCollider>(
+                                                                80);
+                                                ball_collider->set_friction(0.7);
+
+                                                auto ball_texture = sf::Texture{};
+                                                ball_texture.loadFromFile("circle.png");
+                                                auto *ball_renderer = ball.create_component<
+                                                        star::RenderComponent>(ball_texture);
+
+                                                ground_body->set_position(window.getSize().x / 2, 300);
+                                                ball_body->set_position(window.getSize().x / 2, 150);
+                                                auto position = ball_body->get_position();
+                                                REQUIRE(position.y == 150);
+
                                                 while (game.run())
                                                 {
                                                         window.display();
                                                         window.clear();
-                                                        star::LogSystem::log(
-                                                                position.y);
                                                 }
                                         }
                                 }

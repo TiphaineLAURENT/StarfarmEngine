@@ -5,71 +5,67 @@
 #ifndef STARFARMENGINE_LOGSYSTEM_HPP
 #define STARFARMENGINE_LOGSYSTEM_HPP
 
-# include <ostream>
-# include <list>
+#include <list>
+#include <ostream>
 
-# include <System.hpp>
+#include <System.hpp>
 
 namespace star
 {
+        class SYSTEM(LogSystem)
+        {
+                // ATTRIBUTES
+            private:
+                static inline std::list<std::string> _buffer{};
 
-  class SYSTEM(LogSystem)
-  {
-// ATTRIBUTES
-  private:
-          static inline std::list<std::string> _buffer{};
+            public:
+                // METHODS
+            public:    // CONSTRUCTORS
+                explicit LogSystem();
+                ~LogSystem() override = default;
+                LogSystem(const LogSystem &copy) = delete;
+                LogSystem(LogSystem &&) = delete;
 
-  public:
+            public:    // OPERATORS
+                LogSystem &operator=(const LogSystem &other) = delete;
+                LogSystem &operator=(LogSystem &&) noexcept = delete;
 
-// METHODS
-  public:// CONSTRUCTORS
-          LogSystem() = default;
-          ~LogSystem() override = default;
-          LogSystem(const LogSystem &copy) = delete;
-          LogSystem(LogSystem &&) = delete;
+            public:
+                void update(ecs::Interval deltaTime) override;
 
-  public: //OPERATORS
-          LogSystem &operator=(const LogSystem &other) = delete;
-          LogSystem &operator=(LogSystem &&) noexcept = delete;
+                template <typename Type>
+                static void log(const Type &value)
+                {
+                        LogSystem::log(std::to_string(value));
+                }
+                static void log(const std::string &str)
+                {
+                        _buffer.push_back("Info: " + str);
+                }
 
-  public:
-          void update(ecs::Interval deltaTime) override;
+                static void warning(const std::string &str)
+                {
+                        _buffer.push_back("\033[1;33mWarning: " + str);
+                }
+                template <class Type> static void warning(const Type &value)
+                {
+                        LogSystem::warning(std::to_string(value));
+                }
 
-          static void log(const std::string &str)
-          {
-                  _buffer.push_back("Info: " + str);
-          }
-          template <class Type>
-          static void log(const Type &value)
-          {
-                  LogSystem::log(std::to_string(value));
-          }
+                static void error(const std::string &str)
+                {
+                        _buffer.push_back("\033[1;31mError: " + str);
+                }
+                template <class Type> static void error(const Type &value)
+                {
+                        LogSystem::error(std::to_string(value));
+                }
 
-          static void warning(const std::string &str)
-          {
-                  _buffer.push_back("\033[1;33mWarning: " + str);
-          }
-          template <class Type>
-          static void warning(const Type &value)
-          {
-                  LogSystem::warning(std::to_string(value));
-          }
+            private:
+        };
 
-          static void error(const std::string &str)
-          {
-                  _buffer.push_back("\033[1;31mError: " + str);
-          }
-          template <class Type>
-          static void error(const Type &value)
-          {
-                  LogSystem::error(std::to_string(value));
-          }
+        std::ostream &operator<<(std::ostream &out, const LogSystem &);
 
-  private:
-  };
+}    // namespace star
 
-  std::ostream &operator<<(std::ostream &out, const LogSystem &);
-
-}
-
-#endif //STARFARMENGINE_LOGSYSTEM_HPP
+#endif    // STARFARMENGINE_LOGSYSTEM_HPP

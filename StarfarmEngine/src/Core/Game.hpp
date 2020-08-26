@@ -5,67 +5,67 @@
 #ifndef STARFARM_GAME_HPP
 #define STARFARM_GAME_HPP
 
-# include <ostream>
-# include <list>
-# include <unordered_map>
+#include <list>
+#include <ostream>
+#include <unordered_map>
 
-# include <SFML/System/Clock.hpp>
+#include <SFML/System/Clock.hpp>
 
-# include "util.hpp"
-# include "Scene.hpp"
-# include "../Window/Window.hpp"
-# include "../Event/Signal.hpp"
-
+#include "../Event/Signal.hpp"
+#include "../Window/Window.hpp"
+#include "Scene.hpp"
+#include "util.hpp"
 
 namespace star
 {
+        class Game
+        {
+                // ATTRIBUTES
+            private:
+                ::std::list<Scene> _scenes{};
+                ::ecs::NonOwningPointer<Scene> _activeScene{ nullptr };
 
-  class Game
-  {
-// ATTRIBUTES
-  private:
-          ::std::list<Scene> _scenes{};
-          ::ecs::NonOwningPointer<Scene> _activeScene{nullptr};
+                ::std::unordered_map<::std::string, Window> _windows{};
 
-          ::std::unordered_map<::std::string, Window> _windows{};
+                ::sf::Clock _clock{};
 
-          ::sf::Clock _clock{};
+            public:
+                // METHODS
+            public:    // CONSTRUCTORS
+                Game() = default;
+                ~Game() = default;
+                Game(const Game &copy) = delete;
+                Game(Game &&) = delete;
 
-  public:
+            public:    // OPERATORS
+                Game &operator=(const Game &other) = delete;
+                Game &operator=(Game &&) = delete;
 
-// METHODS
-  public:// CONSTRUCTORS
-          Game() = default;
-          ~Game() = default;
-          Game(const Game &copy) = delete;
-          Game(Game &&) = delete;
+            public:
+                bool run();
+                void quit();
 
-  public: //OPERATORS
-          Game &operator=(const Game &other) = delete;
-          Game &operator=(Game &&) = delete;
+                template <typename... ARGS> Scene &create_scene(ARGS... args)
+                {
+                        return _scenes.emplace_back(std::forward<ARGS>(args)...);
+                }
+                void set_active_scene(::ecs::NonOwningPointer<Scene> scene);
 
-  public:
-          bool run();
-          void quit();
+                Window &create_window(const ::sf::VideoMode &mode,
+                                      const ::std::string &name = "StarfarmEngine",
+                                      ::sf::Uint32 style = ::sf::Style::Default);
 
-          Scene &create_scene();
-          void set_active_scene(::ecs::NonOwningPointer<Scene> scene);
+            private:
+                bool _running{ true };
 
-          Window &create_window(
-                  const ::sf::VideoMode &mode,
-                  const ::std::string &name = "StarfarmEngine",
-                  ::sf::Uint32 style = ::sf::Style::Default
-          );
+                SLOT(WindowEventHandler, OnKeyPressed)
+                _onKeyPressed{};
+                SLOT(WindowEventHandler, OnClosed)
+                _onClosed{};
+        };
 
-  private:
-          bool _running{true};
+        ::std::ostream &operator<<(::std::ostream &out, const Game &);
 
-          SLOT(WindowEventHandler, OnKeyPressed) _onKeyPressed{};
-          SLOT(WindowEventHandler, OnClosed) _onClosed{};
-  };
+}    // namespace star
 
-  ::std::ostream &operator<<(::std::ostream &out, const Game &);
-
-}
-
-#endif //STARFARM_GAME_HPP
+#endif    // STARFARM_GAME_HPP
