@@ -47,6 +47,13 @@ namespace star
                 ACCELERATION
         };
 
+        enum class RIGIDBODY_TYPE : unsigned
+        {
+                DYNAMIC = cpBodyType::CP_BODY_TYPE_DYNAMIC,
+                KINEMATIC = cpBodyType::CP_BODY_TYPE_KINEMATIC,
+                STATIC = cpBodyType::CP_BODY_TYPE_STATIC
+        };
+
         class COMPONENT(RigidbodyComponent)
         {
                 // ATTRIBUTES
@@ -94,7 +101,7 @@ namespace star
             public:
                 // METHODS
             public:    // CONSTRUCTORS
-                explicit RigidbodyComponent(cpBodyType type = cpBodyType::CP_BODY_TYPE_DYNAMIC);
+                explicit RigidbodyComponent(RIGIDBODY_TYPE type = RIGIDBODY_TYPE::DYNAMIC);
                 ~RigidbodyComponent() override = default;
                 RigidbodyComponent(const RigidbodyComponent &copy) = default;
                 RigidbodyComponent(RigidbodyComponent &&) noexcept = default;

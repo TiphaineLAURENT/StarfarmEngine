@@ -48,16 +48,18 @@ namespace star
                 ecs::replace_pointer(_activeScene, scene);
         }
 
-        Window &Game::create_window(const sf::VideoMode &mode,
-                                    const std::string &name,
-                                    sf::Uint32 style)
+        Window &Game::create_window(unsigned int width,
+                                    unsigned int height,
+                                    const ::std::string &title,
+                                    ::sf::Uint32 style,
+                                    unsigned int bitsPerPixel)
         {
-                const auto [iterator, emplaced] = _windows.try_emplace(name, mode, name, style);
-                assert(emplaced);
-                auto &window = _windows[name];
+                const auto [iterator, emplaced] = _windows.try_emplace(
+                        title, width, height, title, style, bitsPerPixel);
+                auto &window = iterator->second;
 
                 _onKeyPressed.connect(window.get_event_handler().OnKeyPressed,
-                                      [=, &window](const sf::Event &event) {
+                                      [=, &window](const ::sf::Event &event) {
                                               if (event.key.code == ::sf::Keyboard::Escape)
                                               {
                                                       window.close();
@@ -65,7 +67,7 @@ namespace star
                                               }
                                       });
                 _onClosed.connect(window.get_event_handler().OnClosed,
-                                  [=, &window](const sf::Event &event) {
+                                  [=, &window](const ::sf::Event &event) {
                                           window.close();
 
                                           if (_windows.empty())

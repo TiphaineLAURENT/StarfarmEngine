@@ -2,7 +2,7 @@
 // Created by Tiphaine LAURENT on 09/08/2019.
 //
 
-#include <cassert>
+#include <stdexcept>
 
 #include <ComponentManager.hpp>
 #include <IEntity.hpp>
@@ -16,19 +16,19 @@
 
 namespace star
 {
-        RigidbodyComponent::RigidbodyComponent(cpBodyType type)
-                : m_body{ cpBodyNew(1, 1) }
+        RigidbodyComponent::RigidbodyComponent(RIGIDBODY_TYPE type) : m_body{ cpBodyNew(1, 1) }
         {
-                cpBodySetType(m_body.get(), type);
+                cpBodySetType(m_body.get(), static_cast<cpBodyType>(type));
         }
 
         void RigidbodyComponent::setup()
         {
                 ecs::replace_pointer(m_transformComponent,
                                      get_owner()->get_component<TransformComponent>());
-                assert(("A entity cannot have a rigidbogy without having a "
-                        "transform",
-                        m_transformComponent != nullptr));
+                if (m_transformComponent == nullptr)
+                        throw std::invalid_argument(
+                                "A entity cannot have a rigidbogy without having a "
+                                "transform");
 
                 auto &scene =
                         static_cast<ecs::NonOwningPointer<GameObject>>(get_owner())->get_scene();

@@ -31,7 +31,7 @@ SCENARIO("Game running", "[engine][gamerun]")
                 THEN("We create a new window")
                 {
                         auto &window =
-                                game.create_window(sf::VideoMode(800, 400), "StarfarmEngine");
+                                game.create_window(800, 400, "StarfarmEngine");
                         window.setFramerateLimit(60);
 
                         REQUIRE(window.getSize() == sf::Vector2u{ 800, 400 });
@@ -52,7 +52,7 @@ SCENARIO("Game running", "[engine][gamerun]")
 
                                         auto *ground_body =
                                                 ground.create_component<star::RigidbodyComponent>(
-                                                        cpBodyType::CP_BODY_TYPE_STATIC);
+                                                        star::RIGIDBODY_TYPE::STATIC);
 
                                         auto *ground_collider =
                                                 ground.create_component<star::SegmentCollider>(

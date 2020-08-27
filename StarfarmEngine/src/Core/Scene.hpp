@@ -35,7 +35,7 @@ namespace star
             public:
                 // METHODS
             public:   // CONSTRUCTORS
-                Scene(const Vector<2> &gravity);
+                explicit Scene(const Vector<2> &gravity);
                 Scene() = default;
                 ~Scene() = default;
                 Scene(const Scene &copy) = delete;

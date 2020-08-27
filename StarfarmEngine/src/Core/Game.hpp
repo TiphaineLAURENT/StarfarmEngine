@@ -32,7 +32,7 @@ namespace star
             public:
                 // METHODS
             public:    // CONSTRUCTORS
-                Game() = default;
+                explicit Game() = default;
                 ~Game() = default;
                 Game(const Game &copy) = delete;
                 Game(Game &&) = delete;
@@ -51,17 +51,17 @@ namespace star
                 }
                 void set_active_scene(::ecs::NonOwningPointer<Scene> scene);
 
-                Window &create_window(const ::sf::VideoMode &mode,
-                                      const ::std::string &name = "StarfarmEngine",
-                                      ::sf::Uint32 style = ::sf::Style::Default);
+                Window &create_window(unsigned int width,
+                                      unsigned int height,
+                                      const ::std::string &title,
+                                      ::sf::Uint32 style = ::sf::Style::Default,
+                                      unsigned int bitsPerPixel = 32);
 
             private:
                 bool _running{ true };
 
-                SLOT(WindowEventHandler, OnKeyPressed)
-                _onKeyPressed{};
-                SLOT(WindowEventHandler, OnClosed)
-                _onClosed{};
+                SLOT(WindowEventHandler, OnKeyPressed) _onKeyPressed{};
+                SLOT(WindowEventHandler, OnClosed) _onClosed{};
         };
 
         ::std::ostream &operator<<(::std::ostream &out, const Game &);

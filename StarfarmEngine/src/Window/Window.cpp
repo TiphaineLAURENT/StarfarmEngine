@@ -6,36 +6,28 @@
 
 #include "Window.hpp"
 
-
 namespace star
 {
+        Window::Window(unsigned int width,
+                       unsigned int height,
+                       const sf::String &title,
+                       sf::Uint32 style,
+                       unsigned int bitsPerPixel)
+                : RenderWindow({ width, height, bitsPerPixel }, title, style), m_title(title)
+        {}
 
-  Window::Window(
-          const sf::VideoMode &mode,
-          const sf::String &title,
-          sf::Uint32 style
-  )
-          : RenderWindow(mode, title, style), _name(title)
-  {
-  }
+        void Window::process_events()
+        {
+                auto event = sf::Event{};
 
-  void Window::process_events()
-  {
-          auto event = sf::Event{};
+                while (pollEvent(event))
+                {
+                        m_eventHandler.dispatch(event);
+                }
+        }
 
-          while (pollEvent(event)) {
-                  _eventHandler.dispatch(event);
-          }
-  }
+        WindowEventHandler &Window::get_event_handler() { return m_eventHandler; }
 
-  WindowEventHandler &Window::get_event_handler()
-  {
-          return _eventHandler;
-  }
+        const std::string &Window::get_title() const { return m_title; }
 
-  const std::string &Window::get_name() const
-  {
-          return _name;
-  }
-
-}
+}    // namespace star

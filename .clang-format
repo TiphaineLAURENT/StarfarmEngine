@@ -100,8 +100,8 @@ SpacesInContainerLiterals: false
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
 Standard: c++20
-StatementMacros: ['SIGNAL', 'SLOT', 'REQUIRE']
+StatementMacros: ['REQUIRE']
 TabWidth: 8
-TypenameMacros: ['COMPONENT', 'SYSTEM', 'ENTITY', 'SCENARIO', 'TEST_CASE', 'SECTION', 'GIVEN', 'WHEN', 'THEN', 'AND_GIVEN', 'AND_WHEN', 'AND_THEN', 'TEMPLATE_TEST_CASE', 'TEMPLATE_LIST_TEST_CASE', 'TEMPLATE_TEST_CASE_SIG', 'TEMPLATE_PRODUCT_TEST_CASE_SIG'] # Catch2 macros here instead of MacroBlockBegin because of the braces
+TypenameMacros: ['SIGNAL', 'SLOT', 'COMPONENT', 'SYSTEM', 'ENTITY', 'SCENARIO', 'TEST_CASE', 'SECTION', 'GIVEN', 'WHEN', 'THEN', 'AND_GIVEN', 'AND_WHEN', 'AND_THEN', 'TEMPLATE_TEST_CASE', 'TEMPLATE_LIST_TEST_CASE', 'TEMPLATE_TEST_CASE_SIG', 'TEMPLATE_PRODUCT_TEST_CASE_SIG'] # Catch2 macros here instead of MacroBlockBegin because of the braces
 UseCRLF: false
 UseTab: Never
