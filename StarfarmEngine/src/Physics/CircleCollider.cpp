@@ -2,11 +2,10 @@
 // Created by Tiphaine LAURENT on 13/08/2019.
 //
 
-#include <cassert>
+#include <stdexcept>
 
 #include "../Core/Scene.hpp"
 #include "../GameObject/GameObject.hpp"
-#include "../Util/Vector.hpp"
 #include "CircleCollider.hpp"
 #include "TransformComponent.hpp"
 
@@ -17,14 +16,14 @@ namespace star
         void CircleCollider::setup()
         {
                 auto body = get_owner()->get_component<RigidbodyComponent>();
-                assert(("A entity cannot have a rigidbogy without having a "
-                        "transform",
-                        body != nullptr));
+                if (body == nullptr)
+                        throw std::invalid_argument(
+                                "A entity cannot have a collider without having a "
+                                "rigidbody");
 
                 auto &scene =
                         static_cast<ecs::NonOwningPointer<GameObject>>(get_owner())->get_scene();
-                m_shape.reset(cpCircleShapeNew(
-                        body->m_body.get(), m_radius, cpvzero));
+                m_shape.reset(cpCircleShapeNew(body->m_body.get(), m_radius, cpvzero));
                 cpSpaceAddShape(&scene.get_world(), m_shape.get());
         }
 
@@ -32,10 +31,10 @@ namespace star
         //{
         //        auto distances = std::array<float, 4>{};
         //        distances[0] =
-        //                distance_between(_angles[0] + _transformComponent->getPosition(), point);
-        //        distances[1] = distance(_angles[1] + _transformComponent->getPosition(), point);
-        //        distances[2] = distance(_angles[2] + _transformComponent->getPosition(), point);
-        //        distances[3] = distance(_angles[3] + _transformComponent->getPosition(), point);
+        //                distance_between(_angles[0] + m_transformComponent->getPosition(), point);
+        //        distances[1] = distance(_angles[1] + m_transformComponent->getPosition(), point);
+        //        distances[2] = distance(_angles[2] + m_transformComponent->getPosition(), point);
+        //        distances[3] = distance(_angles[3] + m_transformComponent->getPosition(), point);
 
         //        auto it = std::min_element(
         //                distances.begin(), distances.end(), [](float distance1, float distance2) {
@@ -64,7 +63,7 @@ namespace star
         // void CircleCollider::set_offset(float x, float y)
         //{
         //        _offset = { x, y };
-        //        auto position = _transformComponent->getPosition();
+        //        auto position = m_transformComponent->getPosition();
         //        _bounds.left = position.x + x;
         //        _bounds.top = position.y + y;
         //        update_angles();

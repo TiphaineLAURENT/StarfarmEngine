@@ -22,7 +22,7 @@ namespace star
         protected:
                 ecs::NonOwningPointer<GameObject> _gameObject{nullptr};
 
-                ecs::NonOwningPointer<TransformComponent> _transform{nullptr};
+                ecs::NonOwningPointer<TransformComponent> m_transform{nullptr};
 
         public:
 

@@ -20,7 +20,6 @@ namespace star
 {
         class TransformComponent;
         class Scene;
-        class ColliderComponent;
 
         enum class RIGIDBODY_CONSTRAINTS : unsigned
         {
@@ -61,6 +60,7 @@ namespace star
                 friend class ColliderComponent;
                 friend class SegmentCollider;
                 friend class CircleCollider;
+                friend class BoxCollider;
 
                 ecs::NonOwningPointer<cpSpace> m_space{ nullptr };
 

@@ -10,8 +10,8 @@ namespace star
 
         GameObject::GameObject(Scene &scene)
                 : Entity(),
-                _transform{create_component<TransformComponent>()},
-                _scene{scene}
+                m_transform{create_component<TransformComponent>()},
+                m_scene{scene}
         {}
 
         template <class Behaviour, class ...ARGS>
@@ -22,7 +22,7 @@ namespace star
 
         Scene &GameObject::get_scene()
         {
-                return _scene;
+                return m_scene;
         }
 
 }

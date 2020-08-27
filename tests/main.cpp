@@ -12,6 +12,7 @@
 #include "../StarfarmEngine/src/Core/Game.hpp"
 #include "../StarfarmEngine/src/GameObject/GameObject.hpp"
 #include "../StarfarmEngine/src/Log/LogSystem.hpp"
+#include "../StarfarmEngine/src/Physics/BoxCollider.hpp"
 #include "../StarfarmEngine/src/Physics/CircleCollider.hpp"
 #include "../StarfarmEngine/src/Physics/PhysicSystem.hpp"
 #include "../StarfarmEngine/src/Physics/RigidbodyComponent.hpp"
@@ -54,7 +55,8 @@ SCENARIO("Game running", "[engine][gamerun]")
                                                         star::RIGIDBODY_TYPE::STATIC);
 
                                         auto *ground_collider =
-                                                ground.create_component<star::SegmentCollider>(
+                                                ground.create_component<star::SegmentCollider,
+                                                                        star::ColliderComponent>(
                                                         star::Vector<2>{ -200, 80 },
                                                         star::Vector<2>{ 200, -80 },
                                                         0);
@@ -79,9 +81,9 @@ SCENARIO("Game running", "[engine][gamerun]")
                                                 auto *ball_body = ball.create_component<
                                                         star::RigidbodyComponent>();
 
-                                                auto *ball_collider =
-                                                        ball.create_component<star::CircleCollider>(
-                                                                80);
+                                                auto *ball_collider = ball.create_component<
+                                                        star::CircleCollider,
+                                                        star::ColliderComponent>(80);
                                                 ball_collider->set_friction(0.7);
 
                                                 auto ball_texture = sf::Texture{};

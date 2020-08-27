@@ -22,14 +22,14 @@ namespace star
           friend class MonoBehaviour;
 // ATTRIBUTES
   private:
-          ecs::NonOwningPointer<TransformComponent> _transform{nullptr};
-          Scene &_scene;
+          ecs::NonOwningPointer<TransformComponent> m_transform{nullptr};
+          Scene &m_scene;
 
   public:
 
 // METHODS
   public:// CONSTRUCTORS
-          GameObject(Scene &scene);
+          explicit GameObject(Scene &scene);
           ~GameObject() override = default;
           GameObject(const GameObject &copy) = default;
           GameObject(GameObject &&) noexcept = default;

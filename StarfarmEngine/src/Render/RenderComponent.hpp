@@ -26,10 +26,10 @@ namespace star
                           sf::Vertex         _vertices[4]{};
                           sf::VertexBuffer   _verticesBuffer{sf::TrianglesStrip,
                                                              sf::VertexBuffer::Stream};
-                          const ecs::NonOwningPointer<sf::Texture> _texture{nullptr};
+                          const ecs::NonOwningPointer<sf::Texture> m_texture{nullptr};
                           sf::IntRect        _textureRect{};
 
-                          ecs::NonOwningPointer<RigidbodyComponent> _transformComponent{nullptr};
+                          ecs::NonOwningPointer<RigidbodyComponent> m_transformComponent{nullptr};
 
         public:
 

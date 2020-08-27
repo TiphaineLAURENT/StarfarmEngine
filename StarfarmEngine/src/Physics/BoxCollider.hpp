@@ -3,60 +3,45 @@
 //
 
 #ifndef STARFARMENGINE_BOXCOLLIDER_HPP
-# define STARFARMENGINE_BOXCOLLIDER_HPP
+#define STARFARMENGINE_BOXCOLLIDER_HPP
 
-# include <ostream>
-# include <SFML/System/Vector2.hpp>
-# include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/Rect.hpp>
+#include <SFML/System/Vector2.hpp>
+#include <ostream>
 
-# include "ColliderComponent.hpp"
+#include "ColliderComponent.hpp"
 
 namespace star
 {
+        class BoxCollider : public ColliderComponent
+        {
+                // ATTRIBUTES
+            private:
+                Length m_width{ 0 };
+                Length m_height{ 0 };
 
-  class BoxCollider : public ColliderComponent
-  {
-// ATTRIBUTES
-  private:
-          sf::FloatRect _bounds{};
+                Angle m_radius{ 0 };
 
-          sf::Vector2f _offset{0., 0.};
-          std::array<sf::Vector2f, 4> _angles{};
+            public:
+                // METHODS
+            public:    // CONSTRUCTORS
+                explicit BoxCollider(Length width, Length height, Length radius);
+                ~BoxCollider() override = default;
+                BoxCollider(const BoxCollider &copy) = default;
+                BoxCollider(BoxCollider &&) noexcept = default;
 
-          float _size{0.};
+            public:    // OPERATORS
+                BoxCollider &operator=(const BoxCollider &other) = default;
+                BoxCollider &operator=(BoxCollider &&) noexcept = default;
 
-  public:
+            public:
+                void setup() override;
 
-// METHODS
-  public:// CONSTRUCTORS
-          BoxCollider(float width, float height);
-          explicit BoxCollider(const sf::FloatRect &bounds);
-          ~BoxCollider() override = default;
-          BoxCollider(const BoxCollider &copy) = default;
-          BoxCollider(BoxCollider &&) noexcept = default;
+        private:
+        };
 
-  public: //OPERATORS
-          BoxCollider &operator=(const BoxCollider &other) = default;
-          BoxCollider &operator=(BoxCollider &&) noexcept = default;
+        std::ostream &operator<<(std::ostream &out, const BoxCollider &);
 
-  public:
-          void set_offset(float x, float y);
+}    // namespace star
 
-          [[nodiscard]] const sf::FloatRect &get_bounds() const;
-          [[nodiscard]] std::vector<sf::Vector2f> get_vertices() const override;
-
-          [[nodiscard]] float distance_to(const sf::Vector2f &point) const override;
-          [[nodiscard]] bool contains(const sf::Vector2f &point) const override;
-          [[nodiscard]] bool intersects(const BoxCollider &other) const;
-
-          void collide(const std::vector<BoxCollider*> &);
-
-  private:
-          void update_angles();
-  };
-
-  std::ostream &operator<<(std::ostream &out, const BoxCollider &);
-
-}
-
-#endif //STARFARMENGINE_BOXCOLLIDER_HPP
+#endif    // STARFARMENGINE_BOXCOLLIDER_HPP

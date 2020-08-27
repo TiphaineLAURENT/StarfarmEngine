@@ -20,22 +20,14 @@ namespace star
         {
                 // ATTRIBUTES
             private:
-                // float _bounciness{0.};
-
-                // float _density{0.};
-
-                // float _friction{0.};
-
-                // bool _isTrigger{false};
-
             protected:
                 ecs::NonOwningPointer<RigidbodyComponent> m_rigidbodyComponent{ nullptr };
 
                 ecs::NonOwningPointer<TransformComponent> m_transformComponent{ nullptr };
 
-                std::unique_ptr<cpShape> m_shape{ nullptr };
 
             public:
+                std::unique_ptr<cpShape> m_shape{ nullptr };
                 // METHODS
             public:    // CONSTRUCTORS
                 explicit ColliderComponent() = default;
@@ -51,13 +43,7 @@ namespace star
                 void setup() override;
 
                 ColliderComponent &set_friction(Force friction);
-
-                //[[nodiscard]] virtual std::vector<sf::Vector2f> get_vertices() const = 0;
-
-                //[[nodiscard]] virtual float distance_to(const sf::Vector2f &point)
-                // const = 0;
-                //[[nodiscard]] virtual bool contains(const sf::Vector2f &point)
-                // const = 0;
+                cpBB get_bb() const;
 
             private:
         };

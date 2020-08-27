@@ -11,9 +11,9 @@
 namespace star
 {
         PhysicSystem::PhysicSystem(cpSpace &space)
-                : System(ecs::SYSTEM_PRIORITY::HIGHEST, 0.001), m_space{ space }
+                : System(ecs::SYSTEM_PRIORITY::HIGHEST, 0), m_space{ space }
         {}
 
-        void PhysicSystem::update(::ecs::Interval deltaTime) { cpSpaceStep(&m_space, deltaTime); }
+        void PhysicSystem::update(::ecs::Interval deltaTime) { cpSpaceStep(&m_space, TIME_STEP); }
 
 }    // namespace star

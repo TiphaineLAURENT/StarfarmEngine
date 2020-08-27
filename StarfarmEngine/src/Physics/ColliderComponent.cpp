@@ -22,4 +22,5 @@ namespace star
 
                 return *this;
         }
+        cpBB ColliderComponent::get_bb() const { return cpShapeGetBB(m_shape.get()); }
 }    // namespace star

@@ -9,6 +9,6 @@ namespace star
 {
         MonoBehaviour::MonoBehaviour(ecs::NonOwningPointer<GameObject> gameObject)
                 : Component(), _gameObject{gameObject},
-                _transform{gameObject->_transform}
+                m_transform{gameObject->m_transform}
         {}
 }
