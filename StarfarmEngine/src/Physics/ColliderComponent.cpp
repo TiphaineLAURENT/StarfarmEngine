@@ -2,6 +2,8 @@
 // Created by Tiphaine LAURENT on 13/08/2019.
 //
 
+#include <stdexcept>
+
 #include <chipmunk/chipmunk.h>
 
 #include "ColliderComponent.hpp"
@@ -12,6 +14,11 @@ namespace star
         {
                 ecs::replace_pointer(m_rigidbodyComponent,
                                      get_owner()->get_component<RigidbodyComponent>());
+                if (m_rigidbodyComponent == nullptr)
+                        throw std::invalid_argument(
+                                "A entity cannot have a collider without having a "
+                                "rigidbody");
+
                 ecs::replace_pointer(m_transformComponent,
                                      get_owner()->get_component<TransformComponent>());
         }

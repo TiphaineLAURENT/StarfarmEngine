@@ -2,11 +2,9 @@
 // Created by Tiphaine LAURENT on 13/08/2019.
 //
 
-#include <stdexcept>
-
+#include "CircleCollider.hpp"
 #include "../Core/Scene.hpp"
 #include "../GameObject/GameObject.hpp"
-#include "CircleCollider.hpp"
 #include "TransformComponent.hpp"
 
 namespace star
@@ -15,15 +13,11 @@ namespace star
 
         void CircleCollider::setup()
         {
-                auto body = get_owner()->get_component<RigidbodyComponent>();
-                if (body == nullptr)
-                        throw std::invalid_argument(
-                                "A entity cannot have a collider without having a "
-                                "rigidbody");
+                ColliderComponent::setup();
 
                 auto &scene =
                         static_cast<ecs::NonOwningPointer<GameObject>>(get_owner())->get_scene();
-                m_shape.reset(cpCircleShapeNew(body->m_body.get(), m_radius, cpvzero));
+                m_shape.reset(cpCircleShapeNew(m_rigidbodyComponent->m_body.get(), m_radius, cpvzero));
                 cpSpaceAddShape(&scene.get_world(), m_shape.get());
         }
 

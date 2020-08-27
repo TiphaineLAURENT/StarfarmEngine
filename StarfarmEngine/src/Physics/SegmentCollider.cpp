@@ -2,8 +2,6 @@
 // Created by Tiphaine LAURENT on 13/08/2019.
 //
 
-#include <stdexcept>
-
 #include "../Core/Scene.hpp"
 #include "../GameObject/GameObject.hpp"
 #include "../Util/Vector.hpp"
@@ -18,16 +16,12 @@ namespace star
 
         void SegmentCollider::setup()
         {
-                auto body = get_owner()->get_component<RigidbodyComponent>();
-                if (body == nullptr)
-                        throw std::invalid_argument(
-                                "A entity cannot have a collider without having a "
-                                "rigidbody");
+                ColliderComponent::setup();
 
                 auto &scene =
                         static_cast<ecs::NonOwningPointer<GameObject>>(get_owner())->get_scene();
                 m_shape.reset(
-                        cpSegmentShapeNew(body->m_body.get(), m_corner1, m_corner2, m_radius));
+                        cpSegmentShapeNew(m_rigidbodyComponent->m_body.get(), m_corner1, m_corner2, m_radius));
                 cpSpaceAddShape(&scene.get_world(), m_shape.get());
         }
 

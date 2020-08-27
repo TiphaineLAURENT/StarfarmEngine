@@ -11,6 +11,7 @@
 #include <Component.hpp>
 #include <IEntity.hpp>
 
+#include "../Event/Signal.hpp"
 #include "RigidbodyComponent.hpp"
 #include "TransformComponent.hpp"
 
@@ -24,7 +25,6 @@ namespace star
                 ecs::NonOwningPointer<RigidbodyComponent> m_rigidbodyComponent{ nullptr };
 
                 ecs::NonOwningPointer<TransformComponent> m_transformComponent{ nullptr };
-
 
             public:
                 std::unique_ptr<cpShape> m_shape{ nullptr };
@@ -44,6 +44,8 @@ namespace star
 
                 ColliderComponent &set_friction(Force friction);
                 cpBB get_bb() const;
+
+                SIGNAL(OnPostCollision, cpSpace*, void*, void*);
 
             private:
         };
