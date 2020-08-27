@@ -9,6 +9,7 @@
 #include <ostream>
 
 #include <System.hpp>
+#include <spdlog/spdlog.h>
 
 namespace star
 {
@@ -33,15 +34,11 @@ namespace star
             public:
                 void update(ecs::Interval deltaTime) override;
 
-                template <typename Type>
-                static void log(const Type &value)
+                template <typename Type> static void log(const Type &value)
                 {
                         LogSystem::log(std::to_string(value));
                 }
-                static void log(const std::string &str)
-                {
-                        _buffer.push_back("Info: " + str);
-                }
+                static void log(const std::string &str) { _buffer.push_back("Info: " + str); }
 
                 static void warning(const std::string &str)
                 {

@@ -17,7 +17,7 @@ namespace star
 
         void Scene::update(::ecs::Interval deltaTime)
         {
-                LogSystem::log("Update after " + std::to_string(deltaTime) + " seconds");
+                spdlog::info("Update after {} seconds", deltaTime);
                 m_systems.update(deltaTime);
         }
 

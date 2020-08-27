@@ -15,6 +15,16 @@
                                         "name": "BUILD_STATIC",
                                         "value": "False",
                                         "type": "BOOL"
+                                },
+                                {
+                                        "name": "BUILD_DEMOS",
+                                        "value": "False",
+                                        "type": "BOOL"
+                                },
+                                {
+                                        "name": "SPDLOG_BUILD_SHARED",
+                                        "value": "True",
+                                        "type": "BOOL"
                                 }
                         ]
                 }

@@ -28,6 +28,9 @@ include_directories(ECS/ECS/src/util)
 add_subdirectory(Chipmunk2D)
 include_directories(Chipmunk2D/include)
 
+add_subdirectory(spdlog)
+include_directories(spdlog/include)
+
 set(ENGINE_SOURCES
     StarfarmEngine/src/Core/Game.cpp StarfarmEngine/src/Core/Game.hpp
     StarfarmEngine/src/Core/Scene.cpp StarfarmEngine/src/Core/Scene.hpp
