@@ -19,8 +19,8 @@ namespace star
         {
                 // ATTRIBUTES
             private:
-                Vector<2> m_corner1;
-                Vector<2> m_corner2;
+                Vector<2> m_endpoint_1;
+                Vector<2> m_endpoint_2;
                 Angle m_radius;
 
             public:

@@ -17,7 +17,8 @@ namespace star
 
                 auto &scene =
                         static_cast<ecs::NonOwningPointer<GameObject>>(get_owner())->get_scene();
-                m_shape.reset(cpCircleShapeNew(m_rigidbodyComponent->m_body.get(), m_radius, cpvzero));
+                m_shape.reset(cpCircleShapeNew(
+                        m_rigidbodyComponent->m_body.get(), m_radius, cpvzero));
                 cpSpaceAddShape(&scene.get_world(), m_shape.get());
         }
 

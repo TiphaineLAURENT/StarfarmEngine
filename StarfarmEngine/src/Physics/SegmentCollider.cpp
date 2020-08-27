@@ -10,8 +10,8 @@
 
 namespace star
 {
-        SegmentCollider::SegmentCollider(Vector<2> corner1, Vector<2> corner2, Angle radius)
-                : m_corner1{ corner1 }, m_corner2{ corner2 }, m_radius{ radius }
+        SegmentCollider::SegmentCollider(Vector<2> endpoint_1, Vector<2> endpoint_2, Angle radius)
+                : m_endpoint_1{ endpoint_1 }, m_endpoint_2{ endpoint_2 }, m_radius{ radius }
         {}
 
         void SegmentCollider::setup()
@@ -21,7 +21,7 @@ namespace star
                 auto &scene =
                         static_cast<ecs::NonOwningPointer<GameObject>>(get_owner())->get_scene();
                 m_shape.reset(
-                        cpSegmentShapeNew(m_rigidbodyComponent->m_body.get(), m_corner1, m_corner2, m_radius));
+                        cpSegmentShapeNew(m_rigidbodyComponent->m_body.get(), m_endpoint_1, m_endpoint_2, m_radius));
                 cpSpaceAddShape(&scene.get_world(), m_shape.get());
         }
 

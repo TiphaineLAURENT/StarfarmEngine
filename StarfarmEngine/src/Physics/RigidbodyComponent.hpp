@@ -67,6 +67,7 @@ namespace star
                 ecs::NonOwningPointer<TransformComponent> m_transformComponent{ nullptr };
 
                 std::unique_ptr<cpBody> m_body{ nullptr };
+                Vector<2> m_offset{ 0, 0 };
 
                 // Force _angularDrag{0.};
 
@@ -159,9 +160,17 @@ namespace star
 
                 Vector<2> get_velocity() const;
 
+                Vector<2> get_center_of_gravity() const;
+                void set_center_of_gravity(const Vector<2> &worldCog);
+
+                void set_moment_of_inertia(Force inertia);
+
+                void set_mass(Weight mass);
+
                 void update(ecs::Interval deltaTime);
 
             private:
+                void refresh();
         };
 
         std::ostream &operator<<(std::ostream &out, const RigidbodyComponent &);

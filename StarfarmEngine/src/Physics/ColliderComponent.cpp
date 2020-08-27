@@ -30,4 +30,10 @@ namespace star
                 return *this;
         }
         cpBB ColliderComponent::get_bb() const { return cpShapeGetBB(m_shape.get()); }
+
+        ColliderComponent &ColliderComponent::set_elasticity(Force elasticity)
+        {
+                cpShapeSetElasticity(m_shape.get(), elasticity);
+                return *this;
+        }
 }    // namespace star

@@ -14,6 +14,14 @@ namespace star
                 : System(ecs::SYSTEM_PRIORITY::HIGHEST, 0), m_space{ space }
         {}
 
-        void PhysicSystem::update(::ecs::Interval deltaTime) { cpSpaceStep(&m_space, TIME_STEP); }
+        void PhysicSystem::update(::ecs::Interval deltaTime)
+        {
+                cpSpaceStep(&m_space, TIME_STEP);
+                for (auto &body :
+                     ::ecs::ComponentManager::get_component_container<RigidbodyComponent>())
+                {
+                        body->update(deltaTime);
+                }
+        }
 
 }    // namespace star

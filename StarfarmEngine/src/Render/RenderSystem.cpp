@@ -2,9 +2,11 @@
 // Created by Tiphaine LAURENT on 21/08/2019.
 //
 
+#include <ComponentManager.hpp>
+
+#include "../Log/LogSystem.hpp"
 #include "RenderSystem.hpp"
 #include "RenderComponent.hpp"
-#include <ComponentManager.hpp>
 
 namespace star
 {
@@ -14,6 +16,8 @@ namespace star
 
         void RenderSystem::update(::ecs::Interval deltaTime)
         {
+                spdlog::info("FPS: {}", 1 / deltaTime);
+
                 for (auto &render :
                      ecs::ComponentManager::get_component_container<RenderComponent>())
                 {

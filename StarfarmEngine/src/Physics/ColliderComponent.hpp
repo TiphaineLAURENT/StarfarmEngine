@@ -43,9 +43,10 @@ namespace star
                 void setup() override;
 
                 ColliderComponent &set_friction(Force friction);
+                ColliderComponent &set_elasticity(Force elasticity);
                 cpBB get_bb() const;
 
-                SIGNAL(OnPostCollision, cpSpace*, void*, void*);
+                SIGNAL(OnPostCollision, cpSpace *, void *, void *);
 
             private:
         };

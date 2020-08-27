@@ -38,7 +38,7 @@ SCENARIO("Game running", "[engine][gamerun]")
 
                         THEN("We create a new scene and set it as active scene")
                         {
-                                auto &scene = game.create_scene(star::Vector<2>{ 0, 10 });
+                                auto &scene = game.create_scene(star::Vector<2>{ 0, 100 });
                                 scene.create_system<star::LogSystem>();
                                 scene.create_system<star::RenderSystem>(window);
                                 scene.create_system<star::PhysicSystem>(scene.get_world());
@@ -57,8 +57,8 @@ SCENARIO("Game running", "[engine][gamerun]")
                                         auto *ground_collider =
                                                 ground.create_component<star::SegmentCollider,
                                                                         star::ColliderComponent>(
-                                                        star::Vector<2>{ -200, 80 },
-                                                        star::Vector<2>{ 200, -80 },
+                                                        star::Vector<2>{ -(float)window.getSize().x, 0 },
+                                                        star::Vector<2>{ (float)window.getSize().x, 0 },
                                                         0);
                                         ground_collider->set_friction(1);
 
@@ -80,10 +80,15 @@ SCENARIO("Game running", "[engine][gamerun]")
 
                                                 auto *ball_body = ball.create_component<
                                                         star::RigidbodyComponent>();
+                                                auto mass = 1.f;
+                                                auto radius = 80.f;
+                                                ball_body->set_mass(mass);
+                                                ball_body->set_moment_of_inertia(
+                                                        cpMomentForCircle(mass, 0, radius, cpvzero));
 
                                                 auto *ball_collider = ball.create_component<
                                                         star::CircleCollider,
-                                                        star::ColliderComponent>(80);
+                                                        star::ColliderComponent>(radius);
                                                 ball_collider->set_friction(0.7);
 
                                                 auto ball_texture = sf::Texture{};
@@ -91,12 +96,18 @@ SCENARIO("Game running", "[engine][gamerun]")
                                                 auto *ball_renderer = ball.create_component<
                                                         star::RenderComponent>(ball_texture);
 
+                                                ground_collider->set_elasticity(0);
+                                                ball_collider->set_elasticity(0);
+
                                                 ground_body->set_position(window.getSize().x / 2,
-                                                                          300);
-                                                ball_body->set_position(window.getSize().x / 2,
-                                                                        150);
+                                                                          window.getSize().y - 50);
+                                                ground_body->set_rotation(-0.1f);
+                                                REQUIRE(ground_body->get_rotation()
+                                                        == -0.1f);
+
+                                                ball_body->set_position(window.getSize().x / 2, 0);
                                                 auto position = ball_body->get_position();
-                                                REQUIRE(position.y == 150);
+                                                REQUIRE(position.y == 0);
 
                                                 while (game.run())
                                                 {
