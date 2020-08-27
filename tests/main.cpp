@@ -30,8 +30,7 @@ SCENARIO("Game running", "[engine][gamerun]")
 
                 THEN("We create a new window")
                 {
-                        auto &window =
-                                game.create_window(800, 400, "StarfarmEngine");
+                        auto &window = game.create_window(800, 400, "StarfarmEngine");
                         window.setFramerateLimit(60);
 
                         REQUIRE(window.getSize() == sf::Vector2u{ 800, 400 });
@@ -90,8 +89,10 @@ SCENARIO("Game running", "[engine][gamerun]")
                                                 auto *ball_renderer = ball.create_component<
                                                         star::RenderComponent>(ball_texture);
 
-                                                ground_body->set_position(window.getSize().x / 2, 300);
-                                                ball_body->set_position(window.getSize().x / 2, 150);
+                                                ground_body->set_position(window.getSize().x / 2,
+                                                                          300);
+                                                ball_body->set_position(window.getSize().x / 2,
+                                                                        150);
                                                 auto position = ball_body->get_position();
                                                 REQUIRE(position.y == 150);
 

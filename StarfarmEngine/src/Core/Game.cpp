@@ -3,7 +3,6 @@
 //
 
 #include "Game.hpp"
-#include <cassert>
 
 namespace star
 {
@@ -14,38 +13,40 @@ namespace star
                         return false;
                 }
 
-                if (!_activeScene)
+                if (!m_activeScene)
                         return false;
 
-                auto deltaTime = _clock.restart().asSeconds();
+                const auto nextTick = m_clock.now();
+                const std::chrono::duration<float> deltaTime = nextTick - m_lastTick;
+                m_lastTick = nextTick;
 
-                for (auto it = _windows.begin(); it != _windows.end();)
+                for (auto it = m_windows.begin(); it != m_windows.end();)
                 {
                         if (!it->second.isOpen())
                         {
-                                it = _windows.erase(it);
+                                it = m_windows.erase(it);
                         }
                         else
                         {
                                 it++;
                         }
                 }
-                if (_windows.empty())
+                if (m_windows.empty())
                 {
                         return false;
                 }
 
-                for (auto &[key, window] : _windows)
+                for (auto &[key, window] : m_windows)
                 {
                         window.process_events();
                 }
 
-                _activeScene->update(deltaTime);
+                m_activeScene->update(deltaTime.count());
                 return true;
         }
         void Game::set_active_scene(::ecs::NonOwningPointer<Scene> scene)
         {
-                ecs::replace_pointer(_activeScene, scene);
+                ecs::replace_pointer(m_activeScene, scene);
         }
 
         Window &Game::create_window(unsigned int width,
@@ -54,7 +55,7 @@ namespace star
                                     ::sf::Uint32 style,
                                     unsigned int bitsPerPixel)
         {
-                const auto [iterator, emplaced] = _windows.try_emplace(
+                const auto [iterator, emplaced] = m_windows.try_emplace(
                         title, width, height, title, style, bitsPerPixel);
                 auto &window = iterator->second;
 
@@ -70,7 +71,7 @@ namespace star
                                   [=, &window](const ::sf::Event &event) {
                                           window.close();
 
-                                          if (_windows.empty())
+                                          if (m_windows.empty())
                                           {
                                                   quit();
                                           }

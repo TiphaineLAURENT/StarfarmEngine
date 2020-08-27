@@ -1,8 +1,23 @@
+message("Cmake version: ${CMAKE_VERSION}")
 cmake_minimum_required(VERSION 3.14)
 project(StarfarmEngine)
 set(CMAKE_CXX_STANDARD 20)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
+
+# to change the build type, run cmake with the parameter:
+#   -D CMAKE_BUILD_TYPE=<build-type>
+# run "cmake --help-variable CMAKE_BUILD_TYPE" for details
+if(NOT CMAKE_BUILD_TYPE)
+  SET(CMAKE_BUILD_TYPE Release CACHE STRING
+      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
+      FORCE)
+endif()
+
+option(VERBOSE "Display found source files" OFF)
+if (VERBOSE)
+        message("Verbose ON")
+endif ()
 
 add_subdirectory(ECS)
 include_directories(ECS/ECS/src/Entity)
@@ -37,15 +52,23 @@ set(ENGINE_SOURCES
 
 list(SORT ENGINE_SOURCES COMPARE FILE_BASENAME)
 list(TRANSFORM ENGINE_SOURCES PREPEND "${CMAKE_SOURCE_DIR}/")
-list(JOIN ENGINE_SOURCES "\n" ENGINE_SOURCES_STRING)
-message("Found starfarmengine sources: [\n" ${ENGINE_SOURCES_STRING} "\n]")
+if (VERBOSE)
+        list(JOIN ENGINE_SOURCES "\n" ENGINE_SOURCES_STRING)
+        message("Found starfarmengine sources: [\n" ${ENGINE_SOURCES_STRING} "\n]")
+endif()
 
-if (WIN32)
-    if (CMAKE_SIZEOF_VOID_P EQUAL 8)
-        message("Windows 64bits")
+if (MSVC)
+    set_source_files_properties(${ENGINE_SOURCES} PROPERTIES LANGUAGE CXX)
+    set_target_properties(chipmunk PROPERTIES LINKER_LANGUAGE CXX)
+    if (CMAKE_SIZEOF_VOID_P EQUAL 8) # Is 64bits
+        if (VERBOSE)
+                message("Windows 64bits")
+        endif ()
         set(SFML_DIR "SFML-2.5.1-visual64/lib/cmake/SFML")
         set(SFML_DLLS "${CMAKE_SOURCE_DIR}/SFML-2.5.1-visual64/bin")
         include_directories(SFML-2.5.1-visual64/include)
+    else ()
+        message(FATAL_ERROR "SFML requires Windows 64bits")
     endif ()
 endif ()
 find_package(SFML 2.5 COMPONENTS graphics audio window network system REQUIRED)
@@ -53,23 +76,25 @@ find_package(SFML 2.5 COMPONENTS graphics audio window network system REQUIRED)
 add_library(starfarm STATIC ${ENGINE_SOURCES})
 
 
-#add_library(coverage_config INTERFACE)
-option(CODE_COVERAGE "Enable coverage reporting" OFF)
-if (CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    target_compile_options(coverage_config INTERFACE
-                           -O0
-                           -g
-                           --coverage
-                           )
-    if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.13)
-        target_link_options(coverage_config INTERFACE --coverage)
-    else ()
-        target_link_libraries(coverage_config INTERFACE --coverage)
-    endif ()
-endif ()
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+        #add_library(coverage_config INTERFACE)
+        option(CODE_COVERAGE "Enable coverage reporting" OFF)
+        if (CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+            target_compile_options(coverage_config INTERFACE
+                                   -O0
+                                   -g
+                                   --coverage
+                                   )
+            if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.13)
+                target_link_options(coverage_config INTERFACE --coverage)
+            else ()
+                target_link_libraries(coverage_config INTERFACE --coverage)
+            endif ()
+        endif ()
 
-option(BUILD_TESTING "Build testing tree" ON)
-if (BUILD_TESTING AND (PROJECT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR))
-    enable_testing()
-    add_subdirectory(tests)
-endif ()
+        option(BUILD_TESTING "Build testing tree" ON)
+        if (BUILD_TESTING AND (PROJECT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR))
+                enable_testing()
+                add_subdirectory(tests)
+        endif ()
+endif()

@@ -5,11 +5,10 @@
 #ifndef STARFARM_GAME_HPP
 #define STARFARM_GAME_HPP
 
-#include <list>
+#include <chrono>
 #include <ostream>
+#include <list>
 #include <unordered_map>
-
-#include <SFML/System/Clock.hpp>
 
 #include "../Event/Signal.hpp"
 #include "../Window/Window.hpp"
@@ -22,12 +21,15 @@ namespace star
         {
                 // ATTRIBUTES
             private:
-                ::std::list<Scene> _scenes{};
-                ::ecs::NonOwningPointer<Scene> _activeScene{ nullptr };
+                bool _running{ true };
 
-                ::std::unordered_map<::std::string, Window> _windows{};
+                ::std::list<Scene> m_scenes{};
+                ::ecs::NonOwningPointer<Scene> m_activeScene{ nullptr };
 
-                ::sf::Clock _clock{};
+                ::std::unordered_map<::std::string, Window> m_windows{};
+
+                ::std::chrono::steady_clock m_clock{};
+                ::std::chrono::steady_clock::time_point m_lastTick{ m_clock.now() };
 
             public:
                 // METHODS
@@ -47,7 +49,7 @@ namespace star
 
                 template <typename... ARGS> Scene &create_scene(ARGS... args)
                 {
-                        return _scenes.emplace_back(std::forward<ARGS>(args)...);
+                        return m_scenes.emplace_back(std::forward<ARGS>(args)...);
                 }
                 void set_active_scene(::ecs::NonOwningPointer<Scene> scene);
 
@@ -58,8 +60,6 @@ namespace star
                                       unsigned int bitsPerPixel = 32);
 
             private:
-                bool _running{ true };
-
                 SLOT(WindowEventHandler, OnKeyPressed) _onKeyPressed{};
                 SLOT(WindowEventHandler, OnClosed) _onClosed{};
         };
