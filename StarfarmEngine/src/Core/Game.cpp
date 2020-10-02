@@ -8,7 +8,7 @@ namespace star
 {
         bool Game::run()
         {
-                if (!_running)
+                if (!m_running)
                 {
                         return false;
                 }
@@ -80,6 +80,6 @@ namespace star
                 return window;
         }
 
-        void Game::quit() { _running = false; }
+        void Game::quit() { m_running = false; }
 
 }    // namespace star

@@ -28,7 +28,7 @@ namespace star
                                      get_owner()->get_component<TransformComponent>());
                 if (m_transformComponent == nullptr)
                         throw std::invalid_argument(
-                                "A entity cannot have a rigidbogy without having a "
+                                "A entity cannot have a rigidbody without having a "
                                 "transform");
 
                 auto &scene =

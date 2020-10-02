@@ -5,38 +5,46 @@
 #ifndef STARFARMENGINE_TRANSFORMCOMPONENT_HPP
 #define STARFARMENGINE_TRANSFORMCOMPONENT_HPP
 
-# include <ostream>
+#include <ostream>
 
-# include <Component.hpp>
-# include <SFML/System/Vector2.hpp>
-# include <SFML/System/Vector3.hpp>
-# include <SFML/Graphics/Transformable.hpp>
+#include <Component.hpp>
+#include <SFML/Graphics/Transformable.hpp>
+#include <SFML/System/Vector2.hpp>
+#include <SFML/System/Vector3.hpp>
+#include "../Util/Vector.hpp"
 
 namespace star
 {
+        class RigidbodyComponent;
 
-  class COMPONENT(TransformComponent), public sf::Transformable
-  {
-// ATTRIBUTES
-  private:
-  public:
+        class COMPONENT(TransformComponent), public sf::Transformable
+        {
+                // ATTRIBUTES
+            private:
+                ::ecs::NonOwningPointer<RigidbodyComponent> m_rigidbodyComponent{ nullptr };
 
-// METHODS
-  public:// CONSTRUCTORS
-          TransformComponent() = default;
-          TransformComponent(const TransformComponent &copy) = default;
-          TransformComponent(TransformComponent &&) noexcept = default;
+            public:
+                // METHODS
+            public:    // CONSTRUCTORS
+                TransformComponent() = default;
+                TransformComponent(const TransformComponent &copy) = default;
+                TransformComponent(TransformComponent &&) noexcept = default;
 
-  public: //OPERATORS
-          TransformComponent &operator=(const TransformComponent &other) = default;
-          TransformComponent &operator=(TransformComponent &&) noexcept = default;
+            public:    // OPERATORS
+                TransformComponent &operator=(const TransformComponent &other) = default;
+                TransformComponent &operator=(TransformComponent &&) noexcept = default;
 
-  public:
-  private:
-  };
+            public:
+                void setup() override;
 
-  std::ostream &operator<<(std::ostream &out, const TransformComponent &);
+                void move(const Vector<2>& offsets);
+                void move(Coordinate x, Coordinate y);
 
-}
+            private:
+        };
 
-#endif //STARFARMENGINE_TRANSFORMCOMPONENT_HPP
+        std::ostream &operator<<(std::ostream &out, const TransformComponent &);
+
+}    // namespace star
+
+#endif    // STARFARMENGINE_TRANSFORMCOMPONENT_HPP

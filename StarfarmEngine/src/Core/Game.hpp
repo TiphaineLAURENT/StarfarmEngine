@@ -21,7 +21,7 @@ namespace star
         {
                 // ATTRIBUTES
             private:
-                bool _running{ true };
+                bool m_running{ true };
 
                 ::std::list<Scene> m_scenes{};
                 ::ecs::NonOwningPointer<Scene> m_activeScene{ nullptr };
