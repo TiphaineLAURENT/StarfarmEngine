@@ -51,7 +51,7 @@ SCENARIO("Game running", "[engine][gamerun]")
                                         auto &ground = scene.create_entity<star::GameObject>();
 
                                         auto *ground_body =
-                                                ground.create_component<star::RigidbodyComponent>(
+                                                ground.create_component<star::RigidbodyComponent, star::TransformComponent>(
                                                         star::RIGIDBODY_TYPE::STATIC);
 
                                         auto *ground_collider =
@@ -79,7 +79,7 @@ SCENARIO("Game running", "[engine][gamerun]")
                                                         scene.create_entity<star::GameObject>();
 
                                                 auto *ball_body = ball.create_component<
-                                                        star::RigidbodyComponent>();
+                                                        star::RigidbodyComponent, star::TransformComponent>();
                                                 auto mass = 1.f;
                                                 auto radius = 80.f;
                                                 ball_body->set_mass(mass);

@@ -19,31 +19,23 @@ namespace star
 {
         RigidbodyComponent::RigidbodyComponent(RIGIDBODY_TYPE type) : m_body{ cpBodyNew(1, 1) }
         {
+                spdlog::info("m_body {}", m_body.operator bool());
+                assert(m_body);
                 cpBodySetType(m_body.get(), static_cast<cpBodyType>(type));
         }
 
         void RigidbodyComponent::setup()
         {
-                ecs::replace_pointer(m_transformComponent,
-                                     get_owner()->get_component<TransformComponent>());
-                if (m_transformComponent == nullptr)
-                        throw std::invalid_argument(
-                                "A entity cannot have a rigidbody without having a "
-                                "transform");
-
                 auto &scene =
                         static_cast<ecs::NonOwningPointer<GameObject>>(get_owner())->get_scene();
                 ecs::replace_pointer(m_space, &scene.get_world());
                 cpSpaceAddBody(m_space, m_body.get());
         }
 
-        void RigidbodyComponent::move(const Vector<2> &offsets) { move(offsets.x, offsets.y); }
-        void RigidbodyComponent::move(Coordinate x, Coordinate y)
+        void RigidbodyComponent::set_position(Coordinate x, Coordinate y)
         {
-                auto old_position = get_position();
-                set_position({ x + old_position.x, y + old_position.y });
+                set_position({ x, y });
         }
-
         void RigidbodyComponent::set_position(const Vector<2> &coordinates)
         {
                 cpBodySetPosition(
@@ -51,14 +43,9 @@ namespace star
                         coordinates + cpTransformVect(get_transform(), { m_offset.x, m_offset.y }));
                 refresh();
         }
-        void RigidbodyComponent::set_position(Coordinate x, Coordinate y)
-        {
-                set_position({ x, y });
-        }
 
         const cpTransform &RigidbodyComponent::get_transform() const { return m_body->transform; }
 
-        void RigidbodyComponent::add_rotation(Angle angle) { set_rotation(get_rotation() + angle); }
         void RigidbodyComponent::set_rotation(Angle angle)
         {
                 cpBodySetAngle(m_body.get(), angle);

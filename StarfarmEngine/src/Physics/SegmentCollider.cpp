@@ -2,10 +2,10 @@
 // Created by Tiphaine LAURENT on 13/08/2019.
 //
 
+#include "SegmentCollider.hpp"
 #include "../Core/Scene.hpp"
 #include "../GameObject/GameObject.hpp"
 #include "../Util/Vector.hpp"
-#include "SegmentCollider.hpp"
 #include "TransformComponent.hpp"
 
 namespace star
@@ -20,8 +20,8 @@ namespace star
 
                 auto &scene =
                         static_cast<ecs::NonOwningPointer<GameObject>>(get_owner())->get_scene();
-                m_shape.reset(
-                        cpSegmentShapeNew(m_rigidbodyComponent->m_body.get(), m_endpoint_1, m_endpoint_2, m_radius));
+                m_shape.reset(cpSegmentShapeNew(
+                        m_rigidbodyComponent->m_body.get(), m_endpoint_1, m_endpoint_2, m_radius));
                 cpSpaceAddShape(&scene.get_world(), m_shape.get());
         }
 

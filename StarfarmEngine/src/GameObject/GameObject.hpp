@@ -22,7 +22,7 @@ namespace star
           friend class MonoBehaviour;
 // ATTRIBUTES
   private:
-          std::reference_wrapper<TransformComponent> m_transform;
+          ecs::NonOwningPointer<TransformComponent> m_transform{ nullptr };
           Scene &m_scene;
 
   public:

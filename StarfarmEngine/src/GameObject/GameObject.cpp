@@ -10,7 +10,7 @@ namespace star
 
         GameObject::GameObject(Scene &scene)
                 : Entity(),
-                m_transform{*create_component<TransformComponent>()},
+                //m_transform{*create_component<TransformComponent>()},
                 m_scene{scene}
         {}
 

@@ -8,6 +8,12 @@
 namespace star
 {
         MonoBehaviour::MonoBehaviour(GameObject &gameObject)
-                : Component(), m_gameObject{ gameObject }, m_transform{ gameObject.m_transform }
+                : Component(), m_gameObject{ gameObject }
         {}
+
+        void MonoBehaviour::awake()
+        {
+                ::ecs::replace_pointer(m_transform,
+                                       m_gameObject.get().get_component<TransformComponent>());
+        }
 }    // namespace star

@@ -22,7 +22,7 @@ namespace star
             protected:
                 ::std::reference_wrapper<GameObject> m_gameObject;
 
-                ::std::reference_wrapper<TransformComponent> m_transform;
+                ::ecs::NonOwningPointer<TransformComponent> m_transform{ nullptr };
 
             public:
                 // METHODS:
@@ -37,7 +37,7 @@ namespace star
                 MonoBehaviour &operator=(MonoBehaviour &&other) = delete;
 
             public:
-                virtual void awake(){};
+                virtual void awake();
                 virtual void start(){};
                 virtual void update(){};
                 virtual void fixed_update(){};

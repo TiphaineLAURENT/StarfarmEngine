@@ -13,14 +13,11 @@ namespace star
         void ColliderComponent::setup()
         {
                 ecs::replace_pointer(m_rigidbodyComponent,
-                                     get_owner()->get_component<RigidbodyComponent>());
+                                     static_cast<RigidbodyComponent*>(get_owner()->get_component<TransformComponent>()));
                 if (m_rigidbodyComponent == nullptr)
                         throw std::invalid_argument(
                                 "A entity cannot have a collider without having a "
                                 "rigidbody");
-
-                ecs::replace_pointer(m_transformComponent,
-                                     get_owner()->get_component<TransformComponent>());
         }
 
         ColliderComponent &ColliderComponent::set_friction(Force friction)

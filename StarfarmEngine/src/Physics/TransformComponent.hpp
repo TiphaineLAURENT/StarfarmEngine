@@ -7,21 +7,19 @@
 
 #include <ostream>
 
-#include <Component.hpp>
-#include <SFML/Graphics/Transformable.hpp>
-#include <SFML/System/Vector2.hpp>
-#include <SFML/System/Vector3.hpp>
 #include "../Util/Vector.hpp"
+#include <Component.hpp>
 
 namespace star
 {
-        class RigidbodyComponent;
-
-        class COMPONENT(TransformComponent), public sf::Transformable
+        class COMPONENT(TransformComponent)
         {
                 // ATTRIBUTES
             private:
-                ::ecs::NonOwningPointer<RigidbodyComponent> m_rigidbodyComponent{ nullptr };
+                Coordinate m_x{ 0 };
+                Coordinate m_y{ 0 };
+
+                Angle m_rotation{ 0 };
 
             public:
                 // METHODS
@@ -37,8 +35,16 @@ namespace star
             public:
                 void setup() override;
 
-                void move(const Vector<2>& offsets);
-                void move(Coordinate x, Coordinate y);
+                virtual Vector<2> get_position() const;
+                virtual void set_position(const Vector<2> & coordinates);
+                virtual void set_position(Coordinate x, Coordinate y);
+
+                virtual void move(const Vector<2> &offsets);
+                virtual void move(Coordinate x, Coordinate y);
+
+                virtual Angle get_rotation() const;
+                virtual void set_rotation(Angle rotation);
+                virtual void rotate(Angle rotation);
 
             private:
         };

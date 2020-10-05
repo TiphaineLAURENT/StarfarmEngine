@@ -15,10 +15,10 @@
 #include <chipmunk/cpBody.h>
 
 #include "../Util/Vector.hpp"
+#include "TransformComponent.hpp"
 
 namespace star
 {
-        class TransformComponent;
         class Scene;
 
         enum class RIGIDBODY_CONSTRAINTS : unsigned
@@ -53,7 +53,7 @@ namespace star
                 STATIC = cpBodyType::CP_BODY_TYPE_STATIC
         };
 
-        class COMPONENT(RigidbodyComponent)
+        class RigidbodyComponent : public TransformComponent
         {
                 // ATTRIBUTES
             private:
@@ -63,8 +63,6 @@ namespace star
                 friend class BoxCollider;
 
                 ecs::NonOwningPointer<cpSpace> m_space{ nullptr };
-
-                ecs::NonOwningPointer<TransformComponent> m_transformComponent{ nullptr };
 
                 std::unique_ptr<cpBody> m_body{ nullptr };
                 Vector<2> m_offset{ 0, 0 };
@@ -145,17 +143,13 @@ namespace star
                         add_force<mode>({ x, y });
                 }
 
-                void move(const Vector<2> &offsets);
-                void move(Coordinate x, Coordinate y);
-
-                Vector<2> get_position() const;
-                void set_position(const Vector<2> &coordinates);
-                void set_position(Coordinate x, Coordinate y);
+                Vector<2> get_position() const override;
+                void set_position(const Vector<2> &coordinates) override;
+                void set_position(Coordinate x, Coordinate y) override;
 
                 const cpTransform &get_transform() const;
 
-                Angle get_rotation() const;
-                void add_rotation(Angle angle);
+                Angle get_rotation() const override;
                 void set_rotation(Angle angle);
 
                 Vector<2> get_velocity() const;

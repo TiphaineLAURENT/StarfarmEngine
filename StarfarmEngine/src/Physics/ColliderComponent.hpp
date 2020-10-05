@@ -24,8 +24,6 @@ namespace star
             protected:
                 ecs::NonOwningPointer<RigidbodyComponent> m_rigidbodyComponent{ nullptr };
 
-                ecs::NonOwningPointer<TransformComponent> m_transformComponent{ nullptr };
-
             public:
                 std::unique_ptr<cpShape> m_shape{ nullptr };
                 // METHODS

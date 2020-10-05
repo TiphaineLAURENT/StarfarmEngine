@@ -17,10 +17,12 @@ namespace star
         void PhysicSystem::update(::ecs::Interval deltaTime)
         {
                 cpSpaceStep(&m_space, TIME_STEP);
-                for (auto &body :
-                     ::ecs::ComponentManager::get_component_container<RigidbodyComponent>())
+                for (auto &transform :
+                     ::ecs::ComponentManager::get_component_container<TransformComponent>())
                 {
-                        body->update(deltaTime);
+                        if (auto body = static_cast<RigidbodyComponent *>(transform.get());
+                            body != nullptr)
+                                body->update(deltaTime);
                 }
         }
 
