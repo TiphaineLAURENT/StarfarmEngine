@@ -19,8 +19,6 @@ namespace star
 {
         RigidbodyComponent::RigidbodyComponent(RIGIDBODY_TYPE type) : m_body{ cpBodyNew(1, 1) }
         {
-                spdlog::info("m_body {}", m_body.operator bool());
-                assert(m_body);
                 cpBodySetType(m_body.get(), static_cast<cpBodyType>(type));
         }
 
@@ -52,7 +50,7 @@ namespace star
                 refresh();
         }
 
-        void RigidbodyComponent::update(ecs::Interval deltaTime)
+        void RigidbodyComponent::update(::ecs::Interval deltaTime)
         {
                 const auto vec = get_position();
                 const auto cog = get_center_of_gravity();

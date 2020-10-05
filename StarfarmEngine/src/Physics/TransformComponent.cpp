@@ -7,8 +7,6 @@
 
 namespace star
 {
-        void TransformComponent::setup() {}
-
         Vector<2> TransformComponent::get_position() const
         {
             return { m_x, m_y };

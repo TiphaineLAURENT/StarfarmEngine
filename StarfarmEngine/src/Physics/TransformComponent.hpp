@@ -33,8 +33,6 @@ namespace star
                 TransformComponent &operator=(TransformComponent &&) noexcept = default;
 
             public:
-                void setup() override;
-
                 virtual Vector<2> get_position() const;
                 virtual void set_position(const Vector<2> & coordinates);
                 virtual void set_position(Coordinate x, Coordinate y);
